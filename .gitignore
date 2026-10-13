@@ -1,0 +1,56 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.pem
+*.key
+
+# Python environments and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.venv/
+venv/
+.test-deps/
+.week7-deps/
+.week7-py312/
+.week7-venv/
+
+# JavaScript dependencies and build output
+node_modules/
+.next/
+.next-*/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Local databases, indexes, logs, and test artifacts
+*.db
+*.sqlite
+*.sqlite3
+*.log
+qdrant_storage/
+test-output/
+
+# Local document rendering and temporary archives
+docs/.qa-render/
+docs/**/.qa-*/
+*.zip
+~$*.docx
+
+# Local TypeScript compiler state
+*.tsbuildinfo
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

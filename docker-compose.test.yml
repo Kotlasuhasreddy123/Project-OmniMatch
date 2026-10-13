@@ -1,0 +1,62 @@
+# OmniMatch — TEST environment
+# Runs all backend pytest tests in an isolated container with ephemeral DB.
+# Usage: docker compose -f docker-compose.test.yml up --abort-on-container-exit
+
+services:
+
+  qdrant-test:
+    image: qdrant/qdrant:v1.10.0
+    container_name: omni_qdrant_test
+    ports: ["6335:6333"]       # Different port to avoid conflicts with dev
+    tmpfs: ["/qdrant/storage"] # Ephemeral — wiped after tests
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 5s; timeout: 5s; retries: 10; start_period: 5s
+
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: omni_backend_test
+    command: >
+      sh -c "
+        python -m spacy download en_core_web_sm --quiet &&
+        pytest tests/ -v --tb=short --cov=app --cov-report=term-missing
+          --cov-report=xml:/test-results/coverage.xml
+          -p no:warnings 2>&1 | tee /test-results/pytest.log
+      "
+    depends_on:
+      qdrant-test: { condition: service_healthy }
+    volumes:
+      - ./backend/tests:/app/tests:ro
+      - test_results:/test-results
+    tmpfs: ["/app/data"]       # Ephemeral test DB
+    environment:
+      - APP_ENV=test
+      - QDRANT_HOST=qdrant-test
+      - QDRANT_PORT=6333
+      - SQLITE_DB_PATH=/app/data/test.db
+      - JWT_SECRET_KEY=test-jwt-secret-key-for-testing-only-32chars
+      - APP_SECRET_KEY=test-app-secret-key-for-testing-only-32chars
+      - WHISPER_MODEL=tiny
+      - CLINICALTRIALS_MAX_STUDIES=10
+
+  frontend-test:
+    image: node:20-alpine
+    container_name: omni_frontend_test
+    working_dir: /app
+    command: sh -c "npm install --legacy-peer-deps && npm run test:run -- --coverage 2>&1 | tee /test-results/jest.log"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - test_results:/test-results
+    environment:
+      - CI=true
+      - NEXT_PUBLIC_API_URL=http://backend-test:8000
+
+volumes:
+  test_results:
+
+networks:
+  default:
+    name: omni_test_network

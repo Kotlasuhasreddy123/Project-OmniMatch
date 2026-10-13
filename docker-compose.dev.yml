@@ -1,0 +1,61 @@
+# OmniMatch — DEVELOPMENT environment
+# Hot-reload for both backend and frontend. Qdrant data persisted locally.
+# Usage: docker compose -f docker-compose.dev.yml up
+
+services:
+
+  qdrant:
+    image: qdrant/qdrant:v1.10.0
+    container_name: omni_qdrant_dev
+    ports: ["6333:6333", "6334:6334"]
+    volumes:
+      - qdrant_dev_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 10s; timeout: 5s; retries: 5; start_period: 5s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: builder          # Use builder stage for dev (includes all dev deps)
+    container_name: omni_backend_dev
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+    depends_on:
+      qdrant: { condition: service_healthy }
+    ports: ["8000:8000"]
+    volumes:
+      - ./backend/app:/app/app:ro   # Mount source for hot reload
+      - backend_dev_data:/app/data
+    env_file: ./backend/.env
+    environment:
+      - APP_ENV=development
+      - QDRANT_HOST=qdrant
+      - SQLITE_DB_PATH=/app/data/omni_match_dev.db
+      - WHISPER_MODEL=tiny           # Faster for dev
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
+      interval: 15s; timeout: 10s; retries: 3; start_period: 30s
+
+  frontend:
+    image: node:20-alpine
+    container_name: omni_frontend_dev
+    working_dir: /app
+    command: sh -c "npm install --legacy-peer-deps && npm run dev"
+    depends_on:
+      backend: { condition: service_healthy }
+    ports: ["3000:3000"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules           # Anonymous volume prevents host node_modules override
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NODE_ENV=development
+
+volumes:
+  qdrant_dev_data:
+  backend_dev_data:
+
+networks:
+  default:
+    name: omni_dev_network

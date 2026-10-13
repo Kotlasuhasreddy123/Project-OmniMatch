@@ -1,0 +1,88 @@
+# Bandit security scanner configuration for OmniMatch
+# Run: bandit -r app/ -c .bandit.yml
+# CI integration: bandit -r app/ -c .bandit.yml -f json -o bandit-report.json
+
+# ── Severity threshold ────────────────────────────────────────────────────
+# MEDIUM and HIGH severity issues fail the build.
+# LOW severity issues are reported but do not fail.
+skips: []
+
+# ── Tests to skip (with justification) ───────────────────────────────────
+# B106: hardcoded_password_funcarg — false positives on test fixtures
+# B101: assert_used — OK in test files only
+exclude_dirs:
+  - tests
+  - .venv
+  - venv
+  - __pycache__
+  - node_modules
+
+# ── Custom profile for OmniMatch ─────────────────────────────────────────
+# Critical checks that must NEVER be skipped:
+#   B403: import_pickle       — PHI data must never be pickled
+#   B506: yaml_load           — must use yaml.safe_load
+#   B501-B504: SSL/TLS issues — TLS 1.3 required (REQ-08)
+#   B602-B608: Shell injection, SQL injection
+#   B324: hashlib weak hash   — MD5/SHA1 not acceptable for security
+
+tests:
+  - B102  # exec_used
+  - B103  # set_bad_file_permissions
+  - B105  # hardcoded_password_string
+  - B106  # hardcoded_password_funcarg
+  - B107  # hardcoded_password_default
+  - B108  # probable_insecure_usage_of_temp_file
+  - B201  # flask_debug_true (detect debug=True)
+  - B301  # pickle
+  - B302  # marshal
+  - B303  # md5 / sha1
+  - B304  # ciphers (weak encryption)
+  - B305  # cipher_modes
+  - B306  # mktemp_q
+  - B307  # eval
+  - B311  # random (not for security)
+  - B312  # telnetlib
+  - B314  # xml_bad_cElementTree
+  - B315  # xml_bad_ElementTree
+  - B316  # xml_bad_expatbuilder
+  - B317  # xml_bad_sax
+  - B318  # xml_bad_minidom
+  - B319  # xml_bad_pulldom
+  - B320  # xml_bad_etree
+  - B321  # ftp_lib
+  - B322  # input
+  - B323  # unverified_context
+  - B324  # hashlib_weak_hash
+  - B325  # tempnam
+  - B401  # import_telnetlib
+  - B402  # import_ftplib
+  - B403  # import_pickle
+  - B404  # import_subprocess
+  - B405  # import_xml_etree
+  - B406  # import_xml_sax
+  - B407  # import_xml_expat
+  - B408  # import_xml_minidom
+  - B409  # import_xml_pulldom
+  - B411  # import_xmlrpc
+  - B412  # import_httpoxy
+  - B413  # import_pycrypto
+  - B501  # request_with_no_cert_validation
+  - B502  # ssl_with_bad_version
+  - B503  # ssl_with_bad_defaults
+  - B504  # ssl_with_no_version
+  - B505  # weak_cryptographic_key
+  - B506  # yaml_load
+  - B601  # paramiko_calls
+  - B602  # subprocess_popen_with_shell_equals_true
+  - B603  # subprocess_without_shell_equals_true
+  - B604  # any_other_function_with_shell_equals_true
+  - B605  # start_process_with_a_shell
+  - B606  # start_process_with_no_shell
+  - B607  # start_process_with_partial_path
+  - B608  # hardcoded_sql_expressions
+  - B609  # linux_commands_wildcard_injection
+  - B610  # django_extra
+  - B611  # django_rawsql
+  - B701  # jinja2_autoescape_false
+  - B702  # use_of_mako_templates
+  - B703  # django_mark_safe

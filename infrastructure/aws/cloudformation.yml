@@ -1,0 +1,495 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  OmniMatch - Ambient AI Clinical Trial Routing Engine
+  HIPAA-aligned AWS Free Tier deployment (simulated academic project).
+  Stack: EC2 t2.micro, S3 audit bucket, CloudWatch logs, IAM roles, Security Groups.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Parameters
+# ─────────────────────────────────────────────────────────────────────────────
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: omni-dev
+    AllowedValues: [omni-dev, omni-staging, omni-prod]
+    Description: Deployment environment tag
+
+  KeyPairName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: EC2 Key Pair for SSH access
+
+  AllowedCIDR:
+    Type: String
+    Default: "0.0.0.0/0"
+    Description: CIDR block allowed to reach the ALB (restrict in production)
+
+  JWTSecret:
+    Type: String
+    NoEcho: true
+    MinLength: 32
+    Description: "JWT secret key (32+ chars). Stored in SSM Parameter Store."
+
+  AppSecretKey:
+    Type: String
+    NoEcho: true
+    MinLength: 32
+    Description: "Application secret key (32+ chars). Stored in SSM Parameter Store."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Mappings
+# ─────────────────────────────────────────────────────────────────────────────
+Mappings:
+  RegionAMI:
+    us-east-1:
+      AMI: ami-0c02fb55956c7d316   # Amazon Linux 2023
+    us-west-2:
+      AMI: ami-0cf2b4e024cdb73c8
+    eu-west-1:
+      AMI: ami-0943382e114f188e8
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Resources
+# ─────────────────────────────────────────────────────────────────────────────
+Resources:
+
+  # ── VPC & Networking ───────────────────────────────────────────────────────
+  OmniVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: "10.0.0.0/16"
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-vpc"
+        - Key: Project
+          Value: OmniMatch
+
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref OmniVPC
+      CidrBlock: "10.0.1.0/24"
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-public-a"
+
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref OmniVPC
+      CidrBlock: "10.0.2.0/24"
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-public-b"
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-igw"
+
+  IGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref OmniVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref OmniVPC
+
+  DefaultPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: IGWAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref InternetGateway
+
+  SubnetARouteAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      RouteTableId: !Ref PublicRouteTable
+
+  SubnetBRouteAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetB
+      RouteTableId: !Ref PublicRouteTable
+
+  # ── Security Groups ────────────────────────────────────────────────────────
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTPS inbound to ALB
+      VpcId: !Ref OmniVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref AllowedCIDR
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref AllowedCIDR
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-alb-sg"
+
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow traffic from ALB and SSH from restricted IP
+      VpcId: !Ref OmniVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8000
+          ToPort: 8000
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref AllowedCIDR
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-ec2-sg"
+
+  # ── IAM Role for EC2 ───────────────────────────────────────────────────────
+  OmniEC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${EnvironmentName}-ec2-role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Policies:
+        - PolicyName: OmniMatchS3AuditPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                Resource: !Sub "arn:aws:s3:::${AuditLogBucket}/*"
+              - Effect: Allow
+                Action:
+                  - ssm:GetParameter
+                  - ssm:GetParameters
+                Resource:
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/omni/*"
+      Tags:
+        - Key: Project
+          Value: OmniMatch
+
+  OmniEC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref OmniEC2Role
+
+  # ── S3 Audit Log Bucket (HIPAA-aligned) ───────────────────────────────────
+  AuditLogBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub "${EnvironmentName}-omni-audit-${AWS::AccountId}"
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256    # AES-256 at rest — REQ-08
+      VersioningConfiguration:
+        Status: Enabled
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: RetainAuditLogs7Years
+            Status: Enabled
+            Transitions:
+              - TransitionInDays: 90
+                StorageClass: STANDARD_IA
+              - TransitionInDays: 365
+                StorageClass: GLACIER
+      Tags:
+        - Key: Project
+          Value: OmniMatch
+        - Key: DataClassification
+          Value: PHI-Simulated
+
+  AuditLogBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref AuditLogBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyNonTLS
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !Sub "arn:aws:s3:::${AuditLogBucket}"
+              - !Sub "arn:aws:s3:::${AuditLogBucket}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
+          - Sid: AllowEC2Write
+            Effect: Allow
+            Principal:
+              AWS: !GetAtt OmniEC2Role.Arn
+            Action:
+              - s3:PutObject
+            Resource: !Sub "arn:aws:s3:::${AuditLogBucket}/*"
+
+  # ── SSM Parameter Store (secrets — never in env vars) ─────────────────────
+  JWTSecretParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/omni/${EnvironmentName}/jwt_secret"
+      Type: SecureString
+      Value: !Ref JWTSecret
+      Description: OmniMatch JWT signing secret
+      Tags:
+        Project: OmniMatch
+
+  AppSecretParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/omni/${EnvironmentName}/app_secret"
+      Type: SecureString
+      Value: !Ref AppSecretKey
+      Description: OmniMatch application secret key
+      Tags:
+        Project: OmniMatch
+
+  # ── CloudWatch Log Groups ──────────────────────────────────────────────────
+  AppLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/omni/${EnvironmentName}/app"
+      RetentionInDays: 90
+
+  AuditLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/omni/${EnvironmentName}/audit"
+      RetentionInDays: 2557   # 7 years for HIPAA
+
+  # ── CloudWatch Alarms ──────────────────────────────────────────────────────
+  HighCPUAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${EnvironmentName}-high-cpu"
+      AlarmDescription: EC2 CPU above 80% for 5 minutes
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 80
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref OmniEC2Instance
+
+  # ── EC2 Instance ───────────────────────────────────────────────────────────
+  OmniEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro    # AWS Free Tier
+      ImageId: !FindInMap [RegionAMI, !Ref "AWS::Region", AMI]
+      KeyName: !Ref KeyPairName
+      IamInstanceProfile: !Ref OmniEC2InstanceProfile
+      SubnetId: !Ref PublicSubnetA
+      SecurityGroupIds:
+        - !Ref EC2SecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 30
+            VolumeType: gp3
+            Encrypted: true       # AES-256 at rest — REQ-08
+            DeleteOnTermination: false
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          # System updates
+          yum update -y
+          yum install -y docker git python3-pip
+
+          # Start Docker
+          systemctl enable docker
+          systemctl start docker
+          usermod -aG docker ec2-user
+
+          # Install Docker Compose v2
+          mkdir -p /usr/local/lib/docker/cli-plugins
+          curl -SL https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 \
+            -o /usr/local/lib/docker/cli-plugins/docker-compose
+          chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+          # Fetch secrets from SSM
+          JWT_SECRET=$(aws ssm get-parameter \
+            --name /omni/${EnvironmentName}/jwt_secret \
+            --with-decryption \
+            --query Parameter.Value \
+            --output text \
+            --region ${AWS::Region})
+
+          APP_SECRET=$(aws ssm get-parameter \
+            --name /omni/${EnvironmentName}/app_secret \
+            --with-decryption \
+            --query Parameter.Value \
+            --output text \
+            --region ${AWS::Region})
+
+          # Clone repo (replace with your GitHub URL)
+          cd /home/ec2-user
+          git clone https://github.com/HealthTechInnovationLabs/omni-match.git app
+          cd app
+
+          # Write .env from SSM secrets (never hardcoded)
+          cat > backend/.env <<EOF
+          APP_ENV=production
+          JWT_SECRET_KEY=$JWT_SECRET
+          APP_SECRET_KEY=$APP_SECRET
+          QDRANT_HOST=qdrant
+          QDRANT_PORT=6333
+          SQLITE_DB_PATH=/app/data/omni_match.db
+          CLINICALTRIALS_MAX_STUDIES=500
+          WHISPER_MODEL=base
+          EOF
+
+          # Start with production compose
+          docker compose -f docker-compose.prod.yml up -d --build
+
+          # CloudWatch agent
+          yum install -y amazon-cloudwatch-agent
+          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+            -a fetch-config -m ec2 -s \
+            -c ssm:/AmazonCloudWatch-omni-config
+
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-omni-server"
+        - Key: Project
+          Value: OmniMatch
+
+  # ── Elastic IP ─────────────────────────────────────────────────────────────
+  OmniEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref OmniEC2Instance
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-eip"
+
+  # ── Application Load Balancer ──────────────────────────────────────────────
+  OmniALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub "${EnvironmentName}-alb"
+      Type: application
+      Scheme: internet-facing
+      Subnets:
+        - !Ref PublicSubnetA
+        - !Ref PublicSubnetB
+      SecurityGroups:
+        - !Ref ALBSecurityGroup
+      Tags:
+        - Key: Project
+          Value: OmniMatch
+
+  FrontendTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub "${EnvironmentName}-frontend-tg"
+      Protocol: HTTP
+      Port: 3000
+      VpcId: !Ref OmniVPC
+      HealthCheckPath: /
+      HealthCheckIntervalSeconds: 30
+      HealthyThresholdCount: 2
+      Targets:
+        - Id: !Ref OmniEC2Instance
+          Port: 3000
+
+  BackendTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub "${EnvironmentName}-backend-tg"
+      Protocol: HTTP
+      Port: 8000
+      VpcId: !Ref OmniVPC
+      HealthCheckPath: /api/v1/health
+      HealthCheckIntervalSeconds: 30
+      HealthyThresholdCount: 2
+      Targets:
+        - Id: !Ref OmniEC2Instance
+          Port: 8000
+
+  ALBHTTPListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref OmniALB
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: redirect
+          RedirectConfig:
+            Protocol: HTTPS
+            Port: "443"
+            StatusCode: HTTP_301
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Outputs
+# ─────────────────────────────────────────────────────────────────────────────
+Outputs:
+  EC2PublicIP:
+    Description: Public IP of the OmniMatch EC2 instance
+    Value: !Ref OmniEIP
+    Export:
+      Name: !Sub "${EnvironmentName}-ec2-ip"
+
+  ALBDNSName:
+    Description: DNS name of the Application Load Balancer
+    Value: !GetAtt OmniALB.DNSName
+    Export:
+      Name: !Sub "${EnvironmentName}-alb-dns"
+
+  AuditBucketName:
+    Description: S3 bucket for HIPAA-aligned audit logs
+    Value: !Ref AuditLogBucket
+    Export:
+      Name: !Sub "${EnvironmentName}-audit-bucket"
+
+  AppLogGroupName:
+    Description: CloudWatch log group for application logs
+    Value: !Ref AppLogGroup
+
+  AuditLogGroupName:
+    Description: CloudWatch log group for audit logs (7-year retention)
+    Value: !Ref AuditLogGroup

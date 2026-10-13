@@ -1,0 +1,147 @@
+[
+  {
+    "id": "T001",
+    "description": "Type 2 diabetes with complications",
+    "transcript": "The patient is a 58-year-old male with type 2 diabetes mellitus and hypertension. He reports fatigue and occasional chest pain. He is currently on metformin and lisinopril. His last HbA1c was 8.2 percent. No history of stroke.",
+    "expected_affirmed": ["type 2 diabetes", "hypertension", "fatigue", "chest pain", "metformin", "lisinopril"],
+    "expected_negated": ["stroke"]
+  },
+  {
+    "id": "T002",
+    "description": "Asthma with negation",
+    "transcript": "Patient is a 34-year-old female. She denies asthma and no history of COPD. She presents with shortness of breath and cough. She is taking albuterol as needed.",
+    "expected_affirmed": ["shortness of breath", "cough", "albuterol"],
+    "expected_negated": ["asthma", "copd"]
+  },
+  {
+    "id": "T003",
+    "description": "Cancer family history only",
+    "transcript": "The patient has no personal history of cancer. Family history significant for breast cancer in the mother. Patient currently has fatigue and weight loss.",
+    "expected_affirmed": ["fatigue", "weight loss"],
+    "expected_negated": ["cancer"],
+    "expected_family": ["breast cancer"]
+  },
+  {
+    "id": "T004",
+    "description": "Depression affirmed",
+    "transcript": "Patient presents with depression and insomnia. She reports sleeping only 4 hours per night. She is on sertraline 100mg daily. She denies any suicidal ideation.",
+    "expected_affirmed": ["depression", "insomnia", "sertraline"],
+    "expected_negated": []
+  },
+  {
+    "id": "T005",
+    "description": "Heart failure with multiple negations",
+    "transcript": "The patient has congestive heart failure managed with metoprolol. Rules out myocardial infarction at this time. No evidence of atrial fibrillation. He reports shortness of breath on exertion and palpitations.",
+    "expected_affirmed": ["heart failure", "metoprolol", "shortness of breath", "palpitations"],
+    "expected_negated": ["myocardial infarction", "atrial fibrillation"]
+  },
+  {
+    "id": "T006",
+    "description": "Kidney disease management",
+    "transcript": "Patient has chronic kidney disease stage 3. She is without chest pain today. Blood pressure is elevated at 145 over 92. She takes amlodipine. No diabetes.",
+    "expected_affirmed": ["kidney disease", "amlodipine"],
+    "expected_negated": ["chest pain", "diabetes"]
+  },
+  {
+    "id": "T007",
+    "description": "Rheumatoid arthritis",
+    "transcript": "Patient has rheumatoid arthritis confirmed by serology. She is on methotrexate and prednisone. She reports joint pain and swelling in both hands. Free of cardiac disease.",
+    "expected_affirmed": ["rheumatoid arthritis", "methotrexate", "prednisone", "pain", "swelling"],
+    "expected_negated": ["cardiac disease"]
+  },
+  {
+    "id": "T008",
+    "description": "Parkinson disease",
+    "transcript": "65-year-old male with Parkinson disease. He reports tremor and difficulty walking. He takes levodopa. His father had Alzheimer disease. No history of epilepsy or seizures.",
+    "expected_affirmed": ["parkinson", "levodopa"],
+    "expected_negated": ["epilepsy", "seizures"],
+    "expected_family": ["alzheimer"]
+  },
+  {
+    "id": "T009",
+    "description": "Multiple conditions complex visit",
+    "transcript": "The patient has obesity, type 2 diabetes, and hypertension. She denies any history of kidney disease or liver disease. She is on atorvastatin for high cholesterol and omeprazole for reflux. Her BMI is 38.",
+    "expected_affirmed": ["obesity", "type 2 diabetes", "hypertension", "atorvastatin", "omeprazole"],
+    "expected_negated": ["kidney disease", "liver disease"]
+  },
+  {
+    "id": "T010",
+    "description": "COPD with absence triggers",
+    "transcript": "Patient has severe COPD and is on fluticasone and salmeterol. Absence of asthma noted. He denies smoking currently. Reports chronic cough and fatigue. Negative for lung cancer.",
+    "expected_affirmed": ["copd", "fluticasone", "salmeterol", "cough", "fatigue"],
+    "expected_negated": ["asthma", "cancer"]
+  },
+  {
+    "id": "T011",
+    "description": "Hypothyroidism and depression",
+    "transcript": "Patient presents with hypothyroidism on levothyroxine. She also has depression managed with escitalopram. She reports weight gain and fatigue. No evidence of cardiovascular disease.",
+    "expected_affirmed": ["hypothyroidism", "levothyroxine", "depression", "escitalopram", "fatigue"],
+    "expected_negated": ["cardiovascular disease"]
+  },
+  {
+    "id": "T012",
+    "description": "Pediatric negation complex",
+    "transcript": "The patient never had epilepsy or seizures. He does not have diabetes. He presents with asthma and is on albuterol. Mother had hypertension. Father had type 2 diabetes.",
+    "expected_affirmed": ["asthma", "albuterol"],
+    "expected_negated": ["epilepsy", "seizures", "diabetes"],
+    "expected_family": ["hypertension", "type 2 diabetes"]
+  },
+  {
+    "id": "T013",
+    "description": "Stroke recovery",
+    "transcript": "Patient had a stroke 3 years ago and has been on aspirin and clopidogrel. He denies recurrent chest pain. Blood pressure today is 138 over 82. He reports dizziness and fatigue.",
+    "expected_affirmed": ["stroke", "aspirin", "clopidogrel", "dizziness", "fatigue"],
+    "expected_negated": ["chest pain"]
+  },
+  {
+    "id": "T014",
+    "description": "Multiple sclerosis",
+    "transcript": "Patient has relapsing-remitting multiple sclerosis. She is without active exacerbation today. Reports tingling in her hands and blurred vision. No history of cancer. Her sister had lupus.",
+    "expected_affirmed": ["multiple sclerosis", "tingling", "blurred vision"],
+    "expected_negated": ["cancer"],
+    "expected_family": ["lupus"]
+  },
+  {
+    "id": "T015",
+    "description": "Inflammatory bowel disease",
+    "transcript": "Patient has Crohn disease managed with azathioprine. He reports abdominal pain and weight loss. Rules out colorectal cancer at this time. No evidence of liver disease.",
+    "expected_affirmed": ["crohn", "abdominal pain", "weight loss"],
+    "expected_negated": ["colorectal cancer", "liver disease"]
+  },
+  {
+    "id": "T016",
+    "description": "Atrial fibrillation management",
+    "transcript": "Patient has atrial fibrillation on apixaban. His last echocardiogram showed preserved ejection fraction. He denies chest pain at rest. Reports palpitations and occasional shortness of breath. No history of stroke.",
+    "expected_affirmed": ["atrial fibrillation", "apixaban", "palpitations", "shortness of breath"],
+    "expected_negated": ["chest pain", "stroke"]
+  },
+  {
+    "id": "T017",
+    "description": "Anemia with family negation",
+    "transcript": "Patient has iron deficiency anemia on ferrous sulfate. She reports fatigue and dizziness. Family history negative for sickle cell. She denies shortness of breath at rest.",
+    "expected_affirmed": ["anemia", "fatigue", "dizziness"],
+    "expected_negated": ["sickle cell", "shortness of breath"],
+    "expected_family": []
+  },
+  {
+    "id": "T018",
+    "description": "Anxiety and migraine",
+    "transcript": "The patient has anxiety disorder managed with buspirone. She also suffers from chronic migraines treated with sumatriptan. She reports insomnia. Free of depression. No family history of migraine.",
+    "expected_affirmed": ["anxiety", "migraines", "buspirone", "sumatriptan", "insomnia"],
+    "expected_negated": ["depression"]
+  },
+  {
+    "id": "T019",
+    "description": "Post-surgical cancer follow-up",
+    "transcript": "Patient had breast cancer resection 2 years ago and is now on anastrozole. She reports fatigue and joint pain. Negative for recurrence on last imaging. No evidence of metastasis.",
+    "expected_affirmed": ["breast cancer", "anastrozole", "fatigue", "joint pain"],
+    "expected_negated": ["recurrence", "metastasis"]
+  },
+  {
+    "id": "T020",
+    "description": "Diabetes type 1 pediatric",
+    "transcript": "Patient is a 22-year-old with type 1 diabetes mellitus since childhood on insulin pump. HbA1c is 7.1 percent. She denies any episodes of severe hypoglycemia recently. Reports occasional dizziness. No history of kidney disease.",
+    "expected_affirmed": ["type 1 diabetes", "insulin"],
+    "expected_negated": ["hypoglycemia", "kidney disease"]
+  }
+]

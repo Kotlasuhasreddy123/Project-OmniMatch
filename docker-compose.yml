@@ -1,0 +1,96 @@
+# OmniMatch — Full stack docker-compose
+# Services: qdrant (vector DB), backend (FastAPI), frontend (Next.js)
+#
+# Usage:
+#   cp backend/.env.example backend/.env   # fill in secrets
+#   cp frontend/.env.local.example frontend/.env.local
+#   docker compose up --build
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Qdrant — vector database for clinical trial embeddings
+  # ---------------------------------------------------------------------------
+  qdrant:
+    image: qdrant/qdrant:v1.10.0
+    container_name: omni_qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"     # REST API
+      - "6334:6334"     # gRPC
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Backend — FastAPI (Whisper ASR, NLP, Matching, Inbox)
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: omni_backend
+    restart: unless-stopped
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist SQLite audit log and inbox DB
+      - backend_data:/app/data
+    env_file:
+      - ./backend/.env
+    environment:
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - SQLITE_DB_PATH=/app/data/omni_match.db
+      # NEW: Set your clinic ZIP for geographic proximity ranking (Feature 4)
+      - CLINIC_ZIP=${CLINIC_ZIP:-10001}
+      # NEW: Set webhook URL for end-of-day digest (Feature 7) — optional
+      - DIGEST_WEBHOOK_URL=${DIGEST_WEBHOOK_URL:-}
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s   # Whisper model load takes time
+
+  # ---------------------------------------------------------------------------
+  # Frontend — Next.js 14
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: omni_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  qdrant_data:
+    driver: local
+  backend_data:
+    driver: local
+
+networks:
+  default:
+    name: omni_network

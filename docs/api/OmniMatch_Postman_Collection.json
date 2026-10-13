@@ -1,0 +1,359 @@
+{
+  "info": {
+    "name": "OmniMatch API",
+    "description": "Complete API collection for OmniMatch: Ambient AI Clinical Intelligence and Automated Trial-Routing Engine.\n\nCPSC-69100 Master's Project — HealthTech Innovation Labs\n\nBase URL: http://localhost:8000\nSwagger UI: http://localhost:8000/api/docs\n\nAll PHI is synthetic/simulated. No real patient data.\n\nQuick Start:\n1. Run 'Login (Clinical Staff)' → auto-sets {{token}}\n2. Run 'Log Consent Granted'\n3. Run 'Extract NLP Entities'\n4. Run 'Search Trials (Approved Entities)'\n5. Run 'List Inbox'",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "session_id", "value": "session-demo-001", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "0 — Health",
+      "item": [
+        {
+          "name": "Health Check (public)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/health",
+            "description": "Check system health. Returns Qdrant connectivity and Whisper status. No auth required."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "1 — Authentication",
+      "item": [
+        {
+          "name": "Login (Clinical Staff)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('token', data.access_token);",
+                  "  pm.test('Token received', () => pm.expect(data.access_token).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"clinical_staff\",\n  \"password\": \"Staff@12345\"\n}"
+            },
+            "description": "Authenticate and receive JWT token. Token auto-saved to {{token}} variable."
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin@12345\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login — Wrong Password (expects 401)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"clinical_staff\",\n  \"password\": \"wrongpassword\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 — Consent (REQ-01, REQ-11)",
+      "item": [
+        {
+          "name": "Log Consent Granted",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/consent",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"{{session_id}}\",\n  \"action\": \"CONSENT_GRANTED\",\n  \"patient_pseudonym\": \"REDACTED\"\n}"
+            },
+            "description": "MUST be called before any audio capture. Writes append-only audit log entry."
+          }
+        },
+        {
+          "name": "Log Consent Revoked",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/consent",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"{{session_id}}\",\n  \"action\": \"CONSENT_REVOKED\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Consent — No Auth (expects 401)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/consent",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"s1\",\n  \"action\": \"CONSENT_GRANTED\"\n}"
+            },
+            "description": "Expected: HTTP 401 — confirms REQ-10 RBAC enforcement."
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 — Audio Transcription (REQ-02, REQ-08)",
+      "item": [
+        {
+          "name": "Transcribe Audio File",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/api/v1/audio/transcribe",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "session_id", "value": "{{session_id}}", "type": "text" },
+                { "key": "audio_file", "type": "file", "src": "/path/to/recording.wav",
+                  "description": "Upload a WAV or WebM audio file (max 50MB)" }
+              ]
+            },
+            "description": "RAM-only processing — audio never written to disk (REQ-08).\nReturns transcription + word-level confidence scores."
+          }
+        },
+        {
+          "name": "Transcribe — Wrong MIME (expects 415)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/api/v1/audio/transcribe",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "session_id", "value": "s1", "type": "text" },
+                { "key": "audio_file", "value": "hello", "type": "text",
+                  "contentType": "text/plain" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 — NLP Entity Extraction (REQ-03)",
+      "item": [
+        {
+          "name": "Extract Clinical Entities",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/nlp/extract",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transcription\": \"The patient has type 2 diabetes and hypertension. She denies chest pain. Family history of stroke in father. Currently on metformin and lisinopril.\",\n  \"session_id\": \"{{session_id}}\"\n}"
+            },
+            "description": "NegEx pipeline: entities tagged with negated/family/hypothetical context.\nExpected: diabetes (affirmed), hypertension (affirmed), chest pain (negated), stroke (family)."
+          }
+        },
+        {
+          "name": "Extract — Complex Negation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/nlp/extract",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transcription\": \"Imaging did not reveal any evidence of malignancy. No history of COPD. Patient has asthma on albuterol.\",\n  \"session_id\": \"{{session_id}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5 — Trial Matching (REQ-05, REQ-06)",
+      "item": [
+        {
+          "name": "Search Trials (Approved Entities)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/match/search?clinic_zip=10001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "match", "search"],
+              "query": [{ "key": "clinic_zip", "value": "10001" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approved_entities\": [\n    {\n      \"term\": \"type 2 diabetes\",\n      \"entity_type\": \"DISEASE\",\n      \"negated\": false,\n      \"context\": \"patient\",\n      \"confidence\": 0.92,\n      \"status\": \"approved\"\n    },\n    {\n      \"term\": \"hypertension\",\n      \"entity_type\": \"DISEASE\",\n      \"negated\": false,\n      \"context\": \"patient\",\n      \"confidence\": 0.88,\n      \"status\": \"approved\"\n    }\n  ],\n  \"session_id\": \"{{session_id}}\"\n}"
+            },
+            "description": "Returns trials with per-criterion breakdown + enrollment readiness score.\nclinic_zip enables geographic proximity ranking (Feature 4)."
+          }
+        },
+        {
+          "name": "Search Trials — All Rejected (expects 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/match/search",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approved_entities\": [\n    {\n      \"term\": \"diabetes\",\n      \"entity_type\": \"DISEASE\",\n      \"negated\": false,\n      \"context\": \"patient\",\n      \"confidence\": 0.9,\n      \"status\": \"rejected\"\n    }\n  ],\n  \"session_id\": \"{{session_id}}\"\n}"
+            },
+            "description": "TEST-03: All-rejected payload must return 400. Rejected entities never reach Qdrant."
+          }
+        }
+      ]
+    },
+    {
+      "name": "6 — Session Completion (REQ-07)",
+      "item": [
+        {
+          "name": "Complete Session (Trigger Async Matching)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/sessions/{{session_id}}/complete",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"{{session_id}}\",\n  \"approved_entities\": [\n    {\n      \"term\": \"type 2 diabetes\",\n      \"entity_type\": \"DISEASE\",\n      \"negated\": false,\n      \"context\": \"patient\",\n      \"confidence\": 0.92,\n      \"status\": \"approved\"\n    }\n  ]\n}"
+            },
+            "description": "Returns 202 immediately. Background task runs matching and populates inbox within 60s (REQ-07)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "7 — Clinical Trial Inbox (REQ-07, REQ-10)",
+      "item": [
+        {
+          "name": "List Inbox Items",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/api/v1/inbox",
+            "description": "Returns all inbox items sorted by created_at desc. CLINICAL_STAFF or ADMIN role required."
+          }
+        },
+        {
+          "name": "Get Inbox Item by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/api/v1/inbox/REPLACE_WITH_ITEM_ID"
+          }
+        },
+        {
+          "name": "Mark Inbox Item Reviewed",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/api/v1/inbox/REPLACE_WITH_ITEM_ID",
+            "description": "Sets status to 'reviewed'. Returns 204 No Content."
+          }
+        },
+        {
+          "name": "List Inbox — No Auth (expects 401, TEST-08)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/inbox",
+            "description": "TEST-08: Confirms unauthenticated access returns HTTP 401."
+          }
+        }
+      ]
+    },
+    {
+      "name": "8 — Referral Routing (NEW Feature 5)",
+      "item": [
+        {
+          "name": "Initiate Sponsor Referral",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/referrals",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inbox_item_id\": \"REPLACE_WITH_INBOX_ITEM_ID\",\n  \"nct_id\": \"NCT04442451\",\n  \"session_id\": \"{{session_id}}\",\n  \"trial_title\": \"Mechanisms of Fatigability With Diabetes\",\n  \"met_criteria\": [\"Patients with type 2 diabetes\"],\n  \"patient_pseudo\": \"REDACTED\"\n}"
+            },
+            "description": "Logs referral with timestamp + initiating user. No PHI in payload. Optional webhook_url fires to Slack/Teams."
+          }
+        }
+      ]
+    },
+    {
+      "name": "9 — Patient Timeline (NEW Feature 3)",
+      "item": [
+        {
+          "name": "Get Patient Timeline",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/api/v1/timeline/REDACTED",
+            "description": "Returns longitudinal entity history across all visits for a patient pseudonym."
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 — Trial Sync (Admin Only)",
+      "item": [
+        {
+          "name": "Trigger ClinicalTrials.gov Sync",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/api/v1/trials/sync",
+            "description": "ADMIN only. Fetches RECRUITING trials from ClinicalTrials.gov API v2 and upserts into Qdrant."
+          }
+        }
+      ]
+    }
+  ]
+}
