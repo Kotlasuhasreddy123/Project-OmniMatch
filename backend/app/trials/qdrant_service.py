@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import logging
 import uuid
+import json
+from pathlib import Path
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -17,6 +19,7 @@ logger = logging.getLogger(__name__)
 VECTOR_SIZE = 384          # all-MiniLM-L6-v2 output dimension
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 MATCH_SCORE_THRESHOLD = 0.65
+DEMO_MATCH_SCORE_THRESHOLD = 0.40
 TOP_K = 10
 
 _qdrant_client: Any | None = None
@@ -50,6 +53,7 @@ def get_qdrant_client() -> Any:
         _qdrant_client = AsyncQdrantClient(
             host=settings.qdrant_host,
             port=settings.qdrant_port,
+            timeout=60,
         )
     return _qdrant_client
 
@@ -72,6 +76,21 @@ class QdrantService:
                 vectors_config=VectorParams(size=VECTOR_SIZE, distance=Distance.COSINE),
             )
             logger.info("Created Qdrant collection: %s", self.collection)
+
+    async def seed_demo_trials_if_empty(self) -> int:
+        """Index clearly synthetic studies for a network-independent classroom demo."""
+        if not settings.demo_mode:
+            return 0
+        await self.ensure_collection()
+        count = await self.client.count(collection_name=self.collection, exact=True)
+        if count.count:
+            return 0
+        data_path = Path(__file__).resolve().parents[1] / "data" / "demo_trials.json"
+        trials = json.loads(data_path.read_text(encoding="utf-8"))
+        for trial in trials:
+            await self.upsert_trial(trial)
+        logger.info("Indexed %d synthetic demonstration trials", len(trials))
+        return len(trials)
 
     def _embed_trial(self, trial: dict) -> list[float]:
         """Generate an embedding vector for a trial's eligibility criteria + summary.
@@ -116,6 +135,7 @@ class QdrantService:
                 "eligibility_criteria": trial["eligibility_criteria"],
                 "sponsor": trial["sponsor"],
                 "last_updated": trial["last_updated"],
+                "locations": trial.get("locations", []),
             },
         )
         await self.client.upsert(collection_name=self.collection, points=[point])
@@ -137,7 +157,7 @@ class QdrantService:
             collection_name=self.collection,
             query_vector=query_vector,
             limit=top_k,
-            score_threshold=MATCH_SCORE_THRESHOLD,
+            score_threshold=DEMO_MATCH_SCORE_THRESHOLD if settings.demo_mode else MATCH_SCORE_THRESHOLD,
             with_payload=True,
         )
 
@@ -153,6 +173,7 @@ class QdrantService:
                 "sponsor": r.payload.get("sponsor", ""),
                 "eligibility_criteria": r.payload.get("eligibility_criteria", ""),
                 "last_updated": r.payload.get("last_updated", ""),
+                "locations": r.payload.get("locations", []),
             }
             for r in results
         ]

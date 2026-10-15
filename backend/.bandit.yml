@@ -50,7 +50,6 @@ tests:
   - B319  # xml_bad_pulldom
   - B320  # xml_bad_etree
   - B321  # ftp_lib
-  - B322  # input
   - B323  # unverified_context
   - B324  # hashlib_weak_hash
   - B325  # tempnam

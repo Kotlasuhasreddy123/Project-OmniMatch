@@ -20,6 +20,7 @@ interface ReferralButtonProps {
 export function ReferralButton({ inboxItemId, match, sessionId }: ReferralButtonProps) {
   const [state, setState] = useState<"idle" | "loading" | "sent" | "error">("idle");
   const [referralId, setReferralId] = useState<string>("");
+  const canRefer = match.freshness?.recommended_action === "ROUTE_TO_COORDINATOR";
 
   const metCriteria = match.criterion_breakdown
     .filter((c) => c.verdict === "MET")
@@ -27,6 +28,7 @@ export function ReferralButton({ inboxItemId, match, sessionId }: ReferralButton
     .slice(0, 5);
 
   const handleReferral = async () => {
+    if (!canRefer) return;
     setState("loading");
     try {
       const result = await createReferral({
@@ -51,6 +53,10 @@ export function ReferralButton({ inboxItemId, match, sessionId }: ReferralButton
         Referral logged ({referralId.slice(0, 8)}…)
       </div>
     );
+  }
+
+  if (!canRefer) {
+    return <span className="text-xs text-amber-700">Referral unavailable until trial status is verified</span>;
   }
 
   return (

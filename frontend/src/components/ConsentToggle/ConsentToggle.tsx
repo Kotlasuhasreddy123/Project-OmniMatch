@@ -25,14 +25,6 @@ export function ConsentToggle({
 }: ConsentToggleProps) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-      {/* Skip to main content for keyboard users */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:rounded focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white"
-      >
-        Skip to main content
-      </a>
-
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2

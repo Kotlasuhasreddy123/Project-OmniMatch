@@ -8,18 +8,23 @@ import { TranscriptHeatmap } from "@/components/TranscriptHeatmap/TranscriptHeat
 import { useConsent } from "@/hooks/useConsent";
 import { transcribeAudio, extractEntities } from "@/lib/apiClient";
 import { getOrCreateSessionId } from "@/lib/session";
+import { getCurrentUser } from "@/lib/auth";
 import { Loader2, ChevronRight } from "lucide-react";
 import type { WordConfidence } from "@/types";
 
-type SessionStep = "capture" | "transcribing" | "extracting" | "done";
+type SessionStep = "capture" | "transcribing" | "review" | "extracting";
 
 export default function SessionPage() {
   const router = useRouter();
   const [sessionId, setSessionId] = useState<string>("");
 
   useEffect(() => {
+    if (!getCurrentUser()) {
+      router.replace("/login");
+      return;
+    }
     setSessionId(getOrCreateSessionId());
-  }, []);
+  }, [router]);
 
   const { consentGranted, toggleConsent, isLogging, error: consentError } =
     useConsent({ sessionId });
@@ -52,28 +57,31 @@ export default function SessionPage() {
         return;
       }
 
-      setStep("extracting");
-      setStatusMessage("Extracting clinical entities…");
-      try {
-        const nlpResult = await extractEntities(transcriptionText, sessionId);
-        sessionStorage.setItem("omni_entities", JSON.stringify(nlpResult.entities));
-        sessionStorage.setItem("omni_transcription", transcriptionText);
-        sessionStorage.setItem("omni_word_confidences", JSON.stringify(wordConf));
-        setStep("done");
-        router.push("/verify");
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Entity extraction failed.");
-        setStep("capture");
-      }
+      setStep("review");
     },
-    [sessionId, router]
+    [sessionId]
   );
 
   const handleTranscriptCorrected = useCallback((corrected: string) => {
     setTranscription(corrected);
-    sessionStorage.setItem("omni_transcription", corrected);
-    sessionStorage.setItem("omni_transcript_human_verified", "true");
   }, []);
+
+  const handleProceed = useCallback(async () => {
+    if (!sessionId || !transcription.trim()) return;
+    setError(null);
+    setStep("extracting");
+    setStatusMessage("Extracting clinical entities…");
+    try {
+      const nlpResult = await extractEntities(transcription, sessionId);
+      sessionStorage.setItem("omni_entities", JSON.stringify(nlpResult.entities));
+      sessionStorage.setItem("omni_transcription", transcription);
+      sessionStorage.setItem("omni_word_confidences", JSON.stringify(wordConfidences));
+      router.push("/verify");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Entity extraction failed.");
+      setStep("review");
+    }
+  }, [sessionId, transcription, wordConfidences, router]);
 
   const isProcessing = step === "transcribing" || step === "extracting";
 
@@ -112,7 +120,7 @@ export default function SessionPage() {
         </div>
       )}
 
-      {transcription && !isProcessing && (
+      {transcription && step === "review" && (
         <>
           <TranscriptHeatmap
             transcription={transcription}
@@ -120,13 +128,15 @@ export default function SessionPage() {
             onCorrected={handleTranscriptCorrected}
           />
           <div className="flex justify-end">
-            <a
-              href="/verify"
+            <button
+              type="button"
+              onClick={handleProceed}
+              aria-label="Extract entities from reviewed transcript"
               className="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
             >
               Proceed to Verification
               <ChevronRight className="h-4 w-4" aria-hidden="true" />
-            </a>
+            </button>
           </div>
         </>
       )}

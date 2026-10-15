@@ -20,6 +20,11 @@ _whisper_module = None
 _model = None
 
 
+def is_whisper_loaded() -> bool:
+    """Report whether the speech model is present in this server process."""
+    return _model is not None
+
+
 def _get_whisper():
     """Lazy-load the whisper module."""
     global _whisper_module

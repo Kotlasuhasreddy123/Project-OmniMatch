@@ -7,12 +7,13 @@ import logging
 import time
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, BackgroundTasks, Depends, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 
 from app.auth.jwt_handler import require_role
 from app.models.schemas import SyncResponse, TokenPayload, UserRole
 from app.trials.clinicaltrials_client import ClinicalTrialsClient
 from app.trials.qdrant_service import get_qdrant_service
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/trials", tags=["Trials"])
@@ -67,5 +68,7 @@ async def trigger_sync(
     Returns:
         SyncResponse with count, duration, and sync status.
     """
+    if settings.demo_mode:
+        raise HTTPException(status_code=409, detail="Live registry sync is disabled in classroom demo mode")
     result = await _run_sync()
     return SyncResponse(**result)

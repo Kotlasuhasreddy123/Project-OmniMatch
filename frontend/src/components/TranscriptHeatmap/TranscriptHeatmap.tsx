@@ -6,7 +6,6 @@
  *
  * Words with confidence < 0.7 are highlighted amber so clinical staff
  * can manually correct potential transcription errors before NLP runs.
- * A staff correction is flagged human_verified=true in the audit log.
  */
 
 import { useState, useCallback } from "react";
@@ -146,7 +145,7 @@ export function TranscriptHeatmap({
             aria-describedby="transcript-edit-hint"
           />
           <p id="transcript-edit-hint" className="text-xs text-gray-400">
-            Correct any highlighted words. Your edits will be flagged as human-verified in the audit log.
+            Correct any highlighted words before entity extraction. Verify every clinical term yourself.
           </p>
           <button
             onClick={handleSave}
@@ -162,7 +161,7 @@ export function TranscriptHeatmap({
       {saved && (
         <p role="status" className="flex items-center gap-1.5 text-xs text-green-700">
           <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
-          Transcript correction saved — flagged as human-verified.
+          Transcript correction saved for entity extraction.
         </p>
       )}
     </div>

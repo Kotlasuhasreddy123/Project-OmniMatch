@@ -177,13 +177,17 @@ async def test_session_complete_triggers_background_task(
             }
         ],
     }
-    start = time.perf_counter()
-    resp = await client.post(
-        "/api/v1/sessions/session-timing-test/complete",
-        json=payload,
-        headers=auth_headers,
-    )
-    elapsed = time.perf_counter() - start
+    # HTTPX's in-process ASGI transport waits for Starlette background tasks
+    # before returning; isolate endpoint scheduling time here. The separate
+    # inbox test and live smoke test cover background execution itself.
+    with patch("app.inbox.router._run_matching_and_store", new_callable=AsyncMock):
+        start = time.perf_counter()
+        resp = await client.post(
+            "/api/v1/sessions/session-timing-test/complete",
+            json=payload,
+            headers=auth_headers,
+        )
+        elapsed = time.perf_counter() - start
 
     assert resp.status_code == 202, "Session completion must return HTTP 202 Accepted"
     assert resp.json()["matching_triggered"] is True

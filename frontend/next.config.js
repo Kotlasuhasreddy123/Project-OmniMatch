@@ -6,16 +6,6 @@ const nextConfig = {
   // Standalone output required for Docker multi-stage build
   output: "standalone",
 
-  // Skip ESLint during `next build` — ESLint runs separately via hooks and CI
-  // This prevents linting warnings from blocking the Docker build
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-
-  // Skip TypeScript type-check during build for speed (tsc runs separately)
-  typescript: {
-    ignoreBuildErrors: true,
-  },
 };
 
 module.exports = nextConfig;

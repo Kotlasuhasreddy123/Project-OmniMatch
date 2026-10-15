@@ -197,8 +197,11 @@ def _check_context(
     Returns:
         True if any trigger pattern is found within the context window.
     """
-    words_before = text[:match_start].split()[-window:]
-    words_after = text[match_end:].split()[:window]
+    # Negation cannot reach across sentences or a contrast such as "but".
+    before_scope = re.split(r"[.!?;]|\b(?:but|however|although)\b", text[:match_start])[-1]
+    after_scope = re.split(r"[.!?;]|\b(?:but|however|although)\b", text[match_end:])[0]
+    words_before = before_scope.split()[-window:]
+    words_after = after_scope.split()[:window]
 
     context_text = ""
     if look_before:
@@ -239,11 +242,6 @@ def extract_entities(transcription: str) -> list[dict]:
                 term = match.group(0).strip()
                 normalized_term = re.sub(r"\s+", " ", term)
 
-                # Skip duplicates
-                if normalized_term in seen_terms:
-                    continue
-                seen_terms.add(normalized_term)
-
                 start, end = match.start(), match.end()
 
                 # Keep family-history scope within the current sentence. A
@@ -252,6 +250,12 @@ def extract_entities(transcription: str) -> list[dict]:
                 # hypertension in father".
                 sentence_start = max(text.rfind(".", 0, start), text.rfind("!", 0, start), text.rfind("?", 0, start)) + 1
                 sentence_prefix = text[sentence_start:start]
+                # "Family history ..., but the patient has ..." changes the
+                # subject back to the patient within a single sentence.
+                sentence_prefix = re.split(
+                    r"\b(?:but|however|patient\s+(?:herself|himself|has|is))\b",
+                    sentence_prefix,
+                )[-1]
 
                 # Determine context: family history takes priority
                 is_family = any(pat.search(sentence_prefix) for pat in patterns["family_context"])
@@ -263,6 +267,16 @@ def extract_entities(transcription: str) -> list[dict]:
                 ) or _check_context(
                     text, start, end, patterns["post_negation"], look_after=True
                 )
+                before_scope = re.split(r"[.!?;]|\bbut\b", text[:start])[-1]
+                if re.search(r"\b(?:does|do|did)\s+not\s+deny\b", before_scope):
+                    is_negated = False
+
+                # Retain the same term when it occurs with different contexts
+                # (for example a family history followed by a patient finding).
+                entity_key = f"{normalized_term}|{is_family}|{is_negated}"
+                if entity_key in seen_terms:
+                    continue
+                seen_terms.add(entity_key)
 
                 # Determine context label
                 if is_family:

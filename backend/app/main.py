@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import asyncio
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
@@ -23,7 +24,7 @@ from app.security.middleware import RateLimitMiddleware, SecurityHeadersMiddlewa
 from app.timeline.router import router as timeline_router
 from app.trials.router import router as trials_router
 from app.trials.qdrant_service import get_qdrant_service
-from app.transcription.whisper_service import get_whisper_model
+from app.transcription.whisper_service import get_whisper_model, is_whisper_loaded
 from app.timeline.timeline_service import ensure_timeline_table
 from app.digest.digest_service import ensure_referrals_table
 
@@ -44,19 +45,22 @@ def _schedule_daily_sync() -> None:
     from app.trials.router import _run_sync
     from app.digest.digest_service import send_daily_digest
 
-    scheduler.add_job(
-        _run_sync,
-        trigger="cron",
-        hour=settings.sync_cron_hour,
-        minute=settings.sync_cron_minute,
-        id="daily_clinicaltrials_sync",
-        replace_existing=True,
-    )
-    logger.info(
-        "Daily sync scheduled at %02d:%02d UTC",
-        settings.sync_cron_hour,
-        settings.sync_cron_minute,
-    )
+    if not settings.demo_mode:
+        scheduler.add_job(
+            _run_sync,
+            trigger="cron",
+            hour=settings.sync_cron_hour,
+            minute=settings.sync_cron_minute,
+            id="daily_clinicaltrials_sync",
+            replace_existing=True,
+        )
+        logger.info(
+            "Daily sync scheduled at %02d:%02d UTC",
+            settings.sync_cron_hour,
+            settings.sync_cron_minute,
+        )
+    else:
+        logger.info("Demo mode: live ClinicalTrials.gov sync is disabled.")
 
     # NEW FEATURE 7: End-of-day digest at 17:00 UTC
     async def _send_digest() -> None:
@@ -162,8 +166,17 @@ async def on_startup() -> None:
         qdrant = get_qdrant_service()
         await qdrant.ensure_collection()
         logger.info("Qdrant collection ensured.")
+        if settings.demo_mode:
+            await qdrant.seed_demo_trials_if_empty()
     except Exception as exc:
         logger.warning("Qdrant not available at startup (will retry on first request): %s", exc)
+
+    if settings.demo_mode:
+        try:
+            await asyncio.to_thread(get_whisper_model, settings.whisper_model)
+            logger.info("Whisper is warmed for the local demonstration.")
+        except Exception as exc:
+            logger.error("Whisper warm-up failed: %s", exc)
 
     _schedule_daily_sync()
     scheduler.start()
@@ -194,7 +207,7 @@ async def health_check() -> HealthResponse:
     except Exception as exc:
         logger.warning("Qdrant health check failed: %s", exc)
         qdrant_ok = False
-    whisper_ok = True  # Whisper loads lazily; flag as True once the model is cached
+    whisper_ok = is_whisper_loaded()
 
     overall = "ok" if qdrant_ok else "degraded"
     return HealthResponse(

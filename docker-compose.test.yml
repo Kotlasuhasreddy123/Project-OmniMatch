@@ -10,21 +10,28 @@ services:
     ports: ["6335:6333"]       # Different port to avoid conflicts with dev
     tmpfs: ["/qdrant/storage"] # Ephemeral — wiped after tests
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
-      interval: 5s; timeout: 5s; retries: 10; start_period: 5s
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/6333"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
 
   backend-test:
+    image: omnimatch-renewed-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: omni_backend_test
-    command: >
-      sh -c "
-        python -m spacy download en_core_web_sm --quiet &&
-        pytest tests/ -v --tb=short --cov=app --cov-report=term-missing
-          --cov-report=xml:/test-results/coverage.xml
-          -p no:warnings 2>&1 | tee /test-results/pytest.log
-      "
+    command:
+      - pytest
+      - tests/
+      - -v
+      - --tb=short
+      - --cov=app
+      - --cov-report=term-missing
+      - --cov-report=xml:/tmp/coverage.xml
+      - -p
+      - no:warnings
     depends_on:
       qdrant-test: { condition: service_healthy }
     volumes:

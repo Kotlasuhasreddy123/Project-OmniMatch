@@ -14,7 +14,7 @@ import re
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.auth.jwt_handler import get_current_user
-from app.eligibility.criterion_engine import evaluate_trial_eligibility
+from app.eligibility.criterion_engine import evaluate_trial_eligibility, _split_criteria
 from app.models.schemas import (
     EntityStatus,
     MatchSearchRequest,
@@ -26,6 +26,7 @@ from app.trials.proximity_service import fetch_trial_locations, rank_by_proximit
 from app.trials.qdrant_service import get_qdrant_service
 from app.evidence.ledger_service import approved_evidence_spans, link_criterion_evidence
 from app.trials.freshness_service import evaluate_trial_freshness
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/match", tags=["Matching"])
@@ -49,16 +50,20 @@ def _generate_missing_variables(
     if not eligibility_criteria:
         return []
 
-    # Split eligibility into individual criteria lines
-    lines = re.split(r"\n|;\s*|\d+\.\s+|(?<=[.!?])\s+", eligibility_criteria)
+    # Only inclusion requirements belong in the missing-variables checklist;
+    # an exclusion condition is not a missing patient measurement.
+    inclusion_lines, _ = _split_criteria(eligibility_criteria)
+    lines = [
+        sentence
+        for line in inclusion_lines
+        for sentence in re.split(r"(?<=[.!?])\s+", line)
+    ]
     missing: list[str] = []
 
     for line in lines:
         line = line.strip()
+        line = re.sub(r"^inclusion(?:\s+criteria)?\s*:\s*", "", line, flags=re.IGNORECASE)
         if len(line) < 10:
-            continue
-        # Skip exclusion criteria sections
-        if re.search(r"\bexclusion\b", line, re.IGNORECASE):
             continue
         # Check if any approved term appears in this criterion
         line_lower = line.lower()
@@ -143,7 +148,7 @@ async def search_trials(
         missing = _generate_missing_variables(eligibility_text, approved_lower)
 
         # FEATURE 4: Fetch location data for proximity ranking
-        locations = await fetch_trial_locations(m["nct_id"])
+        locations = m.get("locations", []) if settings.demo_mode else await fetch_trial_locations(m["nct_id"])
 
         criterion_breakdown = [
             {

@@ -11,8 +11,11 @@ services:
     volumes:
       - qdrant_dev_data:/qdrant/storage
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
-      interval: 10s; timeout: 5s; retries: 5; start_period: 5s
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/6333"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   backend:
     build:
@@ -35,7 +38,10 @@ services:
       - WHISPER_MODEL=tiny           # Faster for dev
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
-      interval: 15s; timeout: 10s; retries: 3; start_period: 30s
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   frontend:
     image: node:20-alpine
@@ -51,6 +57,12 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
       - NODE_ENV=development
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 volumes:
   qdrant_dev_data:

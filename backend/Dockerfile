@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Ensure pip, setuptools, wheel are all current BEFORE any package installs
 # This fixes the `No module named pkg_resources` error with openai-whisper
-RUN pip install --upgrade pip setuptools wheel
+RUN pip install --upgrade pip wheel "setuptools<81"
 
 # Install Python deps — split into two steps so torch (large) caches separately
 COPY requirements.txt .
@@ -30,7 +30,7 @@ RUN pip install --no-cache-dir \
     "torch==2.3.1+cpu"
 
 # Step 2: Install openai-whisper after torch is in place
-RUN pip install --no-cache-dir "openai-whisper==20231117"
+RUN pip install --no-cache-dir --no-build-isolation "openai-whisper==20231117"
 
 # Step 3: Install all other requirements
 RUN pip install --no-cache-dir -r requirements.txt
@@ -60,6 +60,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY app/ ./app/
 
 ENV PYTHONPATH="/app"
+ENV XDG_CACHE_HOME="/app/data/model-cache"
 
 # Create data directory for SQLite
 RUN mkdir -p /app/data

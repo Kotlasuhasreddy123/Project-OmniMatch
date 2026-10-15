@@ -21,7 +21,7 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/6333"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -49,7 +49,9 @@ services:
     environment:
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
+      - QDRANT_COLLECTION=clinical_trials_demo
       - SQLITE_DB_PATH=/app/data/omni_match.db
+      - DEMO_MODE=${DEMO_MODE:-true}
       # NEW: Set your clinic ZIP for geographic proximity ranking (Feature 4)
       - CLINIC_ZIP=${CLINIC_ZIP:-10001}
       # NEW: Set webhook URL for end-of-day digest (Feature 7) — optional
@@ -60,7 +62,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 90s   # Whisper model load takes time
+      start_period: 300s   # First start downloads and warms open-source models
 
   # ---------------------------------------------------------------------------
   # Frontend — Next.js 14
@@ -69,6 +71,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
     container_name: omni_frontend
     restart: unless-stopped
     depends_on:
@@ -77,9 +81,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
       interval: 30s
       timeout: 10s
       retries: 3

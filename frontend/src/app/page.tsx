@@ -12,6 +12,9 @@ export default function HomePage() {
         Consent-gated audio capture, NLP entity extraction, and asynchronous
         trial matching — all without interrupting patient care.
       </p>
+      <p className="mt-3 max-w-2xl text-sm font-medium text-amber-800">
+        Classroom prototype. Use synthetic patient details only. A match is not an eligibility or enrollment decision.
+      </p>
 
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm text-left">

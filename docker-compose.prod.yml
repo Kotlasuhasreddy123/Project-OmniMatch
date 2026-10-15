@@ -21,8 +21,11 @@ services:
         limits: { memory: 1G }
         reservations: { memory: 512M }
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
-      interval: 30s; timeout: 10s; retries: 5; start_period: 15s
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/127.0.0.1/6333"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
 
   backend:
     build:
@@ -62,7 +65,10 @@ services:
         reservations: { memory: 512M }
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
-      interval: 30s; timeout: 10s; retries: 3; start_period: 90s
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
     logging:
       driver: json-file
       options: { max-size: "50m", max-file: "5" }
@@ -72,6 +78,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       target: runtime
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
     image: omni-frontend:prod
     container_name: omni_frontend_prod
     restart: always
@@ -80,15 +88,18 @@ services:
     ports: ["3000:3000"]
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     read_only: true
     tmpfs: ["/tmp"]
     deploy:
       resources:
         limits: { cpus: "0.5", memory: 512M }
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
-      interval: 30s; timeout: 10s; retries: 3; start_period: 20s
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
     logging:
       driver: json-file
       options: { max-size: "20m", max-file: "3" }

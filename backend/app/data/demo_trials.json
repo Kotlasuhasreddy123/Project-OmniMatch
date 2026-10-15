@@ -1,0 +1,38 @@
+[
+  {
+    "nct_id": "DEMO-T2D-001",
+    "title": "SIMULATED Type 2 Diabetes Lifestyle Study",
+    "status": "SIMULATED",
+    "phase": "Phase 2",
+    "conditions": ["Type 2 Diabetes Mellitus"],
+    "brief_summary": "Synthetic classroom study of adults with type 2 diabetes taking metformin. Not a real recruiting trial.",
+    "eligibility_criteria": "Inclusion Criteria:\n* Type 2 diabetes\n* Metformin treatment\n* HbA1c above 7 percent\nExclusion Criteria:\n* Kidney disease",
+    "sponsor": "OmniMatch Classroom Demo",
+    "last_updated": "",
+    "locations": [{"facility": "Synthetic Chicago Site", "city": "Chicago", "state": "IL", "country": "United States", "zip": "60601"}]
+  },
+  {
+    "nct_id": "DEMO-HTN-002",
+    "title": "SIMULATED Hypertension Monitoring Study",
+    "status": "SIMULATED",
+    "phase": "Phase 2",
+    "conditions": ["Hypertension"],
+    "brief_summary": "Synthetic classroom study of patients with hypertension. Not a real recruiting trial.",
+    "eligibility_criteria": "Inclusion Criteria:\n* Hypertension\n* Blood pressure measurement\nExclusion Criteria:\n* History of stroke",
+    "sponsor": "OmniMatch Classroom Demo",
+    "last_updated": "",
+    "locations": [{"facility": "Synthetic Chicago Site", "city": "Chicago", "state": "IL", "country": "United States", "zip": "60601"}]
+  },
+  {
+    "nct_id": "DEMO-ASTHMA-003",
+    "title": "SIMULATED Asthma Symptom Study",
+    "status": "SIMULATED",
+    "phase": "Phase 2",
+    "conditions": ["Asthma"],
+    "brief_summary": "Synthetic classroom study of asthma symptoms and albuterol use. Not a real recruiting trial.",
+    "eligibility_criteria": "Inclusion Criteria:\n* Asthma\n* Albuterol use\nExclusion Criteria:\n* COPD",
+    "sponsor": "OmniMatch Classroom Demo",
+    "last_updated": "",
+    "locations": [{"facility": "Synthetic Chicago Site", "city": "Chicago", "state": "IL", "country": "United States", "zip": "60601"}]
+  }
+]
