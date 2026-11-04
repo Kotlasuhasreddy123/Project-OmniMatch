@@ -1,0 +1,33 @@
+# Run from the repository root with --env-file deploy/aws.env.
+services:
+  backend:
+    environment:
+      APP_ALLOWED_ORIGINS: https://${APP_DOMAIN:?Set APP_DOMAIN in deploy/aws.env}
+      DEMO_MODE: "true"
+  frontend:
+    build:
+      args:
+        NEXT_PUBLIC_API_URL: https://${API_DOMAIN:?Set API_DOMAIN in deploy/aws.env}
+    environment:
+      NEXT_PUBLIC_API_URL: https://${API_DOMAIN:?Set API_DOMAIN in deploy/aws.env}
+  proxy:
+    image: caddy:2.10.2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?Set APP_DOMAIN in deploy/aws.env}
+      API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN in deploy/aws.env}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+volumes:
+  caddy_data:
+  caddy_config:

@@ -2,7 +2,9 @@
 
 ## Visual results upgrade
 
-The inbox now includes visit totals, review workload, a stacked criterion-coverage chart and an interactive study-ranking comparison. Values are computed from actual inbox records. The renewed local app also connects this overview to its search filters. The interface uses system typography, soft teal accents and a translucent navigation bar. Charts use lightweight accessible HTML/CSS and numerical labels; no remote chart service receives visit data.
+The inbox now includes visit totals, review workload, a criterion-coverage chart and an interactive Recharts study comparison. Values are computed from inbox records, with a numerical list alongside the chart. The renewed local app also connects its overview to search filters. The interface uses system typography, soft teal accents and translucent navigation. Charts render locally; no remote chart service receives visit data. Open `/preview` to explore clearly labeled fictional display examples without signing in.
+
+Use Node.js 20 and `npm ci` inside `frontend/` for development and CI. `package-lock.json` is the canonical dependency lockfile used by Docker. The older pnpm lockfile is retained as historical project material and is not used by the deployment workflow. The frontend has been upgraded to Next.js 15.5.29 and PostCSS 8.5.32 to address dependency advisories; React remains on 18.3.1.
 
 Deployment instructions: [AWS guide](docs/AWS_DEPLOYMENT.md). Model scope and evaluation: [data plan](docs/MODEL_DATA_PLAN.md). This release does not train or fine-tune models.
 

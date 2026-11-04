@@ -9,16 +9,28 @@ export default function HomePage() {
         A conversation. A clearer research path.
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-gray-600">
-        Bring visit information, human review, and study evidence into one considered workspace.
-        For clinicians, research coordinators, and academic teams exploring the path from a fictional visit to study review.
+        Bring visit information, human review, and study evidence into one
+        considered workspace. For clinicians, research coordinators, and
+        academic teams exploring the path from a fictional visit to study
+        review.
       </p>
       <div className="mt-6 max-w-2xl rounded-xl border border-gray-200 bg-white p-5 text-left text-sm text-gray-700">
-        <h2 className="font-semibold text-gray-900">What does a trial mean here?</h2>
-        <p className="mt-2">A clinical trial is a research study with rules about who may take part. The sample catalog demonstrates how approved visit information can support study review. Available conditions depend on the indexed catalog. These are research matches, not disease forecasts.</p>
-        <a href="/guide" className="mt-3 inline-block text-blue-700 underline">Read the simple project guide and demo script</a>
+        <h2 className="font-semibold text-gray-900">
+          What does a trial mean here?
+        </h2>
+        <p className="mt-2">
+          A clinical trial is a research study with rules about who may take
+          part. The sample catalog demonstrates how approved visit information
+          can support study review. Available conditions depend on the indexed
+          catalog. These are research matches, not disease forecasts.
+        </p>
+        <a href="/guide" className="mt-3 inline-block text-blue-700 underline">
+          Read the simple project guide and demo script
+        </a>
       </div>
       <p className="mt-3 max-w-2xl text-sm font-medium text-amber-800">
-        Use synthetic patient details. A study suggestion still needs eligibility review.
+        Use synthetic patient details. A study suggestion still needs
+        eligibility review.
       </p>
 
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -59,7 +71,7 @@ export default function HomePage() {
           <ArrowRight className="h-5 w-5" aria-hidden="true" />
         </Link>
         <Link
-          href="/inbox"
+          href="/preview"
           className="flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-base font-semibold text-gray-700 shadow hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-colors"
         >
           Explore Visual Results

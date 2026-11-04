@@ -45,6 +45,18 @@ Leave the tunnel open and visit http://localhost:3000. Microphone permission wor
 
 ## 4. Public HTTPS deployment
 
+The repository includes a Caddy/Compose overlay to configure the two HTTPS domains without editing the base Compose file. From the repository root on EC2:
+
+```bash
+cp deploy/aws.env.example deploy/aws.env
+# Edit deploy/aws.env with your app and API domains.
+docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml config --quiet
+docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml up -d --build
+docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml ps
+```
+
+Create DNS A records for both domains pointing to your EC2 public IPv4 address. Allow TCP 80 and 443 in the EC2 security group; keep application/database ports private. Keep backend/.env configured with strong distinct secrets. The overlay sets browser API URL at build time, CORS origin, synthetic-data mode, and TLS 1.3. Caddy stores certificate state in named volumes. Verify certificate issuance and all browser calls before sharing the URL. This configuration requires testing on your AWS account; no account resources or certificates have been provisioned here.
+
 Use a reverse proxy such as Caddy or an Application Load Balancer with an ACM certificate. Serve the frontend at https://app.YOUR_DOMAIN and backend at https://api.YOUR_DOMAIN. Change the frontend build argument NEXT_PUBLIC_API_URL in docker-compose.yml to https://api.YOUR_DOMAIN and rebuild the frontend; changing only the runtime variable will not update a Next.js browser bundle. Set backend APP_ALLOWED_ORIGINS=https://app.YOUR_DOMAIN. Keep application ports bound to loopback when the proxy runs on the host. A container proxy must join the Compose network and address backend:8000 and frontend:3000 instead.
 
 For a host-installed Caddy proxy, the Caddyfile is:
