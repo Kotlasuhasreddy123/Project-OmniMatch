@@ -8,7 +8,13 @@ const StudyComparisonChart = dynamic(() => import("./StudyComparisonChart"), {
   loading: () => <p role="status">Loading study comparison…</p>,
 });
 
-export function ResultsOverview({ items }: { items: InboxItem[] }) {
+export function ResultsOverview({
+  items,
+  description = "Calculated from the visits in this view. Open a visit in the inbox to inspect its supporting evidence.",
+}: {
+  items: InboxItem[];
+  description?: string;
+}) {
   const [order, setOrder] = useState("score");
   const matches = items.flatMap((item) =>
     item.matches.map((match) => ({ ...match, visit: item.session_id })),
@@ -41,10 +47,7 @@ export function ResultsOverview({ items }: { items: InboxItem[] }) {
             Know what to check.
           </h2>
         </div>
-        <p>
-          Calculated from your current search. Each suggestion stays connected
-          to the evidence in the visit below.
-        </p>
+        <p>{description}</p>
       </div>
       <div className="metric-grid">
         {[

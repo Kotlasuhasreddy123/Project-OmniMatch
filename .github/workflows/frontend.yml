@@ -27,3 +27,8 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: "1"
       - run: docker build -t omnimatch-frontend:verify .
+      - name: Check the running frontend container
+        run: |
+          docker run --detach --name frontend-check -p 127.0.0.1:3000:3000 omnimatch-frontend:verify
+          curl --fail --retry 30 --retry-connrefused --retry-delay 1 --retry-max-time 60 http://127.0.0.1:3000/preview > /dev/null || { docker logs frontend-check; exit 1; }
+          docker stop frontend-check

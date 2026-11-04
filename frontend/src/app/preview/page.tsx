@@ -91,7 +91,10 @@ export default function PreviewPage() {
         demonstrate the layout and interactions and are separate from your saved
         inbox records.
       </p>
-      <ResultsOverview items={fixtures} />
+      <ResultsOverview
+        items={fixtures}
+        description="Illustrative totals from two invented visits. These display fixtures demonstrate the workspace and are separate from your inbox."
+      />
       <div className="flex flex-wrap gap-4">
         <Link
           href="/session"
