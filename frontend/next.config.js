@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  outputFileTracingRoot: __dirname,
   // An alternate output path allows verification when OneDrive locks an
   // earlier generated .next directory. Docker keeps the default .next path.
   distDir: process.env.OMNIMATCH_NEXT_DIST_DIR || ".next",
