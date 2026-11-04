@@ -1,0 +1,9 @@
+# Model and audience expansion plan
+
+Current state: pre-trained Whisper for transcription, MiniLM for retrieval, and a rule-based clinical term/context extractor. This upgrade does not train or fine-tune a model. The local catalog has 18 fictional scenarios. A visual review score measures the implemented ranking formula, not clinical accuracy.
+
+Primary users: clinicians preparing research screening information, coordinators verifying study requirements, and academic teams evaluating clinical AI workflows. Expand to additional specialties through explicit vocabulary, representative scenarios, and study coverage; do not claim universal coverage from a small demo catalog.
+
+Before training, select a concrete task such as entity/context classification. Establish licensed, consented or synthetic data with documented source, rights, language and specialty. Public availability does not grant training rights. Keep real patient data outside this academic demo. Record dataset version and exclusions. Split by patient and source before any tuning, reserving a locked external evaluation set. Compare the current rules against a candidate model using entity precision/recall/F1 and negation/family-history errors; measure speech word-error rate separately. Report uncertainty, sample counts and performance by specialty, language and recording conditions. Never train on the evaluation set to chase a target percentage.
+
+For retrieval, assess recall at k and relevance using independently labeled patient-study pairs, including no-match examples. Evaluate numeric eligibility checks independently from similarity. Audit false positives and false negatives with appropriate expert review. A larger dataset or better visualization alone does not establish clinical validity. Release only after documenting limitations, privacy controls, user acceptance results and rollback procedures.

@@ -1,5 +1,11 @@
 # OmniMatch — synthetic-data classroom prototype
 
+## Visual results upgrade
+
+The inbox now includes visit totals, review workload, a stacked criterion-coverage chart and an interactive study-ranking comparison. Values are computed from actual inbox records. The renewed local app also connects this overview to its search filters. The interface uses system typography, soft teal accents and a translucent navigation bar. Charts use lightweight accessible HTML/CSS and numerical labels; no remote chart service receives visit data.
+
+Deployment instructions: [AWS guide](docs/AWS_DEPLOYMENT.md). Model scope and evaluation: [data plan](docs/MODEL_DATA_PLAN.md). This release does not train or fine-tune models.
+
 OmniMatch demonstrates a consent-gated visit, local speech transcription, clinician review of extracted terms, and asynchronous trial suggestions. It is a **research prototype**, not a medical device, clinical decision support product, HIPAA-compliant deployment, or a system for real patient data. Use invented names and details only.
 
 The local demo contains three **fictional** trial records with `DEMO-` identifiers. The trial freshness gate blocks sponsor referral for them. A displayed enrollment-readiness percentage is a heuristic ranking score, **not model accuracy, eligibility, or a probability of enrollment**.

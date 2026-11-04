@@ -17,6 +17,7 @@ import { EligibilityBreakdown } from "@/components/EligibilityBreakdown/Eligibil
 import { ReferralButton } from "@/components/ui/ReferralButton";
 import { TrialTrustPanel } from "@/components/TrialTrustPanel/TrialTrustPanel";
 import type { InboxItem, TrialMatch } from "@/types";
+import { ResultsOverview } from "./ResultsOverview";
 
 interface InboxDashboardProps {
   items: InboxItem[];
@@ -357,6 +358,7 @@ export function InboxDashboard({
         )}
       </div>
 
+      {!isLoading && <ResultsOverview items={items} />}
       {/* Loading */}
       {isLoading && (
         <div

@@ -3,6 +3,19 @@ import { ReferralButton } from "@/components/ui/ReferralButton";
 import type { TrialMatch } from "@/types";
 
 const simulatedMatch = {
+  score: 0.7,
+  phase: "Not applicable",
+  status: "SIMULATED",
+  brief_summary: "Synthetic test fixture",
+  conditions: ["Type 2 diabetes"],
+  sponsor: "Classroom",
+  missing_variables: [],
+  enrollment_readiness_score: 65,
+  score_explanation: "Test ranking",
+  nearest_site_miles: null,
+  nearest_site_city: "",
+  locations: [],
+  criterion_evidence: [],
   nct_id: "DEMO-T2D-001",
   title: "SIMULATED Type 2 Diabetes Study",
   criterion_breakdown: [],
