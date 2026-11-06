@@ -16,8 +16,8 @@ services:
     container_name: omni_qdrant
     restart: unless-stopped
     ports:
-      - "6333:6333"     # REST API
-      - "6334:6334"     # gRPC
+      - "127.0.0.1:6333:6333"     # Local REST API
+      - "127.0.0.1:6334:6334"     # Local gRPC
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
@@ -40,7 +40,7 @@ services:
       qdrant:
         condition: service_healthy
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       # Persist SQLite audit log and inbox DB
       - backend_data:/app/data
@@ -79,7 +79,7 @@ services:
       backend:
         condition: service_healthy
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
     healthcheck:

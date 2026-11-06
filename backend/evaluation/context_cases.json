@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "provenance": "Authored synthetic regression fixtures; no patient records, recordings, registry studies or external training corpus.",
+  "terms": ["diabetes", "asthma", "hypertension", "epilepsy", "migraine", "kidney disease", "depression", "eczema"],
+  "templates": [
+    {"text": "The patient has {term}.", "context": "patient", "negated": false},
+    {"text": "{term} is documented in the patient's chart.", "context": "patient", "negated": false},
+    {"text": "The patient denies {term}.", "context": "patient", "negated": true},
+    {"text": "There is no evidence of {term}.", "context": "patient", "negated": true},
+    {"text": "The mother has {term}.", "context": "family", "negated": false},
+    {"text": "Family history of {term}.", "context": "family", "negated": false},
+    {"text": "If the patient develops {term}, arrange review.", "context": "hypothetical", "negated": false},
+    {"text": "Hypothetically, the patient may develop {term}.", "context": "hypothetical", "negated": false}
+  ],
+  "additional_cases": [
+    {"text": "If the patient develops asthma, arrange review. The patient has asthma.", "expected": [{"term": "asthma", "context": "hypothetical", "negated": false}, {"term": "asthma", "context": "patient", "negated": false}]},
+    {"text": "Family history of diabetes. The patient has diabetes.", "expected": [{"term": "diabetes", "context": "family", "negated": false}, {"term": "diabetes", "context": "patient", "negated": false}]},
+    {"text": "The patient has type 2 diabetes.", "expected": [{"term": "type 2 diabetes", "context": "patient", "negated": false}]},
+    {"text": "No diabetes, but asthma is documented.", "expected": [{"term": "diabetes", "context": "patient", "negated": true}, {"term": "asthma", "context": "patient", "negated": false}]},
+    {"text": "The patient does not deny diabetes.", "expected": [{"term": "diabetes", "context": "patient", "negated": false}]}
+  ]
+}

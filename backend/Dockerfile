@@ -61,6 +61,7 @@ COPY app/ ./app/
 
 ENV PYTHONPATH="/app"
 ENV XDG_CACHE_HOME="/app/data/model-cache"
+ENV HF_HOME="/app/data/model-cache/huggingface"
 
 # Create data directory for SQLite
 RUN mkdir -p /app/data
