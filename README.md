@@ -2,7 +2,7 @@
 
 **Install locally:** [Windows, macOS and Linux instructions](docs/INSTALL_ON_YOUR_COMPUTER.md). No AWS account or paid API key is needed. [Which models are already trained, and on what data?](docs/MODELS_AND_DATA.md)
 
-The active learned models are pretrained Whisper (speech) and `all-MiniLM-L6-v2` (retrieval). Clinical extraction and eligibility checks use rules. This repository does not claim custom medical model training. Run `python backend/evaluate_context.py` for the reproducible synthetic context regression checks; see the model guide for the metric and its limits.
+The active learned models are pretrained Whisper (speech) and `all-MiniLM-L6-v2` (retrieval). Clinical extraction and eligibility checks use rules. A separate TF-IDF/logistic assertion candidate has now been trained on synthetic annotations; it scored 54/60 (90%) on a small internal test and is not connected to the live app. See [all models, training and measured results](docs/MODEL_TRAINING_RESULTS.md). Run `python backend/evaluate_context.py` for the reproducible synthetic context regression checks; see the model guide for the metric and its limits.
 
 ## Approved access and public portal
 
@@ -10,13 +10,17 @@ The public portal contains policies, license notices, a specialty/language cover
 
 See [the evaluation and training plan](docs/VALIDATION_AND_TRAINING_PLAN.md) for the unmet broad extraction benchmark. No universal validation or 98–100% clinical accuracy is claimed.
 
+## Latest model work
+
+The active English vocabulary and context rules improved the legacy 100-transcript development negation recall from 29.7% to 70.3% (F1 77.6%). The broader target remains unmet. The focused 72/72 checks are a separate regression metric. A new `/models` page presents the inventory and evidence; no 98% clinical accuracy is claimed.
+
 ## Visual results upgrade
 
 The inbox now includes visit totals, review workload, a criterion-coverage chart and an interactive Recharts study comparison. Values are computed from inbox records, with a numerical list alongside the chart. The renewed local app also connects its overview to search filters. The interface uses system typography, soft teal accents and translucent navigation. Charts render locally; no remote chart service receives visit data. Open `/preview` to explore clearly labeled fictional display examples without signing in.
 
 Use Node.js 20 and `npm ci` inside `frontend/` for development and CI. `package-lock.json` is the canonical dependency lockfile used by Docker. The older pnpm lockfile is retained as historical project material and is not used by the deployment workflow. The frontend has been upgraded to Next.js 15.5.29 and PostCSS 8.5.32 to address dependency advisories; React remains on 18.3.1.
 
-Deployment instructions: [AWS guide](docs/AWS_DEPLOYMENT.md). Model scope and evaluation: [data plan](docs/MODEL_DATA_PLAN.md). This release does not train or fine-tune models.
+Deployment instructions: [AWS guide](docs/AWS_DEPLOYMENT.md). Model scope and evaluation: [data plan](docs/MODEL_DATA_PLAN.md). Whisper and MiniLM remain unchanged; the separate assertion candidate is experimental.
 
 OmniMatch demonstrates a consent-gated visit, local speech transcription, clinician review of extracted terms, and asynchronous trial suggestions. It is a **research prototype**, not a medical device, clinical decision support product, HIPAA-compliant deployment, or a system for real patient data. Use invented names and details only.
 

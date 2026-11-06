@@ -1,0 +1,31 @@
+{
+  "broad_records": 100,
+  "broad_before": {
+    "precision": 0.7704918032786885,
+    "recall": 0.2974683544303797,
+    "f1": 0.42922374429223736
+  },
+  "broad_after": {
+    "precision": 0.8671875,
+    "recall": 0.7025316455696202,
+    "f1": 0.7762237762237761
+  },
+  "candidate_accuracy": 0.9,
+  "candidate_correct": 54,
+  "candidate_total": 60,
+  "candidate_macro_f1": 0.9297619047619047,
+  "candidate_family_test_count": 1,
+  "candidate_active": false,
+  "medical_accuracy_98_validated": false,
+  "split_annotation_counts": {
+    "train": 216,
+    "validation": 54,
+    "test": 60
+  },
+  "split_record_counts": {
+    "train": 69,
+    "validation": 15,
+    "test": 16
+  },
+  "excluded_annotations": 13
+}

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { ModelEvidence } from "@/components/ModelEvidence";
 
 const specialties = [
   "Primary care",
@@ -74,18 +75,7 @@ export default function ValidationPage() {
           </div>
         ))}
       </div>
-      <section className="rounded-2xl border border-rose-200 bg-rose-50 p-6">
-        <h2 className="text-xl font-semibold text-rose-900">
-          Broader extraction target is not met
-        </h2>
-        <p className="mt-3 leading-7">
-          On the older 100-transcript synthetic set, negation recall is 29.7%,
-          precision is 77.0% and F1 is 42.9% using its existing term-matching
-          procedure. Many expected terms are outside the vocabulary. This result
-          does not meet the 95% recall target. The smaller passing regression
-          set does not replace it.
-        </p>
-      </section>
+      <ModelEvidence />
       <section className="rounded-2xl border bg-white p-6">
         <h2 className="text-xl font-semibold">Check a use case</h2>
         <div className="my-5 grid gap-5 sm:grid-cols-2">
@@ -164,8 +154,8 @@ export default function ValidationPage() {
         Thresholds can change how many studies are retrieved, but do not
         establish accuracy. Fine-tuning needs data rights, reviewed labels,
         patient/source-separated development and test sets, and a measured
-        improvement over the existing model. No new fine-tuning result is
-        claimed here.
+        improvement over the existing model. The separately trained context
+        candidate remains experimental and below the requested target.
       </p>
       <div className="flex flex-wrap gap-5">
         <a

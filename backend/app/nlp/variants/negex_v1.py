@@ -1,18 +1,8 @@
-"""
-Variant 1: Classic NegEx (Chapman et al. 2001) — Rule-based regex window.
+"""Unused standalone NegEx-style rule experiment.
 
-Chapman WW, Bridewell W, Hanbury P, Cooper GF, Buchanan BG.
-"A Simple Algorithm for Identifying Negated Findings and Diseases in Discharge Summaries."
-J Biomed Inform. 2001;34(5):301-10. doi:10.1006/jbin.2001.1029
-
-Performance on i2b2 2010 assertion dataset:
-  Precision: 0.841 | Recall: 0.853 | F1: 0.847
-
-Strengths:  Very fast (<1ms), zero dependencies, fully deterministic.
-Weaknesses: Fixed window misses long-distance negations; no uncertainty/hypothetical
-            distinction; relies on surface patterns only.
-
-Use case in OmniMatch: Primary pipeline (speed-first), fallback when GPU unavailable.
+The live extraction endpoint uses app.nlp.negex_pipeline instead. This module
+has no trained weights. Published NegEx benchmark numbers are not measured
+OmniMatch performance and must not be attributed to this implementation.
 """
 
 from __future__ import annotations

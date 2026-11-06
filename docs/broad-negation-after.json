@@ -1,0 +1,371 @@
+{
+  "dataset_sha256": "b358335baa3498760d3d760d916852c24888cf66a271eb71f0ecca456719af5e",
+  "rules_sha256": "f71430db7f2dab13e7c14f2fa27b7a68e717e133697a0e6869ef5a9ba7e437f4",
+  "vocabulary_sha256": "12b7c968af8e46038cb21707520040a96420e4ccf2f7db5fcaba6acbfc70129f",
+  "record_count": 100,
+  "true_positive": 111,
+  "false_positive": 17,
+  "false_negative": 47,
+  "precision": 0.8671875,
+  "recall": 0.7025316455696202,
+  "f1": 0.7762237762237761,
+  "legacy_95_recall_target_met": false,
+  "failures": [
+    {
+      "id": "T008",
+      "missing": [],
+      "extra": [
+        "stroke"
+      ]
+    },
+    {
+      "id": "T009",
+      "missing": [],
+      "extra": [
+        "rheumatoid"
+      ]
+    },
+    {
+      "id": "T026",
+      "missing": [],
+      "extra": [
+        "mri"
+      ]
+    },
+    {
+      "id": "T028",
+      "missing": [],
+      "extra": [
+        "cognitive decline"
+      ]
+    },
+    {
+      "id": "T030",
+      "missing": [
+        "graves disease"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T031",
+      "missing": [
+        "status asthmaticus"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T032",
+      "missing": [],
+      "extra": [
+        "transplant"
+      ]
+    },
+    {
+      "id": "T033",
+      "missing": [
+        "dysplasia",
+        "fistula",
+        "flare"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T034",
+      "missing": [
+        "iron deficiency"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T036",
+      "missing": [
+        "psychosis",
+        "substance abuse"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T038",
+      "missing": [
+        "abdominal hernias",
+        "bowel obstruction"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T039",
+      "missing": [
+        "latex allergy",
+        "sulfa"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T040",
+      "missing": [
+        "alcohol abuse",
+        "tobacco"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T041",
+      "missing": [
+        "hypoglycemic"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T043",
+      "missing": [
+        "deep vein thrombosis"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T044",
+      "missing": [
+        "preeclampsia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T046",
+      "missing": [
+        "metabolic syndrome"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T047",
+      "missing": [],
+      "extra": [
+        "recurrence"
+      ]
+    },
+    {
+      "id": "T048",
+      "missing": [],
+      "extra": [
+        "hypertension"
+      ]
+    },
+    {
+      "id": "T051",
+      "missing": [],
+      "extra": [
+        "surgery"
+      ]
+    },
+    {
+      "id": "T055",
+      "missing": [],
+      "extra": [
+        "ultrasound"
+      ]
+    },
+    {
+      "id": "T065",
+      "missing": [
+        "lymphoma"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T066",
+      "missing": [
+        "cognitive impairment"
+      ],
+      "extra": [
+        "mri"
+      ]
+    },
+    {
+      "id": "T067",
+      "missing": [
+        "bulimia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T068",
+      "missing": [
+        "pyelonephritis",
+        "sepsis"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T069",
+      "missing": [
+        "amputation"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T070",
+      "missing": [
+        "adrenal crisis",
+        "cushing syndrome"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T071",
+      "missing": [
+        "aortic dissection",
+        "lens dislocation"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T072",
+      "missing": [
+        "hemophilia",
+        "thrombocytopenia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T073",
+      "missing": [
+        "lewy body"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T074",
+      "missing": [
+        "fragility fractures"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T076",
+      "missing": [
+        "gi symptoms",
+        "lymphoma"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T077",
+      "missing": [
+        "barrett esophagus"
+      ],
+      "extra": [
+        "endoscopy"
+      ]
+    },
+    {
+      "id": "T078",
+      "missing": [
+        "endometrial hyperplasia"
+      ],
+      "extra": [
+        "ultrasound"
+      ]
+    },
+    {
+      "id": "T080",
+      "missing": [
+        "nasal polyps"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T081",
+      "missing": [
+        "pacemaker malfunction"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T083",
+      "missing": [
+        "residual disease"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T084",
+      "missing": [
+        "muscle-invasive"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T085",
+      "missing": [
+        "bowel obstruction"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T086",
+      "missing": [],
+      "extra": [
+        "mri"
+      ]
+    },
+    {
+      "id": "T090",
+      "missing": [],
+      "extra": [
+        "fatigue"
+      ]
+    },
+    {
+      "id": "T091",
+      "missing": [
+        "bladder dysfunction",
+        "bowel dysfunction",
+        "cauda equina"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T092",
+      "missing": [
+        "aortic involvement"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T093",
+      "missing": [
+        "respiratory failure"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T096",
+      "missing": [],
+      "extra": [
+        "pain"
+      ]
+    },
+    {
+      "id": "T097",
+      "missing": [],
+      "extra": [
+        "mri"
+      ]
+    },
+    {
+      "id": "T098",
+      "missing": [],
+      "extra": [
+        "transplant"
+      ]
+    },
+    {
+      "id": "T099",
+      "missing": [
+        "cardiac involvement"
+      ],
+      "extra": []
+    }
+  ],
+  "limits": "Previously inspected synthetic development corpus. Legacy substring term matching can credit partial matches and annotations may be incomplete. Not clinical accuracy, full NER F1 or independent validation."
+}

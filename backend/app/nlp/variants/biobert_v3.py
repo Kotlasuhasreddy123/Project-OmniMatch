@@ -1,30 +1,10 @@
-"""
-Variant 3: BioBERT Zero-Shot Assertion Classification (Lee et al. 2019 + 2025 adaptation).
+"""Unused experimental zero-shot NLI wrapper, retained under a legacy filename.
 
-Lee J, Yoon W, Kim S, et al.
-"BioBERT: a pre-trained biomedical language representation model for biomedical text mining."
-Bioinformatics. 2020;36(4):1234–1240. doi:10.1093/bioinformatics/btz682
-
-2025 benchmark (arxiv 2503.17425): Fine-tuned LLM assertion detection = 0.962 accuracy.
-Zero-shot BioBERT (our implementation): ~0.87 accuracy — lower but no training data needed.
-
-Architecture: Zero-shot NLI using BioBERT-mnli or cross-encoder for:
-  - PRESENT (affirmed patient condition)
-  - ABSENT  (negated)
-  - HYPOTHETICAL
-  - FAMILY  (family context)
-  - POSSIBLE (uncertain)
-
-Strengths:  Handles complex linguistic structures, idioms, implicit negation.
-            No rule lists to maintain — generalizes to unseen patterns.
-Weaknesses: ~100ms per sentence (CPU), requires transformers library,
-            2GB+ RAM for model. Not suitable for Free Tier without GPU.
-
-Use case in OmniMatch: Optional high-accuracy mode when GPU/memory available.
-Activated via WHISPER_MODEL=large + NLP_VARIANT=biobert env vars.
-
-NOTE: Implementation uses lazy loading — model only loads when first called.
-      In Free Tier deployments, falls back to NegEx/NegBio automatically.
+The configured checkpoint is cross-encoder/nli-MiniLM2-L6-H768, NOT BioBERT.
+The live /nlp/extract endpoint does not call this module, and NLP_VARIANT is
+not a wired configuration switch. No local medical accuracy or latency is
+established for this wrapper. It can fall back to a rule experiment when its
+optional dependency/model is unavailable. No project fine-tuning is performed.
 """
 
 from __future__ import annotations

@@ -1,0 +1,995 @@
+{
+  "model": "TF-IDF + balanced logistic regression assertion candidate",
+  "active_in_application": false,
+  "provenance": "Repository-authored synthetic classroom transcripts. Previously used for rule development; not independent clinical validation.",
+  "task": "Classify affirmed/family/negated context GIVEN a known, unambiguous entity span. Does not detect entities.",
+  "dataset_sha256": "b358335baa3498760d3d760d916852c24888cf66a271eb71f0ecca456719af5e",
+  "model_sha256": "971a0864e052e2815b77aebc6ceb1ca99fc6ad37894599d2c910ef926a959623",
+  "python": "3.14.4",
+  "scikit_learn": "1.9.0",
+  "split_record_ids": {
+    "train": [
+      "T092",
+      "T052",
+      "T045",
+      "T064",
+      "T083",
+      "T021",
+      "T095",
+      "T013",
+      "T031",
+      "T018",
+      "T039",
+      "T074",
+      "T034",
+      "T094",
+      "T044",
+      "T097",
+      "T019",
+      "T037",
+      "T069",
+      "T089",
+      "T014",
+      "T060",
+      "T020",
+      "T090",
+      "T028",
+      "T075",
+      "T073",
+      "T091",
+      "T003",
+      "T053",
+      "T099",
+      "T046",
+      "T062",
+      "T050",
+      "T067",
+      "T016",
+      "T086",
+      "T071",
+      "T024",
+      "T093",
+      "T087",
+      "T040",
+      "T084",
+      "T002",
+      "T009",
+      "T038",
+      "T080",
+      "T032",
+      "T098",
+      "T057",
+      "T048",
+      "T006",
+      "T055",
+      "T088",
+      "T056",
+      "T008",
+      "T058",
+      "T049",
+      "T022",
+      "T082",
+      "T005",
+      "T072",
+      "T078",
+      "T023",
+      "T011",
+      "T100",
+      "T001",
+      "T065",
+      "T051",
+      "T033"
+    ],
+    "validation": [
+      "T036",
+      "T029",
+      "T061",
+      "T041",
+      "T027",
+      "T081",
+      "T025",
+      "T030",
+      "T026",
+      "T059",
+      "T010",
+      "T054",
+      "T004",
+      "T066",
+      "T085"
+    ],
+    "test": [
+      "T079",
+      "T017",
+      "T035",
+      "T042",
+      "T076",
+      "T043",
+      "T047",
+      "T063",
+      "T077",
+      "T007",
+      "T096",
+      "T012",
+      "T015",
+      "T068",
+      "T070"
+    ]
+  },
+  "split_annotation_counts": {
+    "train": 230,
+    "validation": 57,
+    "test": 43
+  },
+  "parameters": {
+    "seed": 42,
+    "context_words_each_side": 12,
+    "ngrams": [
+      1,
+      2
+    ],
+    "class_weight": "balanced",
+    "C_candidates": [
+      0.1,
+      1.0,
+      10.0
+    ],
+    "selected_C": 0.1,
+    "max_iter": 1000
+  },
+  "validation_candidates": [
+    {
+      "C": 0.1,
+      "metrics": {
+        "correct": 55,
+        "total": 57,
+        "accuracy": 0.9649122807017544,
+        "wilson_95_interval": [
+          0.8807899619581051,
+          0.9903245386467442
+        ],
+        "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+        "classification_report": {
+          "affirmed": {
+            "precision": 1.0,
+            "recall": 0.9333333333333333,
+            "f1-score": 0.9655172413793104,
+            "support": 30.0
+          },
+          "family": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "negated": {
+            "precision": 0.9310344827586207,
+            "recall": 1.0,
+            "f1-score": 0.9642857142857143,
+            "support": 27.0
+          },
+          "accuracy": 0.9649122807017544,
+          "macro avg": {
+            "precision": 0.6436781609195402,
+            "recall": 0.6444444444444445,
+            "f1-score": 0.6432676518883416,
+            "support": 57.0
+          },
+          "weighted avg": {
+            "precision": 0.9673321234119783,
+            "recall": 0.9649122807017544,
+            "f1-score": 0.9649338864402385,
+            "support": 57.0
+          }
+        },
+        "confusion_matrix_labels": [
+          "affirmed",
+          "family",
+          "negated"
+        ],
+        "confusion_matrix": [
+          [
+            28,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            27
+          ]
+        ]
+      }
+    },
+    {
+      "C": 1.0,
+      "metrics": {
+        "correct": 55,
+        "total": 57,
+        "accuracy": 0.9649122807017544,
+        "wilson_95_interval": [
+          0.8807899619581051,
+          0.9903245386467442
+        ],
+        "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+        "classification_report": {
+          "affirmed": {
+            "precision": 1.0,
+            "recall": 0.9333333333333333,
+            "f1-score": 0.9655172413793104,
+            "support": 30.0
+          },
+          "family": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "negated": {
+            "precision": 0.9310344827586207,
+            "recall": 1.0,
+            "f1-score": 0.9642857142857143,
+            "support": 27.0
+          },
+          "accuracy": 0.9649122807017544,
+          "macro avg": {
+            "precision": 0.6436781609195402,
+            "recall": 0.6444444444444445,
+            "f1-score": 0.6432676518883416,
+            "support": 57.0
+          },
+          "weighted avg": {
+            "precision": 0.9673321234119783,
+            "recall": 0.9649122807017544,
+            "f1-score": 0.9649338864402385,
+            "support": 57.0
+          }
+        },
+        "confusion_matrix_labels": [
+          "affirmed",
+          "family",
+          "negated"
+        ],
+        "confusion_matrix": [
+          [
+            28,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            27
+          ]
+        ]
+      }
+    },
+    {
+      "C": 10.0,
+      "metrics": {
+        "correct": 55,
+        "total": 57,
+        "accuracy": 0.9649122807017544,
+        "wilson_95_interval": [
+          0.8807899619581051,
+          0.9903245386467442
+        ],
+        "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+        "classification_report": {
+          "affirmed": {
+            "precision": 1.0,
+            "recall": 0.9333333333333333,
+            "f1-score": 0.9655172413793104,
+            "support": 30.0
+          },
+          "family": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "negated": {
+            "precision": 0.9310344827586207,
+            "recall": 1.0,
+            "f1-score": 0.9642857142857143,
+            "support": 27.0
+          },
+          "accuracy": 0.9649122807017544,
+          "macro avg": {
+            "precision": 0.6436781609195402,
+            "recall": 0.6444444444444445,
+            "f1-score": 0.6432676518883416,
+            "support": 57.0
+          },
+          "weighted avg": {
+            "precision": 0.9673321234119783,
+            "recall": 0.9649122807017544,
+            "f1-score": 0.9649338864402385,
+            "support": 57.0
+          }
+        },
+        "confusion_matrix_labels": [
+          "affirmed",
+          "family",
+          "negated"
+        ],
+        "confusion_matrix": [
+          [
+            28,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            27
+          ]
+        ]
+      }
+    }
+  ],
+  "test": {
+    "correct": 38,
+    "total": 43,
+    "accuracy": 0.8837209302325582,
+    "wilson_95_interval": [
+      0.755205511093586,
+      0.9492964700513791
+    ],
+    "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+    "classification_report": {
+      "affirmed": {
+        "precision": 0.8333333333333334,
+        "recall": 0.9523809523809523,
+        "f1-score": 0.8888888888888888,
+        "support": 21.0
+      },
+      "family": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "negated": {
+        "precision": 0.9473684210526315,
+        "recall": 0.8181818181818182,
+        "f1-score": 0.8780487804878049,
+        "support": 22.0
+      },
+      "accuracy": 0.8837209302325582,
+      "macro avg": {
+        "precision": 0.5935672514619883,
+        "recall": 0.5901875901875901,
+        "f1-score": 0.5889792231255645,
+        "support": 43.0
+      },
+      "weighted avg": {
+        "precision": 0.8916768665850672,
+        "recall": 0.8837209302325582,
+        "f1-score": 0.8833427869162412,
+        "support": 43.0
+      }
+    },
+    "confusion_matrix_labels": [
+      "affirmed",
+      "family",
+      "negated"
+    ],
+    "confusion_matrix": [
+      [
+        20,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        18
+      ]
+    ]
+  },
+  "majority_baseline_test": {
+    "correct": 21,
+    "total": 43,
+    "accuracy": 0.4883720930232558,
+    "wilson_95_interval": [
+      0.34617209277756,
+      0.6324793623392592
+    ],
+    "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+    "classification_report": {
+      "affirmed": {
+        "precision": 0.4883720930232558,
+        "recall": 1.0,
+        "f1-score": 0.65625,
+        "support": 21.0
+      },
+      "family": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "negated": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 22.0
+      },
+      "accuracy": 0.4883720930232558,
+      "macro avg": {
+        "precision": 0.1627906976744186,
+        "recall": 0.3333333333333333,
+        "f1-score": 0.21875,
+        "support": 43.0
+      },
+      "weighted avg": {
+        "precision": 0.2385073012439156,
+        "recall": 0.4883720930232558,
+        "f1-score": 0.32049418604651164,
+        "support": 43.0
+      }
+    },
+    "confusion_matrix_labels": [
+      "affirmed",
+      "family",
+      "negated"
+    ],
+    "confusion_matrix": [
+      [
+        21,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        22,
+        0,
+        0
+      ]
+    ]
+  },
+  "requested_98_percent_met_on_this_internal_test": false,
+  "overall_medical_98_percent_validated": false,
+  "excluded_annotations": [
+    {
+      "record": "T042",
+      "term": "kidney disease",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T048",
+      "term": "hypertension",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 2
+    },
+    {
+      "record": "T066",
+      "term": "multiple sclerosis",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T080",
+      "term": "asthma",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 2
+    },
+    {
+      "record": "T082",
+      "term": "pulmonary hypertension",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T087",
+      "term": "esophageal cancer",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T088",
+      "term": "pancreatic cancer",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T091",
+      "term": "bowel dysfunction",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T094",
+      "term": "huntington disease",
+      "reason": "overlapping annotation spans require manual review"
+    },
+    {
+      "record": "T094",
+      "term": "huntington disease",
+      "reason": "overlapping annotation spans require manual review"
+    },
+    {
+      "record": "T099",
+      "term": "cardiac involvement",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T100",
+      "term": "kidney disease",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T100",
+      "term": "diabetes",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 2
+    }
+  ],
+  "test_predictions": [
+    {
+      "record_id": "T012",
+      "text": "Absence of depression and anxiety noted on psychiatric review.",
+      "term": "depression",
+      "start": 11,
+      "end": 21,
+      "label": "negated",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T012",
+      "text": "Absence of depression and anxiety noted on psychiatric review.",
+      "term": "anxiety",
+      "start": 26,
+      "end": 33,
+      "label": "negated",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T015",
+      "text": "Rules out myocardial infarction based on troponin levels. Rules out stroke on imaging.",
+      "term": "myocardial infarction",
+      "start": 10,
+      "end": 31,
+      "label": "negated",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T015",
+      "text": "Rules out myocardial infarction based on troponin levels. Rules out stroke on imaging.",
+      "term": "stroke",
+      "start": 68,
+      "end": 74,
+      "label": "negated",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "warfarin",
+      "start": 25,
+      "end": 33,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "aspirin",
+      "start": 35,
+      "end": 42,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "metoprolol",
+      "start": 44,
+      "end": 54,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "lisinopril",
+      "start": 60,
+      "end": 70,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "atrial fibrillation",
+      "start": 75,
+      "end": 94,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T035",
+      "text": "HIV positive on antiretroviral therapy. CD4 count 650. Viral load undetectable. Denies opportunistic infections.",
+      "term": "hiv",
+      "start": 0,
+      "end": 3,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T035",
+      "text": "HIV positive on antiretroviral therapy. CD4 count 650. Viral load undetectable. Denies opportunistic infections.",
+      "term": "opportunistic infections",
+      "start": 87,
+      "end": 111,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "heart failure",
+      "start": 17,
+      "end": 30,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "atrial fibrillation",
+      "start": 32,
+      "end": 51,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "furosemide",
+      "start": 117,
+      "end": 127,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "digoxin",
+      "start": 129,
+      "end": 136,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "apixaban",
+      "start": 142,
+      "end": 150,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "dementia",
+      "start": 77,
+      "end": 85,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T043",
+      "text": "Post-op day 3 following left knee arthroplasty. No wound infection or deep vein thrombosis. Patient denies fever or chills.",
+      "term": "wound infection",
+      "start": 51,
+      "end": 66,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T043",
+      "text": "Post-op day 3 following left knee arthroplasty. No wound infection or deep vein thrombosis. Patient denies fever or chills.",
+      "term": "deep vein thrombosis",
+      "start": 70,
+      "end": 90,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T043",
+      "text": "Post-op day 3 following left knee arthroplasty. No wound infection or deep vein thrombosis. Patient denies fever or chills.",
+      "term": "fever",
+      "start": 107,
+      "end": 112,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T047",
+      "text": "Patient previously had MRSA infection, now resolved. No current active infection. Denies recurrence.",
+      "term": "active infection",
+      "start": 64,
+      "end": 80,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T063",
+      "text": "Bilateral sensorineural hearing loss on hearing aids. No otosclerosis. Denies tinnitus at this time.",
+      "term": "hearing loss",
+      "start": 24,
+      "end": 36,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T063",
+      "text": "Bilateral sensorineural hearing loss on hearing aids. No otosclerosis. Denies tinnitus at this time.",
+      "term": "otosclerosis",
+      "start": 57,
+      "end": 69,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T063",
+      "text": "Bilateral sensorineural hearing loss on hearing aids. No otosclerosis. Denies tinnitus at this time.",
+      "term": "tinnitus",
+      "start": 78,
+      "end": 86,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T068",
+      "text": "Recurrent urinary tract infections. Currently not on prophylactic antibiotics. No pyelonephritis. Denies sepsis history.",
+      "term": "urinary tract infections",
+      "start": 10,
+      "end": 34,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T068",
+      "text": "Recurrent urinary tract infections. Currently not on prophylactic antibiotics. No pyelonephritis. Denies sepsis history.",
+      "term": "pyelonephritis",
+      "start": 82,
+      "end": 96,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T068",
+      "text": "Recurrent urinary tract infections. Currently not on prophylactic antibiotics. No pyelonephritis. Denies sepsis history.",
+      "term": "sepsis",
+      "start": 105,
+      "end": 111,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T070",
+      "text": "Adrenal insufficiency on hydrocortisone replacement. No Cushing syndrome. Denies adrenal crisis episodes.",
+      "term": "adrenal insufficiency",
+      "start": 0,
+      "end": 21,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T070",
+      "text": "Adrenal insufficiency on hydrocortisone replacement. No Cushing syndrome. Denies adrenal crisis episodes.",
+      "term": "hydrocortisone",
+      "start": 25,
+      "end": 39,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T070",
+      "text": "Adrenal insufficiency on hydrocortisone replacement. No Cushing syndrome. Denies adrenal crisis episodes.",
+      "term": "cushing syndrome",
+      "start": 56,
+      "end": 72,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T070",
+      "text": "Adrenal insufficiency on hydrocortisone replacement. No Cushing syndrome. Denies adrenal crisis episodes.",
+      "term": "adrenal crisis",
+      "start": 81,
+      "end": 95,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T076",
+      "text": "Celiac disease on strict gluten-free diet. Antibodies now negative. No small bowel lymphoma on surveillance. Denies current GI symptoms.",
+      "term": "celiac disease",
+      "start": 0,
+      "end": 14,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T076",
+      "text": "Celiac disease on strict gluten-free diet. Antibodies now negative. No small bowel lymphoma on surveillance. Denies current GI symptoms.",
+      "term": "lymphoma",
+      "start": 83,
+      "end": 91,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T076",
+      "text": "Celiac disease on strict gluten-free diet. Antibodies now negative. No small bowel lymphoma on surveillance. Denies current GI symptoms.",
+      "term": "gi symptoms",
+      "start": 124,
+      "end": 135,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T077",
+      "text": "GERD on omeprazole 40mg daily. No Barrett esophagus on endoscopy. Denies dysphagia or odynophagia.",
+      "term": "gerd",
+      "start": 0,
+      "end": 4,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T077",
+      "text": "GERD on omeprazole 40mg daily. No Barrett esophagus on endoscopy. Denies dysphagia or odynophagia.",
+      "term": "omeprazole",
+      "start": 8,
+      "end": 18,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T077",
+      "text": "GERD on omeprazole 40mg daily. No Barrett esophagus on endoscopy. Denies dysphagia or odynophagia.",
+      "term": "barrett esophagus",
+      "start": 34,
+      "end": 51,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T077",
+      "text": "GERD on omeprazole 40mg daily. No Barrett esophagus on endoscopy. Denies dysphagia or odynophagia.",
+      "term": "dysphagia",
+      "start": 73,
+      "end": 82,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T079",
+      "text": "Chronic fatigue syndrome with post-exertional malaise. Denies fibromyalgia diagnosis. No autoimmune cause identified. On low-dose naltrexone.",
+      "term": "chronic fatigue",
+      "start": 0,
+      "end": 15,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T079",
+      "text": "Chronic fatigue syndrome with post-exertional malaise. Denies fibromyalgia diagnosis. No autoimmune cause identified. On low-dose naltrexone.",
+      "term": "naltrexone",
+      "start": 130,
+      "end": 140,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T079",
+      "text": "Chronic fatigue syndrome with post-exertional malaise. Denies fibromyalgia diagnosis. No autoimmune cause identified. On low-dose naltrexone.",
+      "term": "fibromyalgia",
+      "start": 62,
+      "end": 74,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T096",
+      "text": "Acute intermittent porphyria. Last attack 8 months ago. No current attack. Denies chronic pain outside attacks. On low carb diet avoidance strategy.",
+      "term": "porphyria",
+      "start": 19,
+      "end": 28,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T096",
+      "text": "Acute intermittent porphyria. Last attack 8 months ago. No current attack. Denies chronic pain outside attacks. On low carb diet avoidance strategy.",
+      "term": "current attack",
+      "start": 59,
+      "end": 73,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    }
+  ],
+  "limits": [
+    "English synthetic development corpus only; no patient data.",
+    "The source has ambiguous or nonliteral annotations, listed as excluded.",
+    "Known entity spans bypass entity discovery. Results are not end-to-end extraction accuracy.",
+    "No uncertainty, hypothetical, temporal or multilingual validation for this classifier.",
+    "No Whisper or MiniLM weight changes. No disease forecasting or prescribing."
+  ],
+  "hash_normalization": "UTF-8 text with LF line endings"
+}

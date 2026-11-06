@@ -50,6 +50,7 @@ export default function RootLayout({
               <Link href="/timeline" className="text-gray-600 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
                 Timeline
               </Link>
+              <Link href="/models" className="text-gray-600 hover:text-blue-600">Models</Link>
               <Link href="/validation" className="text-gray-600 hover:text-blue-600">Validation</Link>
               <Link href="/login" className="font-semibold text-teal-800">Access</Link>
             </nav>
