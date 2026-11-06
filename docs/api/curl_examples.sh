@@ -1,7 +1,12 @@
 #!/bin/bash
 # OmniMatch — Complete cURL API Reference
 # Every endpoint with expected responses.
-# Usage: source curl_examples.sh or run individual commands.
+# Reference only. Run individual reviewed commands, not this whole file.
+# Email access: see ../PASSWORDLESS_ACCESS.md. Never print or commit tokens.
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  echo 'Reference only: use individually reviewed commands after approved email sign-in.'
+  exit 1
+fi
 
 BASE="http://localhost:8000"
 
@@ -14,23 +19,11 @@ echo -e "\n[0] Health Check"
 curl -s "$BASE/api/v1/health" | python -m json.tool
 
 # ── 1. Authentication ─────────────────────────────────────────────────────
-echo -e "\n[1] Login — Clinical Staff"
-TOKEN=$(curl -s -X POST "$BASE/api/v1/auth/login" \
-  -H "Content-Type: application/json" \
-  -d '{"username":"clinical_staff","password":"Staff@12345"}' \
-  | python -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
-echo "Token: ${TOKEN:0:40}..."
-
-echo -e "\n[1b] Login — Admin"
-ADMIN_TOKEN=$(curl -s -X POST "$BASE/api/v1/auth/login" \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"Admin@12345"}' \
-  | python -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
-
-echo -e "\n[1c] Login — Wrong password (expect 401)"
-curl -s -o /dev/null -w "HTTP %{http_code}\n" -X POST "$BASE/api/v1/auth/login" \
-  -H "Content-Type: application/json" \
-  -d '{"username":"clinical_staff","password":"wrongpassword"}'
+# Set TOKEN to a current approved WorkOS access token in your shell.
+# Set ADMIN_TOKEN separately only for approved administrator checks.
+# Do not store either token in this file or print it.
+: "${TOKEN:?Set a current approved WorkOS TOKEN before using protected endpoints}"
+curl -s "$BASE/api/v1/auth/me" -H "Authorization: Bearer $TOKEN" | python -m json.tool
 
 # ── 2. Consent (REQ-01) ───────────────────────────────────────────────────
 SESSION_ID="demo-session-$(date +%s)"

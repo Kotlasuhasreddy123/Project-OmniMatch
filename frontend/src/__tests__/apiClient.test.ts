@@ -23,22 +23,10 @@ function mockResponse(status: number, data: unknown) {
 
 beforeEach(() => { jest.clearAllMocks(); clearToken(); });
 
-describe("apiClient — login", () => {
-  it("posts to /api/v1/auth/login and returns token", async () => {
-    mockFetch.mockReturnValueOnce(
-      mockResponse(200, { access_token: "tok123", token_type: "bearer", expires_in_seconds: 28800 })
-    );
-    const result = await login({ username: "staff", password: "Pass@123" });
-    expect(result.access_token).toBe("tok123");
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining("/api/v1/auth/login"),
-      expect.objectContaining({ method: "POST" })
-    );
-  });
-
-  it("throws ApiError on 401", async () => {
-    mockFetch.mockReturnValueOnce(mockResponse(401, { detail: "Invalid credentials" }));
-    await expect(login({ username: "x", password: "y" })).rejects.toThrow(ApiError);
+describe("apiClient — retired password login", () => {
+  it("rejects password login without transmitting credentials", async () => {
+    await expect(login({ username: "unused", password: "unused" })).rejects.toMatchObject({ status: 410 });
+    expect(mockFetch).not.toHaveBeenCalled();
   });
 });
 

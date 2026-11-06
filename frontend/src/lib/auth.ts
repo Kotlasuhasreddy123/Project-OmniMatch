@@ -13,7 +13,12 @@ export function decodeToken(token: string): TokenClaims | null {
   try {
     const payload = token.split(".")[1];
     const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
-    return JSON.parse(decoded) as TokenClaims;
+    const claims = JSON.parse(decoded);
+    if (typeof claims.sub !== "string" || typeof claims.exp !== "number") return null;
+    // This only controls the UI; the API verifies signature, client, organization and permissions.
+    const permissions: string[] = Array.isArray(claims.permissions) ? claims.permissions : [];
+    if (process.env.NEXT_PUBLIC_WORKOS_CLIENT_ID && !permissions.includes("omnimatch:access")) return null;
+    return { ...claims, role: permissions.includes("omnimatch:admin") ? "ADMIN" : "CLINICAL_STAFF" } as TokenClaims;
   } catch {
     return null;
   }
@@ -32,11 +37,12 @@ export function storeToken(token: string): void {
 export function logout(): void {
   clearToken();
   if (typeof window !== "undefined") {
-    window.location.href = "/login";
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/login/`;
   }
 }
 
 export function getCurrentUser(): TokenClaims | null {
+  if (!process.env.NEXT_PUBLIC_WORKOS_CLIENT_ID) return null;
   if (typeof window === "undefined") return null;
   const token = sessionStorage.getItem("omni_token");
   if (!token || isTokenExpired(token)) return null;

@@ -57,7 +57,9 @@ async function apiFetch<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = getToken();
+  const token = process.env.NEXT_PUBLIC_WORKOS_CLIENT_ID
+    ? await (await import("./passwordless")).providerToken()
+    : getToken();
   const headers: Record<string, string> = {
     ...(options.headers as Record<string, string>),
   };
@@ -96,10 +98,8 @@ export class ApiError extends Error {
 // ---------------------------------------------------------------------------
 
 export async function login(credentials: LoginRequest): Promise<TokenResponse> {
-  return apiFetch<TokenResponse>("/api/v1/auth/login", {
-    method: "POST",
-    body: JSON.stringify(credentials),
-  });
+  void credentials;
+  throw new ApiError(410, "Password sign-in was removed. Use approved email-code access.");
 }
 
 // ---------------------------------------------------------------------------

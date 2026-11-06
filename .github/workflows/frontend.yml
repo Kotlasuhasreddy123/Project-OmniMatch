@@ -32,3 +32,10 @@ jobs:
           docker run --detach --name frontend-check -p 127.0.0.1:3000:3000 omnimatch-frontend:verify
           curl --fail --retry 30 --retry-all-errors --retry-delay 1 --retry-max-time 60 http://127.0.0.1:3000/preview > /dev/null || { docker logs frontend-check; exit 1; }
           docker stop frontend-check
+      - name: Verify public portal export with repository subpath
+        run: npm run build
+        env:
+          OMNIMATCH_STATIC_EXPORT: 'true'
+          OMNIMATCH_NEXT_DIST_DIR: .next-portal-check
+          NEXT_PUBLIC_BASE_PATH: /Project-OmniMatch
+          NEXT_PUBLIC_PORTAL_MODE: 'true'

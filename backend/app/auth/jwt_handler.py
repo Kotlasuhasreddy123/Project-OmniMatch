@@ -78,7 +78,8 @@ async def get_current_user(
             detail="Authentication required.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    return decode_token(credentials.credentials)
+    from app.auth.workos_verifier import verify_workos_token
+    return await verify_workos_token(credentials.credentials)
 
 
 def require_role(allowed_roles: list[UserRole]):

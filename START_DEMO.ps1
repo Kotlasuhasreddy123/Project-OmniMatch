@@ -39,5 +39,5 @@ if (-not $ready) {
 }
 
 Write-Host 'OmniMatch is ready: microphone transcription, Qdrant, and three synthetic trials.' -ForegroundColor Green
-Write-Host 'Open http://localhost:3000 and sign in as clinical_staff / Staff@12345.'
+Write-Host 'Open http://localhost:3000. Configure approved email access using docs/PASSWORDLESS_ACCESS.md; shared passwords are disabled.'
 Start-Process 'http://localhost:3000'

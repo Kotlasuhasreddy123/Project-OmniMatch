@@ -3,8 +3,8 @@ Add-Type -AssemblyName System.Speech
 
 $base = 'http://localhost:8000'
 $session = 'AUDIO-' + [guid]::NewGuid().ToString('N')
-$login = Invoke-RestMethod -Method Post -Uri "$base/api/v1/auth/login" -ContentType 'application/json' -Body '{"username":"clinical_staff","password":"Staff@12345"}'
-$headers = @{ Authorization = "Bearer $($login.access_token)" }
+if (-not $env:OMNIMATCH_ACCESS_TOKEN) { throw 'Sign in with an approved account first. Set OMNIMATCH_ACCESS_TOKEN to a current WorkOS access token in this shell; never save it in a script or commit it.' }
+$headers = @{ Authorization = "Bearer $env:OMNIMATCH_ACCESS_TOKEN" }
 $consentBody = @{ session_id = $session; action = 'CONSENT_GRANTED'; patient_pseudonym = 'SYNTHETIC' } | ConvertTo-Json
 Invoke-RestMethod -Method Post -Uri "$base/api/v1/consent" -Headers $headers -ContentType 'application/json' -Body $consentBody | Out-Null
 

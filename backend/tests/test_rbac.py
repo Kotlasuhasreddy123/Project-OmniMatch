@@ -91,37 +91,13 @@ async def test_inbox_with_tampered_token_returns_401(client: AsyncClient, staff_
 # ---------------------------------------------------------------------------
 
 @pytest.mark.asyncio
-async def test_login_with_valid_credentials_returns_token(client: AsyncClient):
-    """POST /api/v1/auth/login with valid credentials returns a JWT token."""
-    resp = await client.post(
-        "/api/v1/auth/login",
-        json={"username": "clinical_staff", "password": "Staff@12345"},
-    )
-    assert resp.status_code == 200
-    data = resp.json()
-    assert "access_token" in data
-    assert data["token_type"] == "bearer"
-    assert data["expires_in_seconds"] > 0
-
-
-@pytest.mark.asyncio
-async def test_login_with_wrong_password_returns_401(client: AsyncClient):
-    """POST /api/v1/auth/login with wrong password must return HTTP 401."""
-    resp = await client.post(
-        "/api/v1/auth/login",
-        json={"username": "clinical_staff", "password": "WrongPassword!"},
-    )
-    assert resp.status_code == 401
-
-
-@pytest.mark.asyncio
-async def test_login_with_nonexistent_user_returns_401(client: AsyncClient):
-    """POST /api/v1/auth/login with unknown username must return HTTP 401."""
-    resp = await client.post(
-        "/api/v1/auth/login",
-        json={"username": "ghost_user", "password": "SomePass@123"},
-    )
-    assert resp.status_code == 401
+@pytest.mark.parametrize("credentials", [
+    {"username": "retired", "password": "unused"}, {},
+])
+async def test_password_login_is_retired(client, credentials):
+    response = await client.post("/api/v1/auth/login", json=credentials)
+    assert response.status_code == 410
+    assert "access_token" not in response.json()
 
 
 # ---------------------------------------------------------------------------
