@@ -16,7 +16,7 @@ Source: [MiniLM model card and dataset table](https://huggingface.co/sentence-tr
 
 The active extraction endpoint calls `backend/app/nlp/negex_pipeline.py`. It uses a medical vocabulary and regular expressions to identify terms, negation, family history and hypothetical statements. Although spaCy is an installed dependency, this active extractor does not load a trained spaCy medical NER model. Its confidence values are heuristics. Criterion checks and review-score arithmetic are also rules rather than learned diagnostic models.
 
-The two learned models are already trained by their publishers. Our own pipeline needs representative evaluation and carefully reviewed improvements; it does not start as an untrained medical model. No additional weight training has been performed for this release. Fine-tuning requires a defined task, licensed/consented data, independent labels and a held-out evaluation set. The three fictional catalog studies and our synthetic scripts do not establish broad medical coverage.
+The two learned models are already trained by their publishers. Our own pipeline needs representative evaluation and carefully reviewed improvements; it does not start as an untrained medical model. Whisper and MiniLM weights have not been fine-tuned. A separate synthetic-data assertion candidate was trained in the latest update; see [its exact data, parameters and results](MODEL_TRAINING_RESULTS.md). It is not connected to the live app. Fine-tuning requires a defined task, licensed/consented data, independent labels and a held-out evaluation set. The three fictional catalog studies and our synthetic scripts do not establish broad medical coverage.
 
 ## What we checked and fixed
 
@@ -24,7 +24,11 @@ Run `python backend/evaluate_context.py` from the repository root. It uses only 
 
 These are development regression results on known vocabulary, not an independent clinical test set. This metric checks whether an expected term/context combination is present. It does not measure all false positive entities, NER F1, audio word error rate, trial-retrieval relevance, eligibility correctness, or medication/disease prediction. It was used to fix the rules, so it must not be presented as unseen evaluation performance.
 
-The older 100-transcript synthetic benchmark remains below its 95% negation-recall target (29.7% recall under its existing procedure). The strict expected-failure test records that gap rather than counting it as a pass. See [the validation and training plan](VALIDATION_AND_TRAINING_PLAN.md) for the separate results and next steps.
+The older 100-transcript synthetic development benchmark improved from 29.7% to 70.3% negation recall after vocabulary and context-rule changes, under its existing procedure. It remains below its 95% target. The strict expected-failure test records that gap rather than counting it as a pass. See [the validation and training plan](VALIDATION_AND_TRAINING_PLAN.md) for the separate results and next steps.
+
+## Other code and the new candidate
+
+The newly trained TF-IDF/logistic regression candidate classifies an already supplied term span as affirmed, family or negated. Its internal record-separated test scored 54/60 (90%), with only one family-history example. It does not discover entities and is not eligible for deployment. The unused `biobert_v3.py` wrapper actually names `cross-encoder/nli-MiniLM2-L6-H768`, not BioBERT; its description has been corrected. The live route does not use the standalone NegEx/NegBio-inspired/ensemble variants. Published research scores are not measured results for those implementations.
 
 ## What remains before medical claims
 

@@ -1,0 +1,1013 @@
+{
+  "model_sha256": "c012a78f33652738c04939d313f144054f99e13785261132f73305b382fc05fb",
+  "dataset_sha256": "2c6e1d68a76ed0857d227a2d026c98cd5374be8ef8f2600bfd60091d98d15878",
+  "provenance": "Existing 20-note synthetic classroom corpus, previously used in rule experiments; not independent clinical validation.",
+  "source_records": 20,
+  "evaluated_records": 20,
+  "excluded_duplicate_records": [],
+  "correct": 107,
+  "total": 108,
+  "accuracy": 0.9907407407407407,
+  "per_class": {
+    "affirmed": {
+      "correct": 73,
+      "total": 73
+    },
+    "negated": {
+      "correct": 29,
+      "total": 30
+    },
+    "family": {
+      "correct": 5,
+      "total": 5
+    }
+  },
+  "excluded_annotations": [
+    {
+      "id": "T003",
+      "term": "cancer",
+      "reason": "missing literal span or ambiguous repeated occurrence"
+    },
+    {
+      "id": "T012",
+      "term": "diabetes",
+      "reason": "missing literal span or ambiguous repeated occurrence"
+    }
+  ],
+  "predictions": [
+    {
+      "id": "T001",
+      "text": "The patient is a 58-year-old male with type 2 diabetes mellitus and hypertension. He reports fatigue and occasional chest pain. He is currently on metformin and lisinopril. His last HbA1c was 8.2 percent. No history of stroke.",
+      "term": "type 2 diabetes",
+      "label": "affirmed",
+      "start": 39,
+      "end": 54,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T001",
+      "text": "The patient is a 58-year-old male with type 2 diabetes mellitus and hypertension. He reports fatigue and occasional chest pain. He is currently on metformin and lisinopril. His last HbA1c was 8.2 percent. No history of stroke.",
+      "term": "hypertension",
+      "label": "affirmed",
+      "start": 68,
+      "end": 80,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T001",
+      "text": "The patient is a 58-year-old male with type 2 diabetes mellitus and hypertension. He reports fatigue and occasional chest pain. He is currently on metformin and lisinopril. His last HbA1c was 8.2 percent. No history of stroke.",
+      "term": "fatigue",
+      "label": "affirmed",
+      "start": 93,
+      "end": 100,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T001",
+      "text": "The patient is a 58-year-old male with type 2 diabetes mellitus and hypertension. He reports fatigue and occasional chest pain. He is currently on metformin and lisinopril. His last HbA1c was 8.2 percent. No history of stroke.",
+      "term": "chest pain",
+      "label": "affirmed",
+      "start": 116,
+      "end": 126,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T001",
+      "text": "The patient is a 58-year-old male with type 2 diabetes mellitus and hypertension. He reports fatigue and occasional chest pain. He is currently on metformin and lisinopril. His last HbA1c was 8.2 percent. No history of stroke.",
+      "term": "metformin",
+      "label": "affirmed",
+      "start": 147,
+      "end": 156,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T001",
+      "text": "The patient is a 58-year-old male with type 2 diabetes mellitus and hypertension. He reports fatigue and occasional chest pain. He is currently on metformin and lisinopril. His last HbA1c was 8.2 percent. No history of stroke.",
+      "term": "lisinopril",
+      "label": "affirmed",
+      "start": 161,
+      "end": 171,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T001",
+      "text": "The patient is a 58-year-old male with type 2 diabetes mellitus and hypertension. He reports fatigue and occasional chest pain. He is currently on metformin and lisinopril. His last HbA1c was 8.2 percent. No history of stroke.",
+      "term": "stroke",
+      "label": "negated",
+      "start": 219,
+      "end": 225,
+      "prediction": "negated"
+    },
+    {
+      "id": "T002",
+      "text": "Patient is a 34-year-old female. She denies asthma and no history of COPD. She presents with shortness of breath and cough. She is taking albuterol as needed.",
+      "term": "shortness of breath",
+      "label": "affirmed",
+      "start": 93,
+      "end": 112,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T002",
+      "text": "Patient is a 34-year-old female. She denies asthma and no history of COPD. She presents with shortness of breath and cough. She is taking albuterol as needed.",
+      "term": "cough",
+      "label": "affirmed",
+      "start": 117,
+      "end": 122,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T002",
+      "text": "Patient is a 34-year-old female. She denies asthma and no history of COPD. She presents with shortness of breath and cough. She is taking albuterol as needed.",
+      "term": "albuterol",
+      "label": "affirmed",
+      "start": 138,
+      "end": 147,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T002",
+      "text": "Patient is a 34-year-old female. She denies asthma and no history of COPD. She presents with shortness of breath and cough. She is taking albuterol as needed.",
+      "term": "asthma",
+      "label": "negated",
+      "start": 44,
+      "end": 50,
+      "prediction": "negated"
+    },
+    {
+      "id": "T002",
+      "text": "Patient is a 34-year-old female. She denies asthma and no history of COPD. She presents with shortness of breath and cough. She is taking albuterol as needed.",
+      "term": "copd",
+      "label": "negated",
+      "start": 69,
+      "end": 73,
+      "prediction": "negated"
+    },
+    {
+      "id": "T003",
+      "text": "The patient has no personal history of cancer. Family history significant for breast cancer in the mother. Patient currently has fatigue and weight loss.",
+      "term": "fatigue",
+      "label": "affirmed",
+      "start": 129,
+      "end": 136,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T003",
+      "text": "The patient has no personal history of cancer. Family history significant for breast cancer in the mother. Patient currently has fatigue and weight loss.",
+      "term": "weight loss",
+      "label": "affirmed",
+      "start": 141,
+      "end": 152,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T003",
+      "text": "The patient has no personal history of cancer. Family history significant for breast cancer in the mother. Patient currently has fatigue and weight loss.",
+      "term": "breast cancer",
+      "label": "family",
+      "start": 78,
+      "end": 91,
+      "prediction": "family"
+    },
+    {
+      "id": "T004",
+      "text": "Patient presents with depression and insomnia. She reports sleeping only 4 hours per night. She is on sertraline 100mg daily. She denies any suicidal ideation.",
+      "term": "depression",
+      "label": "affirmed",
+      "start": 22,
+      "end": 32,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T004",
+      "text": "Patient presents with depression and insomnia. She reports sleeping only 4 hours per night. She is on sertraline 100mg daily. She denies any suicidal ideation.",
+      "term": "insomnia",
+      "label": "affirmed",
+      "start": 37,
+      "end": 45,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T004",
+      "text": "Patient presents with depression and insomnia. She reports sleeping only 4 hours per night. She is on sertraline 100mg daily. She denies any suicidal ideation.",
+      "term": "sertraline",
+      "label": "affirmed",
+      "start": 102,
+      "end": 112,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T005",
+      "text": "The patient has congestive heart failure managed with metoprolol. Rules out myocardial infarction at this time. No evidence of atrial fibrillation. He reports shortness of breath on exertion and palpitations.",
+      "term": "heart failure",
+      "label": "affirmed",
+      "start": 27,
+      "end": 40,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T005",
+      "text": "The patient has congestive heart failure managed with metoprolol. Rules out myocardial infarction at this time. No evidence of atrial fibrillation. He reports shortness of breath on exertion and palpitations.",
+      "term": "metoprolol",
+      "label": "affirmed",
+      "start": 54,
+      "end": 64,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T005",
+      "text": "The patient has congestive heart failure managed with metoprolol. Rules out myocardial infarction at this time. No evidence of atrial fibrillation. He reports shortness of breath on exertion and palpitations.",
+      "term": "shortness of breath",
+      "label": "affirmed",
+      "start": 159,
+      "end": 178,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T005",
+      "text": "The patient has congestive heart failure managed with metoprolol. Rules out myocardial infarction at this time. No evidence of atrial fibrillation. He reports shortness of breath on exertion and palpitations.",
+      "term": "palpitations",
+      "label": "affirmed",
+      "start": 195,
+      "end": 207,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T005",
+      "text": "The patient has congestive heart failure managed with metoprolol. Rules out myocardial infarction at this time. No evidence of atrial fibrillation. He reports shortness of breath on exertion and palpitations.",
+      "term": "myocardial infarction",
+      "label": "negated",
+      "start": 76,
+      "end": 97,
+      "prediction": "negated"
+    },
+    {
+      "id": "T005",
+      "text": "The patient has congestive heart failure managed with metoprolol. Rules out myocardial infarction at this time. No evidence of atrial fibrillation. He reports shortness of breath on exertion and palpitations.",
+      "term": "atrial fibrillation",
+      "label": "negated",
+      "start": 127,
+      "end": 146,
+      "prediction": "negated"
+    },
+    {
+      "id": "T006",
+      "text": "Patient has chronic kidney disease stage 3. She is without chest pain today. Blood pressure is elevated at 145 over 92. She takes amlodipine. No diabetes.",
+      "term": "kidney disease",
+      "label": "affirmed",
+      "start": 20,
+      "end": 34,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T006",
+      "text": "Patient has chronic kidney disease stage 3. She is without chest pain today. Blood pressure is elevated at 145 over 92. She takes amlodipine. No diabetes.",
+      "term": "amlodipine",
+      "label": "affirmed",
+      "start": 130,
+      "end": 140,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T006",
+      "text": "Patient has chronic kidney disease stage 3. She is without chest pain today. Blood pressure is elevated at 145 over 92. She takes amlodipine. No diabetes.",
+      "term": "chest pain",
+      "label": "negated",
+      "start": 59,
+      "end": 69,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T006",
+      "text": "Patient has chronic kidney disease stage 3. She is without chest pain today. Blood pressure is elevated at 145 over 92. She takes amlodipine. No diabetes.",
+      "term": "diabetes",
+      "label": "negated",
+      "start": 145,
+      "end": 153,
+      "prediction": "negated"
+    },
+    {
+      "id": "T007",
+      "text": "Patient has rheumatoid arthritis confirmed by serology. She is on methotrexate and prednisone. She reports joint pain and swelling in both hands. Free of cardiac disease.",
+      "term": "rheumatoid arthritis",
+      "label": "affirmed",
+      "start": 12,
+      "end": 32,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T007",
+      "text": "Patient has rheumatoid arthritis confirmed by serology. She is on methotrexate and prednisone. She reports joint pain and swelling in both hands. Free of cardiac disease.",
+      "term": "methotrexate",
+      "label": "affirmed",
+      "start": 66,
+      "end": 78,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T007",
+      "text": "Patient has rheumatoid arthritis confirmed by serology. She is on methotrexate and prednisone. She reports joint pain and swelling in both hands. Free of cardiac disease.",
+      "term": "prednisone",
+      "label": "affirmed",
+      "start": 83,
+      "end": 93,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T007",
+      "text": "Patient has rheumatoid arthritis confirmed by serology. She is on methotrexate and prednisone. She reports joint pain and swelling in both hands. Free of cardiac disease.",
+      "term": "pain",
+      "label": "affirmed",
+      "start": 113,
+      "end": 117,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T007",
+      "text": "Patient has rheumatoid arthritis confirmed by serology. She is on methotrexate and prednisone. She reports joint pain and swelling in both hands. Free of cardiac disease.",
+      "term": "swelling",
+      "label": "affirmed",
+      "start": 122,
+      "end": 130,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T007",
+      "text": "Patient has rheumatoid arthritis confirmed by serology. She is on methotrexate and prednisone. She reports joint pain and swelling in both hands. Free of cardiac disease.",
+      "term": "cardiac disease",
+      "label": "negated",
+      "start": 154,
+      "end": 169,
+      "prediction": "negated"
+    },
+    {
+      "id": "T008",
+      "text": "65-year-old male with Parkinson disease. He reports tremor and difficulty walking. He takes levodopa. His father had Alzheimer disease. No history of epilepsy or seizures.",
+      "term": "parkinson",
+      "label": "affirmed",
+      "start": 22,
+      "end": 31,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T008",
+      "text": "65-year-old male with Parkinson disease. He reports tremor and difficulty walking. He takes levodopa. His father had Alzheimer disease. No history of epilepsy or seizures.",
+      "term": "levodopa",
+      "label": "affirmed",
+      "start": 92,
+      "end": 100,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T008",
+      "text": "65-year-old male with Parkinson disease. He reports tremor and difficulty walking. He takes levodopa. His father had Alzheimer disease. No history of epilepsy or seizures.",
+      "term": "epilepsy",
+      "label": "negated",
+      "start": 150,
+      "end": 158,
+      "prediction": "negated"
+    },
+    {
+      "id": "T008",
+      "text": "65-year-old male with Parkinson disease. He reports tremor and difficulty walking. He takes levodopa. His father had Alzheimer disease. No history of epilepsy or seizures.",
+      "term": "seizures",
+      "label": "negated",
+      "start": 162,
+      "end": 170,
+      "prediction": "negated"
+    },
+    {
+      "id": "T008",
+      "text": "65-year-old male with Parkinson disease. He reports tremor and difficulty walking. He takes levodopa. His father had Alzheimer disease. No history of epilepsy or seizures.",
+      "term": "alzheimer",
+      "label": "family",
+      "start": 117,
+      "end": 126,
+      "prediction": "family"
+    },
+    {
+      "id": "T009",
+      "text": "The patient has obesity, type 2 diabetes, and hypertension. She denies any history of kidney disease or liver disease. She is on atorvastatin for high cholesterol and omeprazole for reflux. Her BMI is 38.",
+      "term": "obesity",
+      "label": "affirmed",
+      "start": 16,
+      "end": 23,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T009",
+      "text": "The patient has obesity, type 2 diabetes, and hypertension. She denies any history of kidney disease or liver disease. She is on atorvastatin for high cholesterol and omeprazole for reflux. Her BMI is 38.",
+      "term": "type 2 diabetes",
+      "label": "affirmed",
+      "start": 25,
+      "end": 40,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T009",
+      "text": "The patient has obesity, type 2 diabetes, and hypertension. She denies any history of kidney disease or liver disease. She is on atorvastatin for high cholesterol and omeprazole for reflux. Her BMI is 38.",
+      "term": "hypertension",
+      "label": "affirmed",
+      "start": 46,
+      "end": 58,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T009",
+      "text": "The patient has obesity, type 2 diabetes, and hypertension. She denies any history of kidney disease or liver disease. She is on atorvastatin for high cholesterol and omeprazole for reflux. Her BMI is 38.",
+      "term": "atorvastatin",
+      "label": "affirmed",
+      "start": 129,
+      "end": 141,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T009",
+      "text": "The patient has obesity, type 2 diabetes, and hypertension. She denies any history of kidney disease or liver disease. She is on atorvastatin for high cholesterol and omeprazole for reflux. Her BMI is 38.",
+      "term": "omeprazole",
+      "label": "affirmed",
+      "start": 167,
+      "end": 177,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T009",
+      "text": "The patient has obesity, type 2 diabetes, and hypertension. She denies any history of kidney disease or liver disease. She is on atorvastatin for high cholesterol and omeprazole for reflux. Her BMI is 38.",
+      "term": "kidney disease",
+      "label": "negated",
+      "start": 86,
+      "end": 100,
+      "prediction": "negated"
+    },
+    {
+      "id": "T009",
+      "text": "The patient has obesity, type 2 diabetes, and hypertension. She denies any history of kidney disease or liver disease. She is on atorvastatin for high cholesterol and omeprazole for reflux. Her BMI is 38.",
+      "term": "liver disease",
+      "label": "negated",
+      "start": 104,
+      "end": 117,
+      "prediction": "negated"
+    },
+    {
+      "id": "T010",
+      "text": "Patient has severe COPD and is on fluticasone and salmeterol. Absence of asthma noted. He denies smoking currently. Reports chronic cough and fatigue. Negative for lung cancer.",
+      "term": "copd",
+      "label": "affirmed",
+      "start": 19,
+      "end": 23,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T010",
+      "text": "Patient has severe COPD and is on fluticasone and salmeterol. Absence of asthma noted. He denies smoking currently. Reports chronic cough and fatigue. Negative for lung cancer.",
+      "term": "fluticasone",
+      "label": "affirmed",
+      "start": 34,
+      "end": 45,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T010",
+      "text": "Patient has severe COPD and is on fluticasone and salmeterol. Absence of asthma noted. He denies smoking currently. Reports chronic cough and fatigue. Negative for lung cancer.",
+      "term": "salmeterol",
+      "label": "affirmed",
+      "start": 50,
+      "end": 60,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T010",
+      "text": "Patient has severe COPD and is on fluticasone and salmeterol. Absence of asthma noted. He denies smoking currently. Reports chronic cough and fatigue. Negative for lung cancer.",
+      "term": "cough",
+      "label": "affirmed",
+      "start": 132,
+      "end": 137,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T010",
+      "text": "Patient has severe COPD and is on fluticasone and salmeterol. Absence of asthma noted. He denies smoking currently. Reports chronic cough and fatigue. Negative for lung cancer.",
+      "term": "fatigue",
+      "label": "affirmed",
+      "start": 142,
+      "end": 149,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T010",
+      "text": "Patient has severe COPD and is on fluticasone and salmeterol. Absence of asthma noted. He denies smoking currently. Reports chronic cough and fatigue. Negative for lung cancer.",
+      "term": "asthma",
+      "label": "negated",
+      "start": 73,
+      "end": 79,
+      "prediction": "negated"
+    },
+    {
+      "id": "T010",
+      "text": "Patient has severe COPD and is on fluticasone and salmeterol. Absence of asthma noted. He denies smoking currently. Reports chronic cough and fatigue. Negative for lung cancer.",
+      "term": "cancer",
+      "label": "negated",
+      "start": 169,
+      "end": 175,
+      "prediction": "negated"
+    },
+    {
+      "id": "T011",
+      "text": "Patient presents with hypothyroidism on levothyroxine. She also has depression managed with escitalopram. She reports weight gain and fatigue. No evidence of cardiovascular disease.",
+      "term": "hypothyroidism",
+      "label": "affirmed",
+      "start": 22,
+      "end": 36,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T011",
+      "text": "Patient presents with hypothyroidism on levothyroxine. She also has depression managed with escitalopram. She reports weight gain and fatigue. No evidence of cardiovascular disease.",
+      "term": "levothyroxine",
+      "label": "affirmed",
+      "start": 40,
+      "end": 53,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T011",
+      "text": "Patient presents with hypothyroidism on levothyroxine. She also has depression managed with escitalopram. She reports weight gain and fatigue. No evidence of cardiovascular disease.",
+      "term": "depression",
+      "label": "affirmed",
+      "start": 68,
+      "end": 78,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T011",
+      "text": "Patient presents with hypothyroidism on levothyroxine. She also has depression managed with escitalopram. She reports weight gain and fatigue. No evidence of cardiovascular disease.",
+      "term": "escitalopram",
+      "label": "affirmed",
+      "start": 92,
+      "end": 104,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T011",
+      "text": "Patient presents with hypothyroidism on levothyroxine. She also has depression managed with escitalopram. She reports weight gain and fatigue. No evidence of cardiovascular disease.",
+      "term": "fatigue",
+      "label": "affirmed",
+      "start": 134,
+      "end": 141,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T011",
+      "text": "Patient presents with hypothyroidism on levothyroxine. She also has depression managed with escitalopram. She reports weight gain and fatigue. No evidence of cardiovascular disease.",
+      "term": "cardiovascular disease",
+      "label": "negated",
+      "start": 158,
+      "end": 180,
+      "prediction": "negated"
+    },
+    {
+      "id": "T012",
+      "text": "The patient never had epilepsy or seizures. He does not have diabetes. He presents with asthma and is on albuterol. Mother had hypertension. Father had type 2 diabetes.",
+      "term": "asthma",
+      "label": "affirmed",
+      "start": 88,
+      "end": 94,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T012",
+      "text": "The patient never had epilepsy or seizures. He does not have diabetes. He presents with asthma and is on albuterol. Mother had hypertension. Father had type 2 diabetes.",
+      "term": "albuterol",
+      "label": "affirmed",
+      "start": 105,
+      "end": 114,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T012",
+      "text": "The patient never had epilepsy or seizures. He does not have diabetes. He presents with asthma and is on albuterol. Mother had hypertension. Father had type 2 diabetes.",
+      "term": "epilepsy",
+      "label": "negated",
+      "start": 22,
+      "end": 30,
+      "prediction": "negated"
+    },
+    {
+      "id": "T012",
+      "text": "The patient never had epilepsy or seizures. He does not have diabetes. He presents with asthma and is on albuterol. Mother had hypertension. Father had type 2 diabetes.",
+      "term": "seizures",
+      "label": "negated",
+      "start": 34,
+      "end": 42,
+      "prediction": "negated"
+    },
+    {
+      "id": "T012",
+      "text": "The patient never had epilepsy or seizures. He does not have diabetes. He presents with asthma and is on albuterol. Mother had hypertension. Father had type 2 diabetes.",
+      "term": "hypertension",
+      "label": "family",
+      "start": 127,
+      "end": 139,
+      "prediction": "family"
+    },
+    {
+      "id": "T012",
+      "text": "The patient never had epilepsy or seizures. He does not have diabetes. He presents with asthma and is on albuterol. Mother had hypertension. Father had type 2 diabetes.",
+      "term": "type 2 diabetes",
+      "label": "family",
+      "start": 152,
+      "end": 167,
+      "prediction": "family"
+    },
+    {
+      "id": "T013",
+      "text": "Patient had a stroke 3 years ago and has been on aspirin and clopidogrel. He denies recurrent chest pain. Blood pressure today is 138 over 82. He reports dizziness and fatigue.",
+      "term": "stroke",
+      "label": "affirmed",
+      "start": 14,
+      "end": 20,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T013",
+      "text": "Patient had a stroke 3 years ago and has been on aspirin and clopidogrel. He denies recurrent chest pain. Blood pressure today is 138 over 82. He reports dizziness and fatigue.",
+      "term": "aspirin",
+      "label": "affirmed",
+      "start": 49,
+      "end": 56,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T013",
+      "text": "Patient had a stroke 3 years ago and has been on aspirin and clopidogrel. He denies recurrent chest pain. Blood pressure today is 138 over 82. He reports dizziness and fatigue.",
+      "term": "clopidogrel",
+      "label": "affirmed",
+      "start": 61,
+      "end": 72,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T013",
+      "text": "Patient had a stroke 3 years ago and has been on aspirin and clopidogrel. He denies recurrent chest pain. Blood pressure today is 138 over 82. He reports dizziness and fatigue.",
+      "term": "dizziness",
+      "label": "affirmed",
+      "start": 154,
+      "end": 163,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T013",
+      "text": "Patient had a stroke 3 years ago and has been on aspirin and clopidogrel. He denies recurrent chest pain. Blood pressure today is 138 over 82. He reports dizziness and fatigue.",
+      "term": "fatigue",
+      "label": "affirmed",
+      "start": 168,
+      "end": 175,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T013",
+      "text": "Patient had a stroke 3 years ago and has been on aspirin and clopidogrel. He denies recurrent chest pain. Blood pressure today is 138 over 82. He reports dizziness and fatigue.",
+      "term": "chest pain",
+      "label": "negated",
+      "start": 94,
+      "end": 104,
+      "prediction": "negated"
+    },
+    {
+      "id": "T014",
+      "text": "Patient has relapsing-remitting multiple sclerosis. She is without active exacerbation today. Reports tingling in her hands and blurred vision. No history of cancer. Her sister had lupus.",
+      "term": "multiple sclerosis",
+      "label": "affirmed",
+      "start": 32,
+      "end": 50,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T014",
+      "text": "Patient has relapsing-remitting multiple sclerosis. She is without active exacerbation today. Reports tingling in her hands and blurred vision. No history of cancer. Her sister had lupus.",
+      "term": "tingling",
+      "label": "affirmed",
+      "start": 102,
+      "end": 110,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T014",
+      "text": "Patient has relapsing-remitting multiple sclerosis. She is without active exacerbation today. Reports tingling in her hands and blurred vision. No history of cancer. Her sister had lupus.",
+      "term": "blurred vision",
+      "label": "affirmed",
+      "start": 128,
+      "end": 142,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T014",
+      "text": "Patient has relapsing-remitting multiple sclerosis. She is without active exacerbation today. Reports tingling in her hands and blurred vision. No history of cancer. Her sister had lupus.",
+      "term": "cancer",
+      "label": "negated",
+      "start": 158,
+      "end": 164,
+      "prediction": "negated"
+    },
+    {
+      "id": "T014",
+      "text": "Patient has relapsing-remitting multiple sclerosis. She is without active exacerbation today. Reports tingling in her hands and blurred vision. No history of cancer. Her sister had lupus.",
+      "term": "lupus",
+      "label": "family",
+      "start": 181,
+      "end": 186,
+      "prediction": "family"
+    },
+    {
+      "id": "T015",
+      "text": "Patient has Crohn disease managed with azathioprine. He reports abdominal pain and weight loss. Rules out colorectal cancer at this time. No evidence of liver disease.",
+      "term": "crohn",
+      "label": "affirmed",
+      "start": 12,
+      "end": 17,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T015",
+      "text": "Patient has Crohn disease managed with azathioprine. He reports abdominal pain and weight loss. Rules out colorectal cancer at this time. No evidence of liver disease.",
+      "term": "abdominal pain",
+      "label": "affirmed",
+      "start": 64,
+      "end": 78,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T015",
+      "text": "Patient has Crohn disease managed with azathioprine. He reports abdominal pain and weight loss. Rules out colorectal cancer at this time. No evidence of liver disease.",
+      "term": "weight loss",
+      "label": "affirmed",
+      "start": 83,
+      "end": 94,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T015",
+      "text": "Patient has Crohn disease managed with azathioprine. He reports abdominal pain and weight loss. Rules out colorectal cancer at this time. No evidence of liver disease.",
+      "term": "colorectal cancer",
+      "label": "negated",
+      "start": 106,
+      "end": 123,
+      "prediction": "negated"
+    },
+    {
+      "id": "T015",
+      "text": "Patient has Crohn disease managed with azathioprine. He reports abdominal pain and weight loss. Rules out colorectal cancer at this time. No evidence of liver disease.",
+      "term": "liver disease",
+      "label": "negated",
+      "start": 153,
+      "end": 166,
+      "prediction": "negated"
+    },
+    {
+      "id": "T016",
+      "text": "Patient has atrial fibrillation on apixaban. His last echocardiogram showed preserved ejection fraction. He denies chest pain at rest. Reports palpitations and occasional shortness of breath. No history of stroke.",
+      "term": "atrial fibrillation",
+      "label": "affirmed",
+      "start": 12,
+      "end": 31,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T016",
+      "text": "Patient has atrial fibrillation on apixaban. His last echocardiogram showed preserved ejection fraction. He denies chest pain at rest. Reports palpitations and occasional shortness of breath. No history of stroke.",
+      "term": "apixaban",
+      "label": "affirmed",
+      "start": 35,
+      "end": 43,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T016",
+      "text": "Patient has atrial fibrillation on apixaban. His last echocardiogram showed preserved ejection fraction. He denies chest pain at rest. Reports palpitations and occasional shortness of breath. No history of stroke.",
+      "term": "palpitations",
+      "label": "affirmed",
+      "start": 143,
+      "end": 155,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T016",
+      "text": "Patient has atrial fibrillation on apixaban. His last echocardiogram showed preserved ejection fraction. He denies chest pain at rest. Reports palpitations and occasional shortness of breath. No history of stroke.",
+      "term": "shortness of breath",
+      "label": "affirmed",
+      "start": 171,
+      "end": 190,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T016",
+      "text": "Patient has atrial fibrillation on apixaban. His last echocardiogram showed preserved ejection fraction. He denies chest pain at rest. Reports palpitations and occasional shortness of breath. No history of stroke.",
+      "term": "chest pain",
+      "label": "negated",
+      "start": 115,
+      "end": 125,
+      "prediction": "negated"
+    },
+    {
+      "id": "T016",
+      "text": "Patient has atrial fibrillation on apixaban. His last echocardiogram showed preserved ejection fraction. He denies chest pain at rest. Reports palpitations and occasional shortness of breath. No history of stroke.",
+      "term": "stroke",
+      "label": "negated",
+      "start": 206,
+      "end": 212,
+      "prediction": "negated"
+    },
+    {
+      "id": "T017",
+      "text": "Patient has iron deficiency anemia on ferrous sulfate. She reports fatigue and dizziness. Family history negative for sickle cell. She denies shortness of breath at rest.",
+      "term": "anemia",
+      "label": "affirmed",
+      "start": 28,
+      "end": 34,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T017",
+      "text": "Patient has iron deficiency anemia on ferrous sulfate. She reports fatigue and dizziness. Family history negative for sickle cell. She denies shortness of breath at rest.",
+      "term": "fatigue",
+      "label": "affirmed",
+      "start": 67,
+      "end": 74,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T017",
+      "text": "Patient has iron deficiency anemia on ferrous sulfate. She reports fatigue and dizziness. Family history negative for sickle cell. She denies shortness of breath at rest.",
+      "term": "dizziness",
+      "label": "affirmed",
+      "start": 79,
+      "end": 88,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T017",
+      "text": "Patient has iron deficiency anemia on ferrous sulfate. She reports fatigue and dizziness. Family history negative for sickle cell. She denies shortness of breath at rest.",
+      "term": "sickle cell",
+      "label": "negated",
+      "start": 118,
+      "end": 129,
+      "prediction": "negated"
+    },
+    {
+      "id": "T017",
+      "text": "Patient has iron deficiency anemia on ferrous sulfate. She reports fatigue and dizziness. Family history negative for sickle cell. She denies shortness of breath at rest.",
+      "term": "shortness of breath",
+      "label": "negated",
+      "start": 142,
+      "end": 161,
+      "prediction": "negated"
+    },
+    {
+      "id": "T018",
+      "text": "The patient has anxiety disorder managed with buspirone. She also suffers from chronic migraines treated with sumatriptan. She reports insomnia. Free of depression. No family history of migraine.",
+      "term": "anxiety",
+      "label": "affirmed",
+      "start": 16,
+      "end": 23,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T018",
+      "text": "The patient has anxiety disorder managed with buspirone. She also suffers from chronic migraines treated with sumatriptan. She reports insomnia. Free of depression. No family history of migraine.",
+      "term": "migraines",
+      "label": "affirmed",
+      "start": 87,
+      "end": 96,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T018",
+      "text": "The patient has anxiety disorder managed with buspirone. She also suffers from chronic migraines treated with sumatriptan. She reports insomnia. Free of depression. No family history of migraine.",
+      "term": "buspirone",
+      "label": "affirmed",
+      "start": 46,
+      "end": 55,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T018",
+      "text": "The patient has anxiety disorder managed with buspirone. She also suffers from chronic migraines treated with sumatriptan. She reports insomnia. Free of depression. No family history of migraine.",
+      "term": "sumatriptan",
+      "label": "affirmed",
+      "start": 110,
+      "end": 121,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T018",
+      "text": "The patient has anxiety disorder managed with buspirone. She also suffers from chronic migraines treated with sumatriptan. She reports insomnia. Free of depression. No family history of migraine.",
+      "term": "insomnia",
+      "label": "affirmed",
+      "start": 135,
+      "end": 143,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T018",
+      "text": "The patient has anxiety disorder managed with buspirone. She also suffers from chronic migraines treated with sumatriptan. She reports insomnia. Free of depression. No family history of migraine.",
+      "term": "depression",
+      "label": "negated",
+      "start": 153,
+      "end": 163,
+      "prediction": "negated"
+    },
+    {
+      "id": "T019",
+      "text": "Patient had breast cancer resection 2 years ago and is now on anastrozole. She reports fatigue and joint pain. Negative for recurrence on last imaging. No evidence of metastasis.",
+      "term": "breast cancer",
+      "label": "affirmed",
+      "start": 12,
+      "end": 25,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T019",
+      "text": "Patient had breast cancer resection 2 years ago and is now on anastrozole. She reports fatigue and joint pain. Negative for recurrence on last imaging. No evidence of metastasis.",
+      "term": "anastrozole",
+      "label": "affirmed",
+      "start": 62,
+      "end": 73,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T019",
+      "text": "Patient had breast cancer resection 2 years ago and is now on anastrozole. She reports fatigue and joint pain. Negative for recurrence on last imaging. No evidence of metastasis.",
+      "term": "fatigue",
+      "label": "affirmed",
+      "start": 87,
+      "end": 94,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T019",
+      "text": "Patient had breast cancer resection 2 years ago and is now on anastrozole. She reports fatigue and joint pain. Negative for recurrence on last imaging. No evidence of metastasis.",
+      "term": "joint pain",
+      "label": "affirmed",
+      "start": 99,
+      "end": 109,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T019",
+      "text": "Patient had breast cancer resection 2 years ago and is now on anastrozole. She reports fatigue and joint pain. Negative for recurrence on last imaging. No evidence of metastasis.",
+      "term": "recurrence",
+      "label": "negated",
+      "start": 124,
+      "end": 134,
+      "prediction": "negated"
+    },
+    {
+      "id": "T019",
+      "text": "Patient had breast cancer resection 2 years ago and is now on anastrozole. She reports fatigue and joint pain. Negative for recurrence on last imaging. No evidence of metastasis.",
+      "term": "metastasis",
+      "label": "negated",
+      "start": 167,
+      "end": 177,
+      "prediction": "negated"
+    },
+    {
+      "id": "T020",
+      "text": "Patient is a 22-year-old with type 1 diabetes mellitus since childhood on insulin pump. HbA1c is 7.1 percent. She denies any episodes of severe hypoglycemia recently. Reports occasional dizziness. No history of kidney disease.",
+      "term": "type 1 diabetes",
+      "label": "affirmed",
+      "start": 30,
+      "end": 45,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T020",
+      "text": "Patient is a 22-year-old with type 1 diabetes mellitus since childhood on insulin pump. HbA1c is 7.1 percent. She denies any episodes of severe hypoglycemia recently. Reports occasional dizziness. No history of kidney disease.",
+      "term": "insulin",
+      "label": "affirmed",
+      "start": 74,
+      "end": 81,
+      "prediction": "affirmed"
+    },
+    {
+      "id": "T020",
+      "text": "Patient is a 22-year-old with type 1 diabetes mellitus since childhood on insulin pump. HbA1c is 7.1 percent. She denies any episodes of severe hypoglycemia recently. Reports occasional dizziness. No history of kidney disease.",
+      "term": "hypoglycemia",
+      "label": "negated",
+      "start": 144,
+      "end": 156,
+      "prediction": "negated"
+    },
+    {
+      "id": "T020",
+      "text": "Patient is a 22-year-old with type 1 diabetes mellitus since childhood on insulin pump. HbA1c is 7.1 percent. She denies any episodes of severe hypoglycemia recently. Reports occasional dizziness. No history of kidney disease.",
+      "term": "kidney disease",
+      "label": "negated",
+      "start": 211,
+      "end": 225,
+      "prediction": "negated"
+    }
+  ],
+  "overall_medical_98_percent_validated": false,
+  "limits": "Known spans are supplied; no entity discovery is tested. The separate internal test remains 90%. Different difficulty and sparse family examples prevent an overall 98% claim. No retraining used this corpus."
+}

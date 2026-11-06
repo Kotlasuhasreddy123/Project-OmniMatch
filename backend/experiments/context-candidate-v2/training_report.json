@@ -1,0 +1,1186 @@
+{
+  "model": "TF-IDF + balanced logistic regression assertion candidate",
+  "active_in_application": false,
+  "provenance": "Repository-authored synthetic classroom transcripts. Previously used for rule development; not independent clinical validation.",
+  "task": "Classify affirmed/family/negated context GIVEN a known, unambiguous entity span. Does not detect entities.",
+  "dataset_sha256": "b358335baa3498760d3d760d916852c24888cf66a271eb71f0ecca456719af5e",
+  "model_sha256": "c012a78f33652738c04939d313f144054f99e13785261132f73305b382fc05fb",
+  "python": "3.14.4",
+  "scikit_learn": "1.9.0",
+  "split_record_ids": {
+    "train": [
+      "T092",
+      "T052",
+      "T045",
+      "T064",
+      "T083",
+      "T021",
+      "T095",
+      "T013",
+      "T031",
+      "T018",
+      "T039",
+      "T074",
+      "T034",
+      "T094",
+      "T044",
+      "T097",
+      "T019",
+      "T037",
+      "T069",
+      "T089",
+      "T014",
+      "T060",
+      "T020",
+      "T090",
+      "T028",
+      "T075",
+      "T073",
+      "T091",
+      "T003",
+      "T053",
+      "T099",
+      "T046",
+      "T062",
+      "T050",
+      "T067",
+      "T016",
+      "T086",
+      "T071",
+      "T024",
+      "T093",
+      "T087",
+      "T040",
+      "T084",
+      "T002",
+      "T009",
+      "T038",
+      "T080",
+      "T032",
+      "T098",
+      "T057",
+      "T048",
+      "T006",
+      "T055",
+      "T088",
+      "T056",
+      "T058",
+      "T049",
+      "T022",
+      "T082",
+      "T005",
+      "T072",
+      "T078",
+      "T023",
+      "T011",
+      "T001",
+      "T065",
+      "T051",
+      "T033",
+      "T036"
+    ],
+    "validation": [
+      "T008",
+      "T029",
+      "T061",
+      "T041",
+      "T027",
+      "T081",
+      "T025",
+      "T030",
+      "T026",
+      "T059",
+      "T010",
+      "T054",
+      "T004",
+      "T066",
+      "T085"
+    ],
+    "test": [
+      "T100",
+      "T079",
+      "T017",
+      "T035",
+      "T042",
+      "T076",
+      "T043",
+      "T047",
+      "T063",
+      "T077",
+      "T007",
+      "T096",
+      "T012",
+      "T015",
+      "T068",
+      "T070"
+    ]
+  },
+  "split_method": "Record-separated fixed SHA-256 seed order, stratified by presence of aligned family labels. Internal synthetic development corpus only.",
+  "training_script_sha256": "64d3f4da0dce70f152d4fbaf912e35841818e2fef5e3d5a16729b9be8c49c03d",
+  "feature_code_sha256": "bbf428a83457a2fb9a9ba92d0cdc9051fc54b74d97872420c23bf15da6099777",
+  "split_annotation_counts": {
+    "train": 216,
+    "validation": 54,
+    "test": 60
+  },
+  "split_class_counts": {
+    "train": {
+      "affirmed": 100,
+      "negated": 106,
+      "family": 10
+    },
+    "validation": {
+      "affirmed": 28,
+      "negated": 25,
+      "family": 1
+    },
+    "test": {
+      "affirmed": 34,
+      "negated": 25,
+      "family": 1
+    }
+  },
+  "parameters": {
+    "seed": 42,
+    "context_words_each_side": 12,
+    "ngrams": [
+      1,
+      2
+    ],
+    "class_weight": "balanced",
+    "C_candidates": [
+      0.1,
+      1.0,
+      10.0
+    ],
+    "selected_C": 10.0,
+    "max_iter": 1000
+  },
+  "validation_candidates": [
+    {
+      "C": 0.1,
+      "metrics": {
+        "correct": 51,
+        "total": 54,
+        "accuracy": 0.9444444444444444,
+        "wilson_95_interval": [
+          0.8489254853651705,
+          0.980927077496161
+        ],
+        "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+        "classification_report": {
+          "affirmed": {
+            "precision": 0.9629629629629629,
+            "recall": 0.9285714285714286,
+            "f1-score": 0.9454545454545454,
+            "support": 28.0
+          },
+          "family": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "negated": {
+            "precision": 0.9230769230769231,
+            "recall": 0.96,
+            "f1-score": 0.9411764705882353,
+            "support": 25.0
+          },
+          "accuracy": 0.9444444444444444,
+          "macro avg": {
+            "precision": 0.9620132953466287,
+            "recall": 0.962857142857143,
+            "f1-score": 0.962210338680927,
+            "support": 54.0
+          },
+          "weighted avg": {
+            "precision": 0.9451830748127045,
+            "recall": 0.9444444444444444,
+            "f1-score": 0.9444840562487621,
+            "support": 54.0
+          }
+        },
+        "confusion_matrix_labels": [
+          "affirmed",
+          "family",
+          "negated"
+        ],
+        "confusion_matrix": [
+          [
+            26,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            24
+          ]
+        ]
+      }
+    },
+    {
+      "C": 1.0,
+      "metrics": {
+        "correct": 51,
+        "total": 54,
+        "accuracy": 0.9444444444444444,
+        "wilson_95_interval": [
+          0.8489254853651705,
+          0.980927077496161
+        ],
+        "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+        "classification_report": {
+          "affirmed": {
+            "precision": 0.9629629629629629,
+            "recall": 0.9285714285714286,
+            "f1-score": 0.9454545454545454,
+            "support": 28.0
+          },
+          "family": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "negated": {
+            "precision": 0.9230769230769231,
+            "recall": 0.96,
+            "f1-score": 0.9411764705882353,
+            "support": 25.0
+          },
+          "accuracy": 0.9444444444444444,
+          "macro avg": {
+            "precision": 0.9620132953466287,
+            "recall": 0.962857142857143,
+            "f1-score": 0.962210338680927,
+            "support": 54.0
+          },
+          "weighted avg": {
+            "precision": 0.9451830748127045,
+            "recall": 0.9444444444444444,
+            "f1-score": 0.9444840562487621,
+            "support": 54.0
+          }
+        },
+        "confusion_matrix_labels": [
+          "affirmed",
+          "family",
+          "negated"
+        ],
+        "confusion_matrix": [
+          [
+            26,
+            0,
+            2
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            24
+          ]
+        ]
+      }
+    },
+    {
+      "C": 10.0,
+      "metrics": {
+        "correct": 52,
+        "total": 54,
+        "accuracy": 0.9629629629629629,
+        "wilson_95_interval": [
+          0.8746459065659669,
+          0.9897838464145869
+        ],
+        "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+        "classification_report": {
+          "affirmed": {
+            "precision": 0.9333333333333333,
+            "recall": 1.0,
+            "f1-score": 0.9655172413793104,
+            "support": 28.0
+          },
+          "family": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "negated": {
+            "precision": 1.0,
+            "recall": 0.92,
+            "f1-score": 0.9583333333333334,
+            "support": 25.0
+          },
+          "accuracy": 0.9629629629629629,
+          "macro avg": {
+            "precision": 0.9777777777777779,
+            "recall": 0.9733333333333333,
+            "f1-score": 0.974616858237548,
+            "support": 54.0
+          },
+          "weighted avg": {
+            "precision": 0.9654320987654321,
+            "recall": 0.9629629629629629,
+            "f1-score": 0.9628299276287783,
+            "support": 54.0
+          }
+        },
+        "confusion_matrix_labels": [
+          "affirmed",
+          "family",
+          "negated"
+        ],
+        "confusion_matrix": [
+          [
+            28,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            2,
+            0,
+            23
+          ]
+        ]
+      }
+    }
+  ],
+  "test": {
+    "correct": 54,
+    "total": 60,
+    "accuracy": 0.9,
+    "wilson_95_interval": [
+      0.7985030550748896,
+      0.9533578005427642
+    ],
+    "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+    "classification_report": {
+      "affirmed": {
+        "precision": 0.8888888888888888,
+        "recall": 0.9411764705882353,
+        "f1-score": 0.9142857142857143,
+        "support": 34.0
+      },
+      "family": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1.0
+      },
+      "negated": {
+        "precision": 0.9130434782608695,
+        "recall": 0.84,
+        "f1-score": 0.875,
+        "support": 25.0
+      },
+      "accuracy": 0.9,
+      "macro avg": {
+        "precision": 0.9339774557165862,
+        "recall": 0.9270588235294118,
+        "f1-score": 0.9297619047619047,
+        "support": 60.0
+      },
+      "weighted avg": {
+        "precision": 0.900805152979066,
+        "recall": 0.9,
+        "f1-score": 0.8993452380952381,
+        "support": 60.0
+      }
+    },
+    "confusion_matrix_labels": [
+      "affirmed",
+      "family",
+      "negated"
+    ],
+    "confusion_matrix": [
+      [
+        32,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        4,
+        0,
+        21
+      ]
+    ]
+  },
+  "majority_baseline_test": {
+    "correct": 25,
+    "total": 60,
+    "accuracy": 0.4166666666666667,
+    "wilson_95_interval": [
+      0.30064086487871833,
+      0.5427214568676039
+    ],
+    "interval_limit": "Term observations are clustered within records; this simple interval may understate uncertainty.",
+    "classification_report": {
+      "affirmed": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 34.0
+      },
+      "family": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 1.0
+      },
+      "negated": {
+        "precision": 0.4166666666666667,
+        "recall": 1.0,
+        "f1-score": 0.5882352941176471,
+        "support": 25.0
+      },
+      "accuracy": 0.4166666666666667,
+      "macro avg": {
+        "precision": 0.1388888888888889,
+        "recall": 0.3333333333333333,
+        "f1-score": 0.19607843137254902,
+        "support": 60.0
+      },
+      "weighted avg": {
+        "precision": 0.17361111111111113,
+        "recall": 0.4166666666666667,
+        "f1-score": 0.2450980392156863,
+        "support": 60.0
+      }
+    },
+    "confusion_matrix_labels": [
+      "affirmed",
+      "family",
+      "negated"
+    ],
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        34
+      ],
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        25
+      ]
+    ]
+  },
+  "requested_98_percent_met_on_this_internal_test": false,
+  "overall_medical_98_percent_validated": false,
+  "eligible_for_live_promotion": false,
+  "excluded_annotations": [
+    {
+      "record": "T042",
+      "term": "kidney disease",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T048",
+      "term": "hypertension",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 2
+    },
+    {
+      "record": "T066",
+      "term": "multiple sclerosis",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T080",
+      "term": "asthma",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 2
+    },
+    {
+      "record": "T082",
+      "term": "pulmonary hypertension",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T087",
+      "term": "esophageal cancer",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T088",
+      "term": "pancreatic cancer",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T091",
+      "term": "bowel dysfunction",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T094",
+      "term": "huntington disease",
+      "reason": "overlapping annotation spans require manual review"
+    },
+    {
+      "record": "T094",
+      "term": "huntington disease",
+      "reason": "overlapping annotation spans require manual review"
+    },
+    {
+      "record": "T099",
+      "term": "cardiac involvement",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T100",
+      "term": "kidney disease",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 0
+    },
+    {
+      "record": "T100",
+      "term": "diabetes",
+      "reason": "missing literal span or ambiguous repeated occurrence",
+      "occurrences": 2
+    }
+  ],
+  "test_predictions": [
+    {
+      "record_id": "T012",
+      "text": "Absence of depression and anxiety noted on psychiatric review.",
+      "term": "depression",
+      "start": 11,
+      "end": 21,
+      "label": "negated",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T012",
+      "text": "Absence of depression and anxiety noted on psychiatric review.",
+      "term": "anxiety",
+      "start": 26,
+      "end": 33,
+      "label": "negated",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T015",
+      "text": "Rules out myocardial infarction based on troponin levels. Rules out stroke on imaging.",
+      "term": "myocardial infarction",
+      "start": 10,
+      "end": 31,
+      "label": "negated",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T015",
+      "text": "Rules out myocardial infarction based on troponin levels. Rules out stroke on imaging.",
+      "term": "stroke",
+      "start": 68,
+      "end": 74,
+      "label": "negated",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "warfarin",
+      "start": 25,
+      "end": 33,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "aspirin",
+      "start": 35,
+      "end": 42,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "metoprolol",
+      "start": 44,
+      "end": 54,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "lisinopril",
+      "start": 60,
+      "end": 70,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T017",
+      "text": "Patient currently taking warfarin, aspirin, metoprolol, and lisinopril for atrial fibrillation.",
+      "term": "atrial fibrillation",
+      "start": 75,
+      "end": 94,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T035",
+      "text": "HIV positive on antiretroviral therapy. CD4 count 650. Viral load undetectable. Denies opportunistic infections.",
+      "term": "hiv",
+      "start": 0,
+      "end": 3,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T035",
+      "text": "HIV positive on antiretroviral therapy. CD4 count 650. Viral load undetectable. Denies opportunistic infections.",
+      "term": "opportunistic infections",
+      "start": 87,
+      "end": 111,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "heart failure",
+      "start": 17,
+      "end": 30,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "atrial fibrillation",
+      "start": 32,
+      "end": 51,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "furosemide",
+      "start": 117,
+      "end": 127,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "digoxin",
+      "start": 129,
+      "end": 136,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "apixaban",
+      "start": 142,
+      "end": 150,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T042",
+      "text": "82-year-old with heart failure, atrial fibrillation, and stage 3 CKD. Denies dementia. No falls in past 6 months. On furosemide, digoxin, and apixaban.",
+      "term": "dementia",
+      "start": 77,
+      "end": 85,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T043",
+      "text": "Post-op day 3 following left knee arthroplasty. No wound infection or deep vein thrombosis. Patient denies fever or chills.",
+      "term": "wound infection",
+      "start": 51,
+      "end": 66,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T043",
+      "text": "Post-op day 3 following left knee arthroplasty. No wound infection or deep vein thrombosis. Patient denies fever or chills.",
+      "term": "deep vein thrombosis",
+      "start": 70,
+      "end": 90,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T043",
+      "text": "Post-op day 3 following left knee arthroplasty. No wound infection or deep vein thrombosis. Patient denies fever or chills.",
+      "term": "fever",
+      "start": 107,
+      "end": 112,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T047",
+      "text": "Patient previously had MRSA infection, now resolved. No current active infection. Denies recurrence.",
+      "term": "active infection",
+      "start": 64,
+      "end": 80,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T063",
+      "text": "Bilateral sensorineural hearing loss on hearing aids. No otosclerosis. Denies tinnitus at this time.",
+      "term": "hearing loss",
+      "start": 24,
+      "end": 36,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T063",
+      "text": "Bilateral sensorineural hearing loss on hearing aids. No otosclerosis. Denies tinnitus at this time.",
+      "term": "otosclerosis",
+      "start": 57,
+      "end": 69,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T063",
+      "text": "Bilateral sensorineural hearing loss on hearing aids. No otosclerosis. Denies tinnitus at this time.",
+      "term": "tinnitus",
+      "start": 78,
+      "end": 86,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T068",
+      "text": "Recurrent urinary tract infections. Currently not on prophylactic antibiotics. No pyelonephritis. Denies sepsis history.",
+      "term": "urinary tract infections",
+      "start": 10,
+      "end": 34,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T068",
+      "text": "Recurrent urinary tract infections. Currently not on prophylactic antibiotics. No pyelonephritis. Denies sepsis history.",
+      "term": "pyelonephritis",
+      "start": 82,
+      "end": 96,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T068",
+      "text": "Recurrent urinary tract infections. Currently not on prophylactic antibiotics. No pyelonephritis. Denies sepsis history.",
+      "term": "sepsis",
+      "start": 105,
+      "end": 111,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T070",
+      "text": "Adrenal insufficiency on hydrocortisone replacement. No Cushing syndrome. Denies adrenal crisis episodes.",
+      "term": "adrenal insufficiency",
+      "start": 0,
+      "end": 21,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T070",
+      "text": "Adrenal insufficiency on hydrocortisone replacement. No Cushing syndrome. Denies adrenal crisis episodes.",
+      "term": "hydrocortisone",
+      "start": 25,
+      "end": 39,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T070",
+      "text": "Adrenal insufficiency on hydrocortisone replacement. No Cushing syndrome. Denies adrenal crisis episodes.",
+      "term": "cushing syndrome",
+      "start": 56,
+      "end": 72,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T070",
+      "text": "Adrenal insufficiency on hydrocortisone replacement. No Cushing syndrome. Denies adrenal crisis episodes.",
+      "term": "adrenal crisis",
+      "start": 81,
+      "end": 95,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T076",
+      "text": "Celiac disease on strict gluten-free diet. Antibodies now negative. No small bowel lymphoma on surveillance. Denies current GI symptoms.",
+      "term": "celiac disease",
+      "start": 0,
+      "end": 14,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T076",
+      "text": "Celiac disease on strict gluten-free diet. Antibodies now negative. No small bowel lymphoma on surveillance. Denies current GI symptoms.",
+      "term": "lymphoma",
+      "start": 83,
+      "end": 91,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T076",
+      "text": "Celiac disease on strict gluten-free diet. Antibodies now negative. No small bowel lymphoma on surveillance. Denies current GI symptoms.",
+      "term": "gi symptoms",
+      "start": 124,
+      "end": 135,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T077",
+      "text": "GERD on omeprazole 40mg daily. No Barrett esophagus on endoscopy. Denies dysphagia or odynophagia.",
+      "term": "gerd",
+      "start": 0,
+      "end": 4,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T077",
+      "text": "GERD on omeprazole 40mg daily. No Barrett esophagus on endoscopy. Denies dysphagia or odynophagia.",
+      "term": "omeprazole",
+      "start": 8,
+      "end": 18,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T077",
+      "text": "GERD on omeprazole 40mg daily. No Barrett esophagus on endoscopy. Denies dysphagia or odynophagia.",
+      "term": "barrett esophagus",
+      "start": 34,
+      "end": 51,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T077",
+      "text": "GERD on omeprazole 40mg daily. No Barrett esophagus on endoscopy. Denies dysphagia or odynophagia.",
+      "term": "dysphagia",
+      "start": 73,
+      "end": 82,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T079",
+      "text": "Chronic fatigue syndrome with post-exertional malaise. Denies fibromyalgia diagnosis. No autoimmune cause identified. On low-dose naltrexone.",
+      "term": "chronic fatigue",
+      "start": 0,
+      "end": 15,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T079",
+      "text": "Chronic fatigue syndrome with post-exertional malaise. Denies fibromyalgia diagnosis. No autoimmune cause identified. On low-dose naltrexone.",
+      "term": "naltrexone",
+      "start": 130,
+      "end": 140,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T079",
+      "text": "Chronic fatigue syndrome with post-exertional malaise. Denies fibromyalgia diagnosis. No autoimmune cause identified. On low-dose naltrexone.",
+      "term": "fibromyalgia",
+      "start": 62,
+      "end": 74,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T096",
+      "text": "Acute intermittent porphyria. Last attack 8 months ago. No current attack. Denies chronic pain outside attacks. On low carb diet avoidance strategy.",
+      "term": "porphyria",
+      "start": 19,
+      "end": 28,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T096",
+      "text": "Acute intermittent porphyria. Last attack 8 months ago. No current attack. Denies chronic pain outside attacks. On low carb diet avoidance strategy.",
+      "term": "current attack",
+      "start": 59,
+      "end": 73,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "type 2 diabetes",
+      "start": 17,
+      "end": 32,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "nephropathy",
+      "start": 38,
+      "end": 49,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "hypertension",
+      "start": 51,
+      "end": 63,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "heart failure",
+      "start": 65,
+      "end": 78,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "atrial fibrillation",
+      "start": 111,
+      "end": 130,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "obesity",
+      "start": 161,
+      "end": 168,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "metformin",
+      "start": 292,
+      "end": 301,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "lisinopril",
+      "start": 303,
+      "end": 313,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "carvedilol",
+      "start": 315,
+      "end": 325,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "spironolactone",
+      "start": 327,
+      "end": 341,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "apixaban",
+      "start": 343,
+      "end": 351,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "atorvastatin",
+      "start": 353,
+      "end": 365,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "furosemide",
+      "start": 371,
+      "end": 381,
+      "label": "affirmed",
+      "split": "test",
+      "prediction": "affirmed"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "angina",
+      "start": 184,
+      "end": 190,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "infections",
+      "start": 200,
+      "end": 210,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "malignancy",
+      "start": 215,
+      "end": 225,
+      "label": "negated",
+      "split": "test",
+      "prediction": "negated"
+    },
+    {
+      "record_id": "T100",
+      "text": "Complex patient: type 2 diabetes with nephropathy, hypertension, heart failure with reduced ejection fraction, atrial fibrillation, prior CABG, stage 3 CKD, and obesity. Denies active angina, current infections, or malignancy. Family history of diabetes in both parents and CAD in father. On metformin, lisinopril, carvedilol, spironolactone, apixaban, atorvastatin, and furosemide.",
+      "term": "cad",
+      "start": 274,
+      "end": 277,
+      "label": "family",
+      "split": "test",
+      "prediction": "family"
+    }
+  ],
+  "limits": [
+    "English synthetic development corpus only; no patient data.",
+    "The source has ambiguous or nonliteral annotations, listed as excluded.",
+    "Known entity spans bypass entity discovery. Results are not end-to-end extraction accuracy.",
+    "No uncertainty, hypothetical, temporal or multilingual validation for this classifier.",
+    "No Whisper or MiniLM weight changes. No disease forecasting or prescribing."
+  ],
+  "hash_normalization": "UTF-8 text with LF line endings"
+}

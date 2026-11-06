@@ -1,0 +1,23 @@
+name: Reproduce assertion candidate training
+on:
+  push:
+    paths: ["backend/train_context_candidate.py", "backend/requirements-training.txt", "backend/app/nlp/context_candidate.py", "backend/app/data/training_transcripts.json", ".github/workflows/context-training.yml"]
+  pull_request:
+    paths: ["backend/train_context_candidate.py", "backend/requirements-training.txt", "backend/app/nlp/context_candidate.py", "backend/app/data/training_transcripts.json", ".github/workflows/context-training.yml"]
+permissions:
+  contents: read
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r backend/requirements-training.txt
+      - name: Fit using training labels, select with validation, evaluate internal test once
+        run: python backend/train_context_candidate.py --output-dir "$RUNNER_TEMP/context-candidate"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: experimental-context-training-evidence
+          path: ${{ runner.temp }}/context-candidate

@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parent
 
 
 def evaluate(dataset: Path) -> dict:
-    raw = dataset.read_bytes()
+    raw = dataset.read_bytes().replace(b'\r\n', b'\n')
     data = json.loads(raw)
     cases = list(data["additional_cases"])
     for term in data["terms"]:
@@ -37,7 +37,8 @@ def evaluate(dataset: Path) -> dict:
                 failures.append({"text": case["text"], "expected": expected, "actual_for_term": relevant})
     return {
         "dataset_version": data["version"], "dataset_sha256": hashlib.sha256(raw).hexdigest(),
-        "rules_sha256": hashlib.sha256((ROOT / "app/nlp/negex_pipeline.py").read_bytes()).hexdigest(),
+        "rules_sha256": hashlib.sha256((ROOT / "app/nlp/negex_pipeline.py").read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
+        "vocabulary_sha256": hashlib.sha256((ROOT / "app/nlp/vocabulary.py").read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
         "provenance": data["provenance"], "case_count": len(cases),
         "metric": "Expected target term present with the expected context and negation",
         "correct": correct, "total": total, "target_assertion_accuracy": correct / total,

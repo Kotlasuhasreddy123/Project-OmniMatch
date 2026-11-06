@@ -17,6 +17,9 @@ jobs:
       - run: python backend/evaluate_context.py
       - run: python -m unittest discover -s scripts -p "test_*.py"
       - run: pip install pytest==8.2.2 pytest-asyncio==0.23.7
-      - run: python -m pytest backend/tests/test_nlp_pipeline.py --noconftest -q -k "not api"
+      - run: python scripts/export_model_evidence.py
+      - run: python backend/evaluate_candidate_extra.py --output /tmp/extra-corpus-report.json
+      - run: git diff --exit-code -- frontend/src/data/modelEvidence.json
+      - run: python -m pytest backend/tests/test_nlp_pipeline.py backend/tests/test_context_improvements.py backend/tests/test_context_candidate.py --noconftest -q -k "not api"
         env:
           PYTHONPATH: backend

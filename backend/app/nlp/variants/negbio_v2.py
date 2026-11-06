@@ -1,22 +1,9 @@
-"""
-Variant 2: NegBio-style Dependency-Path Negation (Peng et al. 2018).
+"""Unused rule experiment under a legacy NegBio-inspired filename.
 
-Peng Y, Wang X, Lu L, Bagheri M, Summers R, Lu Z.
-"NegBio: a high-performance tool for negation and uncertainty detection in radiology reports."
-AMIA Jt Summits Transl Sci Proc. 2018;2017:188-196. PMCID: PMC5961822.
-
-Improvement over NegEx: +9.5% precision, +5.1% F1 on radiology/clinical notes.
-Key advance: uses Universal Dependency parse paths instead of linear word windows,
-capturing long-distance negations that NegEx misses.
-
-Performance (NegBio paper):
-  Precision: 0.924 | Recall: 0.895 | F1: 0.909
-
-Strengths:  Handles long-distance negation ("The scan did not reveal any evidence of...diabetes")
-            Distinguishes uncertain vs. negated findings.
-Weaknesses: Requires spaCy dependency parse (~5ms/sentence); slightly slower than NegEx.
-
-Use case in OmniMatch: Secondary pipeline when spaCy is available; improves edge cases.
+This is a heuristic window implementation, not the original NegBio package,
+and it does not load a dependency parser or trained spaCy model. Published
+NegBio results must not be attributed to this code. The live extraction
+endpoint does not call it. Measure this implementation separately.
 """
 
 from __future__ import annotations

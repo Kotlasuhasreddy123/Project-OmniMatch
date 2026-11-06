@@ -9,6 +9,7 @@ from __future__ import annotations
 import logging
 import re
 from functools import lru_cache
+from app.nlp import vocabulary
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +62,16 @@ HYPOTHETICAL_TRIGGERS = [
     r"\bshould\s+(the\s+)?patient\b",
     r"\bwere\s+(the\s+)?patient\b",
     r"\bhypothetically\b",
+]
+
+UNCERTAINTY_PRE_TRIGGERS = [
+    r"\bpossible\b", r"\bpossibly\b", r"\bsuspected\b",
+    r"\bconcern\s+for\b", r"\bmay\s+have\b",
+    r"\bcannot\s+(?:exclude|rule\s+out)\b",
+]
+UNCERTAINTY_POST_TRIGGERS = [
+    r"\bcannot\s+be\s+excluded\b", r"\bnot\s+(?:yet\s+)?ruled\s+out\b",
+    r"\bis\s+suspected\b",
 ]
 
 # ---------------------------------------------------------------------------
@@ -154,8 +165,15 @@ ALL_ENTITY_PATTERNS = {
     "PROCEDURE": PROCEDURE_PATTERNS,
 }
 
+# Specific phrases precede shorter patterns, preserving their clinical wording.
+for kind, terms in [("DISEASE", vocabulary.DISEASES),
+                    ("SYMPTOM", vocabulary.SYMPTOMS),
+                    ("MEDICATION", vocabulary.MEDICATIONS)]:
+    ALL_ENTITY_PATTERNS[kind] = [r"\b(?:" + "|".join(
+        re.escape(term) for term in sorted(terms, key=len, reverse=True)) + r")\b"] + ALL_ENTITY_PATTERNS[kind]
+
 # Context window: number of words to look before/after entity for triggers
-NEGATION_WINDOW = 6
+NEGATION_WINDOW = 12
 
 
 def _compile_patterns(patterns: list[str]) -> list[re.Pattern]:
@@ -172,6 +190,8 @@ def _get_compiled_patterns():
         "post_negation": _compile_patterns(POST_NEGATION_TRIGGERS),
         "family_context": _compile_patterns(FAMILY_CONTEXT_TRIGGERS),
         "hypothetical": _compile_patterns(HYPOTHETICAL_TRIGGERS),
+        "uncertainty_pre": _compile_patterns(UNCERTAINTY_PRE_TRIGGERS),
+        "uncertainty_post": _compile_patterns(UNCERTAINTY_POST_TRIGGERS),
     }
 
 
@@ -199,7 +219,10 @@ def _check_context(
         True if any trigger pattern is found within the context window.
     """
     # Negation cannot reach across sentences or a contrast such as "but".
-    before_scope = re.split(r"[.!?;]|\b(?:but|however|although)\b", text[:match_start])[-1]
+    before_scope = re.split(
+        r"[.!?;]|\b(?:but|however|although)\b|\band\s+(?:has|reports|takes|uses|presents\s+with)\b",
+        text[:match_start],
+    )[-1]
     after_scope = re.split(r"[.!?;]|\b(?:but|however|although)\b", text[match_end:])[0]
     words_before = before_scope.split()[-window:]
     words_after = after_scope.split()[:window]
@@ -267,13 +290,21 @@ def extract_entities(transcription: str) -> list[dict]:
                 is_hypothetical = _check_context(
                     text, start, end, patterns["hypothetical"], look_before=True
                 )
+                is_uncertain = _check_context(
+                    text, start, end, patterns["uncertainty_pre"], look_before=True
+                ) or _check_context(
+                    text, start, end, patterns["uncertainty_post"], look_before=False, look_after=True
+                )
                 is_negated = _check_context(
                     text, start, end, patterns["pre_negation"], look_before=True
                 ) or _check_context(
-                    text, start, end, patterns["post_negation"], look_after=True
+                    text, start, end, patterns["post_negation"], look_before=False, look_after=True
                 )
                 before_scope = re.split(r"[.!?;]|\bbut\b", text[:start])[-1]
                 if re.search(r"\b(?:does|do|did)\s+not\s+deny\b", before_scope):
+                    is_negated = False
+                if is_uncertain:
+                    is_hypothetical = True
                     is_negated = False
 
                 # Retain the same term when it occurs with different contexts

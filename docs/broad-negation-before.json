@@ -1,0 +1,591 @@
+{
+  "dataset_sha256": "b358335baa3498760d3d760d916852c24888cf66a271eb71f0ecca456719af5e",
+  "rules_sha256": "3d782a0e255d42659fa1d07c296b96472e36f0182ec83250954c723322f2e96d",
+  "record_count": 100,
+  "true_positive": 47,
+  "false_positive": 14,
+  "false_negative": 111,
+  "precision": 0.7704918032786885,
+  "recall": 0.2974683544303797,
+  "f1": 0.42922374429223736,
+  "legacy_95_recall_target_met": false,
+  "failures": [
+    {
+      "id": "T005",
+      "missing": [
+        "metastatic"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T006",
+      "missing": [
+        "dizziness"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T009",
+      "missing": [],
+      "extra": [
+        "rheumatoid"
+      ]
+    },
+    {
+      "id": "T011",
+      "missing": [
+        "cardiac disease",
+        "pulmonary embolism"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T014",
+      "missing": [
+        "infection"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T019",
+      "missing": [
+        "wall motion abnormalities"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T023",
+      "missing": [
+        "suicidal"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T025",
+      "missing": [
+        "tuberculosis"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T026",
+      "missing": [
+        "brain metastases",
+        "pericardial effusion"
+      ],
+      "extra": [
+        "mri"
+      ]
+    },
+    {
+      "id": "T030",
+      "missing": [
+        "graves disease"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T031",
+      "missing": [
+        "status asthmaticus"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T032",
+      "missing": [],
+      "extra": [
+        "transplant"
+      ]
+    },
+    {
+      "id": "T033",
+      "missing": [
+        "dysplasia",
+        "fistula",
+        "flare"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T034",
+      "missing": [
+        "iron deficiency"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T035",
+      "missing": [
+        "opportunistic infections"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T036",
+      "missing": [
+        "psychosis",
+        "substance abuse",
+        "suicidal"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T038",
+      "missing": [
+        "abdominal hernias",
+        "bowel obstruction"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T039",
+      "missing": [
+        "latex allergy",
+        "sulfa"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T040",
+      "missing": [
+        "alcohol abuse",
+        "tobacco"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T041",
+      "missing": [
+        "diabetic ketoacidosis",
+        "hypoglycemic"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T043",
+      "missing": [
+        "deep vein thrombosis",
+        "wound infection"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T044",
+      "missing": [
+        "preeclampsia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T045",
+      "missing": [
+        "cardiac disease"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T046",
+      "missing": [
+        "metabolic syndrome"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T047",
+      "missing": [
+        "active infection"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T048",
+      "missing": [],
+      "extra": [
+        "hypertension"
+      ]
+    },
+    {
+      "id": "T049",
+      "missing": [
+        "dysarthria"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T050",
+      "missing": [
+        "lymph node involvement",
+        "metastasis"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T051",
+      "missing": [
+        "herniation",
+        "radiculopathy"
+      ],
+      "extra": [
+        "surgery"
+      ]
+    },
+    {
+      "id": "T052",
+      "missing": [
+        "pericarditis",
+        "pleuritis",
+        "renal involvement"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T053",
+      "missing": [
+        "alcohol dependence",
+        "illicit drug"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T055",
+      "missing": [
+        "metastases",
+        "recurrence"
+      ],
+      "extra": [
+        "ultrasound"
+      ]
+    },
+    {
+      "id": "T056",
+      "missing": [
+        "presyncope",
+        "syncope"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T057",
+      "missing": [
+        "infection",
+        "rejection"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T058",
+      "missing": [
+        "cluster headaches",
+        "trigeminal neuralgia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T059",
+      "missing": [
+        "ascites"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T060",
+      "missing": [
+        "pneumonia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T061",
+      "missing": [
+        "narcolepsy",
+        "restless leg"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T062",
+      "missing": [
+        "cataracts",
+        "diabetic retinopathy",
+        "macular degeneration"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T063",
+      "missing": [
+        "otosclerosis",
+        "tinnitus"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T064",
+      "missing": [
+        "gout"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T065",
+      "missing": [
+        "infections",
+        "lymphoma"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T066",
+      "missing": [
+        "cognitive impairment"
+      ],
+      "extra": [
+        "mri"
+      ]
+    },
+    {
+      "id": "T067",
+      "missing": [
+        "bulimia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T068",
+      "missing": [
+        "pyelonephritis",
+        "sepsis"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T069",
+      "missing": [
+        "amputation"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T070",
+      "missing": [
+        "adrenal crisis",
+        "cushing syndrome"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T071",
+      "missing": [
+        "aortic dissection",
+        "lens dislocation"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T072",
+      "missing": [
+        "hemophilia",
+        "thrombocytopenia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T073",
+      "missing": [
+        "lewy body"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T074",
+      "missing": [
+        "fragility fractures",
+        "hypercalcemia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T076",
+      "missing": [
+        "gi symptoms",
+        "lymphoma"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T077",
+      "missing": [
+        "barrett esophagus",
+        "dysphagia"
+      ],
+      "extra": [
+        "endoscopy"
+      ]
+    },
+    {
+      "id": "T078",
+      "missing": [
+        "endometrial hyperplasia"
+      ],
+      "extra": [
+        "ultrasound"
+      ]
+    },
+    {
+      "id": "T080",
+      "missing": [
+        "nasal polyps"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T081",
+      "missing": [
+        "pacemaker malfunction",
+        "syncope"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T083",
+      "missing": [
+        "lymphadenopathy",
+        "residual disease"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T084",
+      "missing": [
+        "muscle-invasive"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T085",
+      "missing": [
+        "ascites",
+        "bowel obstruction"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T086",
+      "missing": [
+        "recurrence"
+      ],
+      "extra": [
+        "mri"
+      ]
+    },
+    {
+      "id": "T087",
+      "missing": [
+        "anastomotic leak",
+        "dysphagia"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T088",
+      "missing": [
+        "exocrine insufficiency"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T089",
+      "missing": [
+        "bowel changes",
+        "recurrence"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T090",
+      "missing": [
+        "recurrence"
+      ],
+      "extra": [
+        "fatigue"
+      ]
+    },
+    {
+      "id": "T091",
+      "missing": [
+        "bladder dysfunction",
+        "bowel dysfunction",
+        "cauda equina"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T092",
+      "missing": [
+        "aortic involvement"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T093",
+      "missing": [
+        "respiratory failure"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T095",
+      "missing": [
+        "neurological symptoms"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T096",
+      "missing": [
+        "current attack"
+      ],
+      "extra": [
+        "pain"
+      ]
+    },
+    {
+      "id": "T097",
+      "missing": [
+        "cardiac iron deposition"
+      ],
+      "extra": [
+        "mri"
+      ]
+    },
+    {
+      "id": "T098",
+      "missing": [
+        "acute exacerbation"
+      ],
+      "extra": [
+        "transplant"
+      ]
+    },
+    {
+      "id": "T099",
+      "missing": [
+        "cardiac involvement",
+        "hypercalcemia",
+        "ocular involvement"
+      ],
+      "extra": []
+    },
+    {
+      "id": "T100",
+      "missing": [
+        "infections"
+      ],
+      "extra": []
+    }
+  ],
+  "limits": "Previously inspected synthetic development corpus. Legacy substring term matching can credit partial matches and annotations may be incomplete. Not clinical accuracy, full NER F1 or independent validation.",
+  "hash_normalization": "UTF-8 text with LF line endings",
+  "rules_commit": "ae397a806993be14c9e4f7cbb1df4334db0e2697"
+}

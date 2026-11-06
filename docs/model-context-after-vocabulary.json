@@ -1,0 +1,32 @@
+{
+  "dataset_version": "1.0",
+  "dataset_sha256": "3a86692c735d51aa4288ac4e05569f1ad39e0e4ddc342a72bfad4521a110676d",
+  "rules_sha256": "f71430db7f2dab13e7c14f2fa27b7a68e717e133697a0e6869ef5a9ba7e437f4",
+  "vocabulary_sha256": "12b7c968af8e46038cb21707520040a96420e4ccf2f7db5fcaba6acbfc70129f",
+  "provenance": "Authored synthetic regression fixtures; no patient records, recordings, registry studies or external training corpus.",
+  "case_count": 69,
+  "metric": "Expected target term present with the expected context and negation",
+  "correct": 72,
+  "total": 72,
+  "target_assertion_accuracy": 1.0,
+  "by_context": {
+    "hypothetical": {
+      "correct": 17,
+      "total": 17
+    },
+    "patient": {
+      "correct": 21,
+      "total": 21
+    },
+    "family": {
+      "correct": 17,
+      "total": 17
+    },
+    "negated": {
+      "correct": 17,
+      "total": 17
+    }
+  },
+  "failures": [],
+  "limits": "Synthetic regression checks on known vocabulary. Does not measure all extracted false positives, NER F1, speech accuracy, retrieval relevance or clinical validity. No weights are trained or fine-tuned."
+}

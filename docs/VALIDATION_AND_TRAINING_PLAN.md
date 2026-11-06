@@ -1,12 +1,12 @@
 # Model improvement and coverage plan
 
-No new model has been trained in this release. No result establishes 98–100% clinical accuracy, all-specialty validation or all-language validation. The active extraction rules are English. Whisper and MiniLM use published pretrained weights; their training sources are documented in MODELS_AND_DATA.md.
+A separate synthetic assertion candidate has now been trained and evaluated; it remains experimental. See [the training report](MODEL_TRAINING_RESULTS.md). No result establishes 98–100% clinical accuracy, all-specialty validation or all-language validation. The active extraction rules are English. Whisper and MiniLM use published pretrained weights; their training sources are documented in MODELS_AND_DATA.md.
 
 ## What we can measure now
 
 The text-context regression checks contain 69 synthetic English development examples with 72 expected term/context assertions. Passing them demonstrates those assertions only. They are not independent clinical validation, speech word error rate, complete NER precision/recall, or trial retrieval quality. The validation page keeps these distinctions visible.
 
-The older 100-transcript synthetic set in `backend/app/data/training_transcripts.json` gives negation precision 0.770, recall 0.297 and F1 0.429 using its existing substring-matching evaluation procedure. Many expected terms are absent from the extraction vocabulary. Its 95% recall acceptance test is explicitly marked as a strict expected failure, not a pass. This is an unresolved release limitation. Neither this set nor the focused regression set establishes clinical performance. The small passing set must not be substituted for this broader failing target.
+The older 100-transcript synthetic set in `backend/app/data/training_transcripts.json` initially gave negation precision 0.770, recall 0.297 and F1 0.429; after the latest active-rule improvements it gives precision 0.867, recall 0.703 and F1 0.776 using its existing substring-matching evaluation procedure. Many expected terms are absent from the extraction vocabulary. Its 95% recall acceptance test is explicitly marked as a strict expected failure, not a pass. This is an unresolved release limitation. Neither this set nor the focused regression set establishes clinical performance. The small passing set must not be substituted for this broader failing target.
 
 ## Before fine-tuning
 
@@ -28,6 +28,6 @@ For extraction, report entity precision/recall/F1 and separate negation, family,
 
 Keep a versioned manifest of model revision, data hashes, permitted use, split assignments, reviewers, parameters, hardware, baseline/candidate results and unresolved errors. Require human approval before replacing a model. Mark unsupported slices as unmeasured. Do not turn a ranking score into a disease probability or tune until a test score looks good.
 
-The required independently reviewed corpus has not been supplied. Fine-tuning and representative clinical evaluation therefore remain pending. The coverage selector on the website is a planning register; it does not imply that each selectable category has been tested.
+The required independently reviewed corpus has not been supplied. Fine-tuning Whisper/MiniLM and representative clinical evaluation therefore remain pending. The small assertion candidate does not supply that evidence. The coverage selector on the website is a planning register; it does not imply that each selectable category has been tested.
 
 Reference: [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework).
