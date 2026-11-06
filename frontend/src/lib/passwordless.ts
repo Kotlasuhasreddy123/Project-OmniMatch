@@ -1,4 +1,5 @@
 import { createClient } from "@workos-inc/authkit-js";
+import { clearToken, setToken } from "./apiClient";
 
 export const clientId = process.env.NEXT_PUBLIC_WORKOS_CLIENT_ID || "";
 export const organizationId = process.env.NEXT_PUBLIC_WORKOS_ORG_ID || "";
@@ -24,6 +25,8 @@ export async function authClient() {
       // Explicit free browser mode: WorkOS stores refresh state in browser storage.
       // The public portal processes account information only, never visit/audio data.
       devMode: true,
+      onRefresh: ({ accessToken }) => setToken(accessToken),
+      onRefreshFailure: () => clearToken(),
       onRedirectCallback: () =>
         window.history.replaceState({}, "", `${basePath}/login/`),
     }).catch((error) => {
