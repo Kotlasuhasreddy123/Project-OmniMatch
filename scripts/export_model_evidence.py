@@ -11,8 +11,10 @@ def export():
     before = load('docs/broad-negation-before.json')
     after = load('docs/broad-negation-after.json')
     training = load('backend/experiments/context-candidate-v2/training_report.json')
+    extra = load('backend/experiments/context-candidate-v2/extra_corpus_report.json')
     model = ROOT/'backend/experiments/context-candidate-v2/context_candidate.json'
     assert hashlib.sha256(model.read_bytes().replace(b'\r\n', b'\n')).hexdigest() == training['model_sha256']
+    assert extra['model_sha256'] == training['model_sha256']
     assert before['dataset_sha256'] == after['dataset_sha256'] == training['dataset_sha256']
     assert hashlib.sha256((ROOT/'backend/app/nlp/negex_pipeline.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest() == after['rules_sha256']
     assert hashlib.sha256((ROOT/'backend/app/nlp/vocabulary.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest() == after['vocabulary_sha256']
@@ -24,6 +26,8 @@ def export():
               'candidate_macro_f1': training['test']['classification_report']['macro avg']['f1-score'],
               'candidate_family_test_count': training['split_class_counts']['test']['family'],
               'candidate_active': False, 'medical_accuracy_98_validated': False,
+              'extra_accuracy': extra['accuracy'], 'extra_correct': extra['correct'],
+              'extra_total': extra['total'], 'extra_records': extra['evaluated_records'],
               'split_annotation_counts': training['split_annotation_counts'],
               'split_record_counts': {key: len(values) for key, values in training['split_record_ids'].items()},
               'excluded_annotations': len(training['excluded_annotations'])}

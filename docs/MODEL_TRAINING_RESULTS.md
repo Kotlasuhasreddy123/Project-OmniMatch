@@ -42,6 +42,12 @@ I trained a small CPU-based assertion classifier, separate from the active rules
 
 The first hash-only split scored 38/43 (88.37%) but contained no family examples in validation/test. I retained that diagnostic experiment as `context-candidate-v1`. I corrected the split design in `context-candidate-v2`; these are different test sets, so their percentages must not be presented as a like-for-like improvement. The candidate is not promoted to the live workflow.
 
+## Additional frozen-model check
+
+After freezing the candidate, I evaluated the second existing classroom corpus, `mock_transcripts.json`: 20 different notes, with no exact normalized transcript duplicates against the training-source corpus. On 108 unambiguous supplied term spans, it scored **107/108 = 99.07%**: 73/73 affirmed, 29/30 negated and 5/5 family examples. Missing or ambiguous annotations are listed in the report. This corpus was previously used for rule experiments, so it is additional development evidence, not an independent clinical dataset. I did not retrain the candidate or adjust parameters using this check.
+
+This specific small check exceeds 98%; the corrected internal test is still 90%. Do not select the 99.07% result and call it overall application accuracy. The two sets have different difficulty and sparse family coverage. Reproduce this check with `python backend/evaluate_candidate_extra.py`; the saved `extra_corpus_report.json` includes the model hash, predictions and the failed example.
+
 ## Run the training and tests yourself
 
 From the repository root in Windows PowerShell:

@@ -70,6 +70,9 @@ export function ModelEvidence() {
           record. Only {evidence.candidate_family_test_count} family-history
           test example; more independently reviewed data is needed.
         </p>
+        <p className="mt-4 rounded-xl bg-white p-4 text-sm leading-6">
+          Additional check: {percent(evidence.extra_accuracy)} ({evidence.extra_correct}/{evidence.extra_total}) on a different existing set of {evidence.extra_records} synthetic notes, using the same frozen model. This smaller classroom check has different difficulty; it does not replace the 90.0% internal result or establish 98% across the application.
+        </p>
         <p className="mt-4 font-semibold text-indigo-950">
           98% minimum: not achieved. Whisper speech and study-search accuracy
           remain unmeasured.

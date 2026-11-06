@@ -17,6 +17,10 @@
   "candidate_family_test_count": 1,
   "candidate_active": false,
   "medical_accuracy_98_validated": false,
+  "extra_accuracy": 0.9907407407407407,
+  "extra_correct": 107,
+  "extra_total": 108,
+  "extra_records": 20,
   "split_annotation_counts": {
     "train": 216,
     "validation": 54,
