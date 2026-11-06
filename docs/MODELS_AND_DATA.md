@@ -24,6 +24,8 @@ Run `python backend/evaluate_context.py` from the repository root. It uses only 
 
 These are development regression results on known vocabulary, not an independent clinical test set. This metric checks whether an expected term/context combination is present. It does not measure all false positive entities, NER F1, audio word error rate, trial-retrieval relevance, eligibility correctness, or medication/disease prediction. It was used to fix the rules, so it must not be presented as unseen evaluation performance.
 
+The older 100-transcript synthetic benchmark remains below its 95% negation-recall target (29.7% recall under its existing procedure). The strict expected-failure test records that gap rather than counting it as a pass. See [the validation and training plan](VALIDATION_AND_TRAINING_PLAN.md) for the separate results and next steps.
+
 ## What remains before medical claims
 
 Use consented/synthetic recordings with independently prepared transcripts to measure speech word error rate. Use independently annotated conversations to measure entity precision/recall/F1 and context errors. Use reviewed patient-study pairs to measure retrieval recall at k. Keep development and held-out sets separate by patient and source. Only fine-tune after a baseline and rights to the data are established, then compare both models on a locked evaluation set. Do not adjust model weights on the evaluation examples to reach a target percentage.

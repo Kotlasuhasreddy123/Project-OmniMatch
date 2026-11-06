@@ -70,7 +70,7 @@ api.YOUR_DOMAIN {
 }
 ```
 
-Replace both domain placeholders and verify DNS before enabling the proxy. Use separate strong demo account passwords. Review backend configuration and account provisioning before allowing external users. HTTPS is necessary for browser microphone access on a public domain.
+Replace both domain placeholders and verify DNS before enabling the proxy. Configure [passwordless organization roles and owner approval](PASSWORDLESS_ACCESS.md). Review backend configuration before allowing external users. HTTPS is necessary for browser microphone access on a public domain.
 
 ## 5. Acceptance checks
 

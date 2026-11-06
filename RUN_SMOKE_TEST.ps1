@@ -3,8 +3,8 @@ $base = 'http://localhost:8000'
 $session = 'SMOKE-' + [guid]::NewGuid().ToString('N')
 $start = Get-Date
 
-$login = Invoke-RestMethod -Method Post -Uri "$base/api/v1/auth/login" -ContentType 'application/json' -Body '{"username":"clinical_staff","password":"Staff@12345"}'
-$headers = @{ Authorization = "Bearer $($login.access_token)" }
+if (-not $env:OMNIMATCH_ACCESS_TOKEN) { throw 'Sign in with an approved account first. Set OMNIMATCH_ACCESS_TOKEN to a current WorkOS access token in this shell; never save it in a script or commit it.' }
+$headers = @{ Authorization = "Bearer $env:OMNIMATCH_ACCESS_TOKEN" }
 $health = Invoke-RestMethod -Uri "$base/api/v1/health"
 if (-not ($health.qdrant_connected -and $health.whisper_loaded)) { throw 'API dependencies are not ready.' }
 
@@ -14,7 +14,10 @@ Invoke-RestMethod -Method Post -Uri "$base/api/v1/consent" -Headers $headers -Co
 $scriptedText = 'Doctor: What brings you in today? Patient: I have type 2 diabetes and take metformin. I also have high blood pressure. I do not have kidney disease. My mother had a stroke.'
 $nlpBody = @{ transcription = $scriptedText; session_id = $session } | ConvertTo-Json
 $nlp = Invoke-RestMethod -Method Post -Uri "$base/api/v1/nlp/extract" -Headers $headers -ContentType 'application/json' -Body $nlpBody
-$approved = @($nlp.entities | Where-Object { -not $_.negated -and $_.context -eq 'patient' } | ForEach-Object { $_.status = 'approved'; $_ })
+$approved = @($nlp.entities | Where-Object { -not $_.negated -and $_.context -eq 'patient' } | ForEach-Object {
+    $choice = Read-Host "Review term '$($_.term)'. Type approve to include it; anything else rejects it"
+    if ($choice -eq 'approve') { $_.status = 'approved'; $_ }
+})
 if ($approved.Count -lt 2) { throw 'Entity extraction returned fewer than two approvable patient findings.' }
 
 $completeBody = @{ session_id = $session; approved_entities = $approved; evidence_spans = @() } | ConvertTo-Json -Depth 12

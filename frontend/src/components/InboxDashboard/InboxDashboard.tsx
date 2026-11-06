@@ -18,6 +18,7 @@ import { ReferralButton } from "@/components/ui/ReferralButton";
 import { TrialTrustPanel } from "@/components/TrialTrustPanel/TrialTrustPanel";
 import type { InboxItem, TrialMatch } from "@/types";
 import { ResultsOverview } from "./ResultsOverview";
+import { CaseBadge } from "@/components/CaseBadge";
 
 interface InboxDashboardProps {
   items: InboxItem[];
@@ -72,6 +73,7 @@ function TrialMatchCard({ match, inboxItemId, sessionId }: { match: TrialMatch; 
       >
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
+            <CaseBadge conditions={match.conditions} />
             <span className="text-sm font-semibold text-gray-900 truncate">{match.title}</span>
             <span className="shrink-0 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
               {match.phase}

@@ -23,6 +23,12 @@ class Settings(BaseSettings):
     jwt_secret_key: str = "dev-jwt-secret-change-in-production"
     jwt_algorithm: str = "HS256"
     jwt_expire_hours: int = 8
+    # WorkOS public application identifiers. No WorkOS API secret is needed to verify JWTs.
+    workos_client_id: str = ""
+    workos_organization_id: str = ""
+    workos_issuer: str = "https://api.workos.com"
+    workos_access_permission: str = "omnimatch:access"
+    workos_admin_permission: str = "omnimatch:admin"
 
     # Qdrant
     qdrant_host: str = "localhost"

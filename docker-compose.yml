@@ -73,6 +73,8 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: http://localhost:8000
+        NEXT_PUBLIC_WORKOS_CLIENT_ID: ${WORKOS_CLIENT_ID:-}
+        NEXT_PUBLIC_WORKOS_ORG_ID: ${WORKOS_ORGANIZATION_ID:-}
     container_name: omni_frontend
     restart: unless-stopped
     depends_on:

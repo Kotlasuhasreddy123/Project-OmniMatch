@@ -24,9 +24,9 @@ export default function HomePage() {
           can support study review. Available conditions depend on the indexed
           catalog. These are research matches, not disease forecasts.
         </p>
-        <a href="/guide" className="mt-3 inline-block text-blue-700 underline">
+        <Link href="/guide" className="mt-3 inline-block text-blue-700 underline">
           Read the simple project guide and demo script
-        </a>
+        </Link>
       </div>
       <p className="mt-3 max-w-2xl text-sm font-medium text-amber-800">
         Use synthetic patient details. A study suggestion still needs

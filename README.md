@@ -4,6 +4,12 @@
 
 The active learned models are pretrained Whisper (speech) and `all-MiniLM-L6-v2` (retrieval). Clinical extraction and eligibility checks use rules. This repository does not claim custom medical model training. Run `python backend/evaluate_context.py` for the reproducible synthetic context regression checks; see the model guide for the metric and its limits.
 
+## Approved access and public portal
+
+The public portal contains policies, license notices, a specialty/language coverage register, and installation links. WorkOS email access stays disabled until the owner adds application IDs and configures the waitlist and organization roles. Follow [passwordless setup](docs/PASSWORDLESS_ACCESS.md). The public MIT repository remains downloadable regardless of account approval.
+
+See [the evaluation and training plan](docs/VALIDATION_AND_TRAINING_PLAN.md) for the unmet broad extraction benchmark. No universal validation or 98–100% clinical accuracy is claimed.
+
 ## Visual results upgrade
 
 The inbox now includes visit totals, review workload, a criterion-coverage chart and an interactive Recharts study comparison. Values are computed from inbox records, with a numerical list alongside the chart. The renewed local app also connects its overview to search filters. The interface uses system typography, soft teal accents and translucent navigation. Charts render locally; no remote chart service receives visit data. Open `/preview` to explore clearly labeled fictional display examples without signing in.
@@ -20,8 +26,8 @@ The local demo contains three **fictional** trial records with `DEMO-` identifie
 
 1. Install and start Docker Desktop. Allow enough time and disk space for the first model download and image build.
 2. From this folder in PowerShell, run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\START_DEMO.ps1`. Later starts can use `-SkipBuild`.
-3. Open [the local app](http://localhost:3000) in Chrome or Edge. Sign in with the **local demonstration account** `clinical_staff` / `Staff@12345`. Never reuse that password for anything else.
-4. Before the presentation, run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\RUN_SMOKE_TEST.ps1` and `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\RUN_AUDIO_SMOKE_TEST.ps1`.
+3. Open [the local app](http://localhost:3000). Configure [owner-approved email access](docs/PASSWORDLESS_ACCESS.md) before using protected visits. Shared passwords have been removed. The `/preview` page is available without an account.
+4. For authenticated command-line checks, set a current approved WorkOS access token in the shell's `OMNIMATCH_ACCESS_TOKEN` environment variable. Never save it in source or share it. Then run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\RUN_SMOKE_TEST.ps1` and `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\RUN_AUDIO_SMOKE_TEST.ps1`.
 5. Allow microphone permission in the browser when prompted. The microphone control remains disabled until consent is granted.
 
 See [the demo guide](docs/team-share/OmniMatch%20October%2020%20Live%20Demo%20Guide.docx) for the speaking script, UI sequence, and backup plan. See [the Week 8 evidence report](docs/weekly-reports/OmniMatch%20Week%208%20Implementation%20Milestone%20Evidence.docx) for measured results and limitations.

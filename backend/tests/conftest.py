@@ -33,7 +33,7 @@ def tmp_db_path(tmp_path):
 # ---------------------------------------------------------------------------
 
 @pytest_asyncio.fixture
-async def app(tmp_db_path: str) -> FastAPI:
+async def app(tmp_db_path: str, monkeypatch, identity_key) -> FastAPI:
     """Return a configured FastAPI test app with a temporary database."""
     import os
     # Set env var BEFORE importing app modules so pydantic-settings picks it up
@@ -49,6 +49,13 @@ async def app(tmp_db_path: str) -> FastAPI:
     db_mod.DB_PATH = tmp_db_path
 
     await init_db()
+    import time
+    from app.auth import workos_verifier as verifier
+    monkeypatch.setattr(cfg.settings, "workos_client_id", "client_test")
+    monkeypatch.setattr(cfg.settings, "workos_organization_id", "org_test")
+    monkeypatch.setattr(verifier, "_client_id", "client_test")
+    monkeypatch.setattr(verifier, "_keys", {"test-key": identity_key[1]})
+    monkeypatch.setattr(verifier, "_expires", time.monotonic() + 3600)
     return _app
 
 
@@ -65,26 +72,38 @@ async def client(app: FastAPI) -> AsyncGenerator[AsyncClient, None]:
 # Auth helpers
 # ---------------------------------------------------------------------------
 
-@pytest_asyncio.fixture
-async def staff_token(client: AsyncClient) -> str:
-    """Return a valid JWT token for the clinical_staff demo user."""
-    resp = await client.post(
-        "/api/v1/auth/login",
-        json={"username": "clinical_staff", "password": "Staff@12345"},
-    )
-    assert resp.status_code == 200, f"Login failed: {resp.text}"
-    return resp.json()["access_token"]
+@pytest.fixture(scope="session")
+def identity_key():
+    from cryptography.hazmat.primitives.asymmetric import rsa
+    from cryptography.hazmat.primitives import serialization
+    from jose import jwk
+    private = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    pem = private.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
+    public = private.public_key().public_bytes(serialization.Encoding.PEM, serialization.PublicFormat.SubjectPublicKeyInfo)
+    key = jwk.construct(public, "RS256").to_dict()
+    key["kid"] = "test-key"
+    return pem, key
 
 
-@pytest_asyncio.fixture
-async def admin_token(client: AsyncClient) -> str:
-    """Return a valid JWT token for the admin demo user."""
-    resp = await client.post(
-        "/api/v1/auth/login",
-        json={"username": "admin", "password": "Admin@12345"},
-    )
-    assert resp.status_code == 200, f"Admin login failed: {resp.text}"
-    return resp.json()["access_token"]
+def test_identity_token(identity_key, admin=False):
+    """Locally signed test-provider token; no live account or production bypass."""
+    import time
+    from jose import jwt
+    permissions = ["omnimatch:access"] + (["omnimatch:admin"] if admin else [])
+    return jwt.encode(dict(sub="test_admin" if admin else "test_staff", sid="test_session",
+        client_id="client_test", org_id="org_test", iss="https://api.workos.com",
+        iat=int(time.time()), exp=int(time.time()) + 3600, permissions=permissions),
+        identity_key[0], algorithm="RS256", headers={"kid": "test-key"})
+
+
+@pytest.fixture
+def staff_token(identity_key):
+    return test_identity_token(identity_key)
+
+
+@pytest.fixture
+def admin_token(identity_key):
+    return test_identity_token(identity_key, admin=True)
 
 
 @pytest.fixture
