@@ -68,6 +68,7 @@ HYPOTHETICAL_TRIGGERS = [
 # ---------------------------------------------------------------------------
 
 DISEASE_PATTERNS = [
+    r"\b(type\s+[12]\s+diabetes(?:\s+mellitus)?)\b",
     r"\b(diabetes(?:\s+mellitus)?(?:\s+type\s+[12])?)\b",
     r"\b(hypertension|high\s+blood\s+pressure)\b",
     r"\b(asthma|copd|emphysema|bronchitis)\b",
@@ -235,6 +236,7 @@ def extract_entities(transcription: str) -> list[dict]:
     text = transcription.lower()
     found_entities: list[dict] = []
     seen_terms: set[str] = set()  # deduplicate
+    covered_spans: list[tuple[str, int, int]] = []
 
     for entity_type, entity_patterns in patterns["entity"].items():
         for pat in entity_patterns:
@@ -243,6 +245,9 @@ def extract_entities(transcription: str) -> list[dict]:
                 normalized_term = re.sub(r"\s+", " ", term)
 
                 start, end = match.start(), match.end()
+                if any(kind == entity_type and start >= left and end <= right for kind, left, right in covered_spans):
+                    continue
+                covered_spans.append((entity_type, start, end))
 
                 # Keep family-history scope within the current sentence. A
                 # short fixed word window misses coordinated mentions such as
@@ -273,7 +278,7 @@ def extract_entities(transcription: str) -> list[dict]:
 
                 # Retain the same term when it occurs with different contexts
                 # (for example a family history followed by a patient finding).
-                entity_key = f"{normalized_term}|{is_family}|{is_negated}"
+                entity_key = f"{normalized_term}|{is_family}|{is_hypothetical}|{is_negated}"
                 if entity_key in seen_terms:
                     continue
                 seen_terms.add(entity_key)

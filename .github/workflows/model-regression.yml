@@ -1,0 +1,22 @@
+name: Clinical context regression
+on:
+  push:
+    paths: ["backend/app/nlp/**", "backend/evaluation/**", "backend/evaluate_context.py", "scripts/**", ".github/workflows/model-regression.yml"]
+  pull_request:
+    paths: ["backend/app/nlp/**", "backend/evaluation/**", "backend/evaluate_context.py", "scripts/**", ".github/workflows/model-regression.yml"]
+permissions:
+  contents: read
+jobs:
+  synthetic-context:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python backend/evaluate_context.py
+      - run: python -m unittest discover -s scripts -p "test_*.py"
+      - run: pip install pytest==8.2.2 pytest-asyncio==0.23.7
+      - run: python -m pytest backend/tests/test_nlp_pipeline.py --noconftest -q -k "not api"
+        env:
+          PYTHONPATH: backend

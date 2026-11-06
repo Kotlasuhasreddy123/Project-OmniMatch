@@ -1,5 +1,9 @@
 # OmniMatch — synthetic-data classroom prototype
 
+**Install locally:** [Windows, macOS and Linux instructions](docs/INSTALL_ON_YOUR_COMPUTER.md). No AWS account or paid API key is needed. [Which models are already trained, and on what data?](docs/MODELS_AND_DATA.md)
+
+The active learned models are pretrained Whisper (speech) and `all-MiniLM-L6-v2` (retrieval). Clinical extraction and eligibility checks use rules. This repository does not claim custom medical model training. Run `python backend/evaluate_context.py` for the reproducible synthetic context regression checks; see the model guide for the metric and its limits.
+
 ## Visual results upgrade
 
 The inbox now includes visit totals, review workload, a criterion-coverage chart and an interactive Recharts study comparison. Values are computed from inbox records, with a numerical list alongside the chart. The renewed local app also connects its overview to search filters. The interface uses system typography, soft teal accents and translucent navigation. Charts render locally; no remote chart service receives visit data. Open `/preview` to explore clearly labeled fictional display examples without signing in.

@@ -1,0 +1,59 @@
+{
+  "dataset_version": "1.0",
+  "dataset_sha256": "3a86692c735d51aa4288ac4e05569f1ad39e0e4ddc342a72bfad4521a110676d",
+  "rules_sha256": "0450ececf7876ca7ed9d3d6b189f6a4043d0c53d6664febc0323d7e7090249c3",
+  "provenance": "Authored synthetic regression fixtures; no patient records, recordings, registry studies or external training corpus.",
+  "case_count": 69,
+  "metric": "Expected target term present with the expected context and negation",
+  "correct": 70,
+  "total": 72,
+  "target_assertion_accuracy": 0.9722222222222222,
+  "by_context": {
+    "hypothetical": {
+      "correct": 17,
+      "total": 17
+    },
+    "patient": {
+      "correct": 19,
+      "total": 21
+    },
+    "family": {
+      "correct": 17,
+      "total": 17
+    },
+    "negated": {
+      "correct": 17,
+      "total": 17
+    }
+  },
+  "failures": [
+    {
+      "text": "If the patient develops asthma, arrange review. The patient has asthma.",
+      "expected": {
+        "term": "asthma",
+        "context": "patient",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "asthma",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "hypothetical",
+          "confidence": 0.68,
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "text": "The patient has type 2 diabetes.",
+      "expected": {
+        "term": "type 2 diabetes",
+        "context": "patient",
+        "negated": false
+      },
+      "actual_for_term": []
+    }
+  ],
+  "limits": "Synthetic regression checks on known vocabulary. Does not measure all extracted false positives, NER F1, speech accuracy, retrieval relevance or clinical validity. No weights are trained or fine-tuned."
+}
