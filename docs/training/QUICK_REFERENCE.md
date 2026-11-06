@@ -1,3 +1,5 @@
+> **Historical classroom guide — superseded November 2026.** Passwords, setup steps, score interpretations and referral behavior below are retained for project history and must not be used as current instructions. Use [the current installation guide](../INSTALL_ON_YOUR_COMPUTER.md), [email access setup](../PASSWORDLESS_ACCESS.md) and [release status](../PUBLIC_PORTAL_RELEASE.md).
+
 # OmniMatch — 1-Page Quick Reference Card
 
 ## Sign In
