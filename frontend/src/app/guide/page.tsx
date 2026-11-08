@@ -14,7 +14,7 @@ export default function GuidePage() {
           and current recruitment information. The review score helps order
           suggestions; it is not a probability of enrollment.
           The bundled study records are fictional. They are not past patient
-          cases or forecasts. For registry-backed records, check each study's
+          cases or forecasts. For registry-backed records, check each study’s
           listed locations and eligibility rules; a suggested study does not
           establish citizenship, travel or enrollment eligibility.
         </p>

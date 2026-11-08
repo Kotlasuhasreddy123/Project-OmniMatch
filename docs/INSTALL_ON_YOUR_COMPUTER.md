@@ -37,7 +37,7 @@ On Linux, fix Docker group/socket permissions using Docker's installation instru
 
 ## Open and use it
 
-Open http://localhost:3000. The backend is at http://localhost:8000/api/docs. See http://localhost:3000/preview for illustrative display data. Model warm-up can take longer than container startup; `--verify` requires Qdrant connectivity, the frontend, and a loaded Whisper model. If it fails during downloads, inspect logs and retry once warm-up completes.
+Open http://localhost:3000. The backend is at http://localhost:8000/api/docs. See http://localhost:3000/preview for illustrative display data. Model warm-up can take longer than container startup; `--verify` requires Qdrant connectivity, the frontend, a loaded Whisper model and configured WorkOS IDs. It does not verify actual email delivery. If it fails during downloads, inspect logs and retry once warm-up completes. For optional transformers, use `python scripts/setup_local.py --start --advanced` after reading [the local release checklist](LOCAL_RELEASE_CHECKLIST.md).
 
 Shared demonstration passwords have been removed. Configure owner-approved email access using [the passwordless setup guide](PASSWORDLESS_ACCESS.md) before opening a session. Blank WorkOS IDs keep protected functions disabled. You can view `/preview` without an account. Registration and email delivery require the external provider configuration; downloading the source does not automatically create an account.
 
@@ -66,7 +66,7 @@ Before an update, back up your demo data and record the old Git commit. Then:
 
 ```bash
 git pull --ff-only
-docker compose up -d --build
+docker compose --env-file backend/.env up -d --build
 ```
 
 Do not use `docker compose down -v` unless you intentionally want to remove the database, indexed studies and model cache. Named volumes preserve data across normal stops and rebuilds.
