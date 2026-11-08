@@ -38,7 +38,7 @@ Use the current repository root in PowerShell:
 
 ```powershell
 git pull --ff-only
-docker compose build backend frontend
+docker compose --env-file backend/.env build backend frontend
 ```
 
 Edit `backend/.env` and set:
@@ -57,6 +57,8 @@ docker compose ps
 ```
 
 The model cache is in the persistent backend data volume. The first download can take several minutes and needs several GB of free disk. Start with 16 GB system memory and enough memory assigned to Docker; the basic low-memory AWS free-tier machine is not an appropriate expectation for all these models. These are planning requirements, not a measured cloud capacity guarantee. No GPU or paid inference API is required.
+
+Alternatively, `python scripts/setup_local.py --start --advanced` enables this setting, builds the images, prepares weights and starts the services. Add `--project-name` with the existing Compose project name when upgrading an older installation. The runtime keeps only two optional models cached in memory and loads others as needed. This trades some switching time for lower model residency; it does not cap total application memory.
 
 Open `http://localhost:3000/research`, sign in, and refresh the page after model preparation. With a development frontend, use its actual port, such as `http://localhost:3013/research`. The setup panel stays visible when required dependencies or cached model files are missing. The feature defaults to disabled and never returns fabricated model predictions when setup is incomplete.
 
