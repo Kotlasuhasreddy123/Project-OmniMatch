@@ -52,3 +52,17 @@ Back up the database and Qdrant before upgrading. Never run `docker compose down
 - Do not submit real patient information. Synthetic fixture studies cannot accept referrals. The public GitHub Pages site is an access/install portal; Python inference runs on the local installation.
 
 Use [the installation guide](INSTALL_ON_YOUR_COMPUTER.md) for details and [the AWS guide](AWS_DEPLOYMENT.md) if you later choose cloud hosting. No paid cloud resources are created by these local commands.
+
+## Verification record — November 8, 2026
+
+- Frontend: 67 tests passed; TypeScript checks passed.
+- Backend: 211 tests passed on GitHub's Linux runner, one optional test skipped and the known broad NLP target recorded as an expected failure.
+- Real pinned CPU transformer evaluation and authenticated API checks passed separately. The evidence file records the new run after the memory-cache change. These checks are not live WorkOS or clinical validation.
+- Five focused lifecycle checks passed locally, including a repeated migration of a legacy database.
+- The fresh local Docker rebuild stopped when the Windows C: drive reached 0 bytes free. Docker returned an EOF/502 error. The upgraded local stack has not passed its full rehearsal.
+- A SQLite backup was made inside the existing data volume before stopping the old frontend/backend. A Qdrant snapshot was also created. No database volumes were deleted.
+- Automatic approval review blocked deletion of generated build caches. No cleanup was performed.
+
+Before resuming locally, free at least 20–25 GB through Windows Storage settings or move files you choose to another drive. Preserve project folders and Docker data volumes. Restart Docker Desktop, then use the existing-installation command above. Do not assume the old frontend/backend are running: they were stopped before the attempted upgrade.
+
+WorkOS IDs remain blank until the owner configures them. Complete an approved-account email sign-in and the demonstration checklist after disk recovery. User acceptance, deployment and the unmet medical-accuracy target remain in progress.
