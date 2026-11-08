@@ -13,6 +13,8 @@ import { buildEvidenceSpans } from "@/lib/evidence";
 import { getOrCreateSessionId, clearSessionId } from "@/lib/session";
 import type { ClinicalEntity } from "@/types";
 import { AlertCircle } from "lucide-react";
+import { PatientIdentity } from "@/components/PatientIdentity/PatientIdentity";
+import { getPatientLabel, patientLabelKey, PATIENT_LABEL_PATTERN } from "@/lib/patient";
 
 export default function VerifyPage() {
   const router = useRouter();
@@ -37,15 +39,23 @@ export default function VerifyPage() {
 
   const handleSubmit = async (approvedEntities: ClinicalEntity[]) => {
     if (!sessionId) return;
+    const patientLabel = getPatientLabel(sessionId);
+    if (!PATIENT_LABEL_PATTERN.test(patientLabel)) {
+      setError("Enter a demo patient ID such as DEMO-001 before sending this visit.");
+      return;
+    }
     setIsSubmitting(true);
     setError(null);
     try {
       const transcript = sessionStorage.getItem("omni_transcription") ?? "";
       const evidenceSpans = await buildEvidenceSpans(transcript, approvedEntities);
       await recordEvidenceLedger(sessionId, approvedEntities, evidenceSpans);
-      await completeSession(sessionId, approvedEntities, evidenceSpans);
+      await completeSession(sessionId, approvedEntities, evidenceSpans, patientLabel);
+      sessionStorage.setItem("omni_pending_visit", JSON.stringify({ sessionId, patientLabel, submittedAt: Date.now() }));
       sessionStorage.removeItem("omni_entities");
       sessionStorage.removeItem("omni_transcription");
+      sessionStorage.removeItem("omni_word_confidences");
+      sessionStorage.removeItem(patientLabelKey(sessionId));
       clearSessionId();
       router.push("/inbox");
     } catch (err) {
@@ -66,7 +76,7 @@ export default function VerifyPage() {
     );
   }
 
-  if (entities.length === 0) {
+  if (entities.length === 0 && !sessionStorage.getItem("omni_transcription")) {
     return (
       <div className="flex flex-col items-center justify-center py-16 gap-4">
         <AlertCircle className="h-12 w-12 text-amber-400" aria-hidden="true" />
@@ -85,6 +95,7 @@ export default function VerifyPage() {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <div className="mb-5"><PatientIdentity sessionId={sessionId} /></div>
       {error && (
         <div
           role="alert"

@@ -176,6 +176,8 @@ export interface MatchSearchResponse {
 // ---------------------------------------------------------------------------
 
 export interface InboxItem {
+  patient_pseudo?: string | null;
+  archived_at?: string | null;
   id: string;
   session_id: string;
   created_at: string;
@@ -235,6 +237,7 @@ export interface TimelineEntry {
 }
 
 export interface PatientTimelineResponse {
+  visits?: { session_id: string; created_at: string; approved_terms: string[]; study_count: number; reviewed: boolean; archived: boolean }[];
   patient_pseudo: string;
   entries: TimelineEntry[];
   total_entities: number;

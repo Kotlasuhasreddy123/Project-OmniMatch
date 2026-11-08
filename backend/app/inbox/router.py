@@ -40,6 +40,7 @@ async def _run_matching_and_store(
     approved_entities: list[ClinicalEntity],
     evidence_spans: list[EvidenceSpan],
     db_path: str,
+    patient_pseudo: str | None = None,
 ) -> None:
     """Background task: run trial matching and write results to the inbox.
 
@@ -65,12 +66,8 @@ async def _run_matching_and_store(
             and e.context == "patient"
         ]
 
-        if not approved_terms:
-            logger.warning("Session %s: no approved entities to match.", session_id)
-            return
-
         qdrant = get_qdrant_service()
-        raw_matches = await qdrant.search(approved_terms)
+        raw_matches = await qdrant.search(approved_terms) if approved_terms else []
         approved_lower = [t.lower() for t in approved_terms]
         approved_spans = approved_evidence_spans(approved_entities, evidence_spans)
 
@@ -101,6 +98,7 @@ async def _run_matching_and_store(
             ]
             locations = m.get("locations", [])
             trial_matches.append(TrialMatch(
+                retrieval_method=m.get("retrieval_method", "semantic"),
                 nct_id=m["nct_id"],
                 title=m["title"],
                 score=m["score"],
@@ -125,20 +123,34 @@ async def _run_matching_and_store(
         inbox_id = str(uuid.uuid4())
         now = datetime.now(timezone.utc).isoformat()
         matches_json = json.dumps([m.model_dump() for m in trial_matches])
-        entities_json = json.dumps([e.term for e in approved_entities
-                                    if e.status == EntityStatus.APPROVED])
+        entities_json = json.dumps(approved_terms)
 
         async with aiosqlite.connect(db_path) as db:
+            # Serialize completion retries without changing historical records.
+            await db.execute('BEGIN IMMEDIATE')
+            existing = await db.execute('SELECT id FROM inbox_items WHERE session_id = ?', (session_id,))
+            if await existing.fetchone():
+                await db.rollback()
+                return
             await db.execute(
                 """
                 INSERT INTO inbox_items
-                    (id, session_id, created_at, status, matches_json, approved_entities)
-                VALUES (?, ?, ?, ?, ?, ?)
+                    (id, session_id, created_at, status, matches_json, approved_entities, patient_pseudo)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
                 (inbox_id, session_id, now, InboxStatus.UNREAD.value,
-                 matches_json, entities_json),
+                 matches_json, entities_json, patient_pseudo),
             )
             await db.commit()
+
+        if patient_pseudo:
+            from app.timeline.timeline_service import ensure_timeline_table, upsert_patient_entities
+            await ensure_timeline_table()
+            await upsert_patient_entities(
+                patient_pseudo, session_id,
+                [e.model_dump() for e in approved_entities
+                 if e.status == EntityStatus.APPROVED and not e.negated and e.context == "patient"],
+            )
 
         logger.info(
             "Inbox item %s created for session %s with %d matches.",
@@ -162,7 +174,7 @@ async def complete_session(
     session_id: str,
     body: SessionCompleteRequest,
     background_tasks: BackgroundTasks,
-    current_user: TokenPayload = Depends(get_current_user),
+    current_user: TokenPayload = Depends(require_role(INBOX_ROLES)),
 ) -> SessionCompleteResponse:
     """Mark a visit session as complete and trigger asynchronous trial matching.
 
@@ -180,12 +192,16 @@ async def complete_session(
     """
     from app.config import settings as app_settings
 
+    if body.session_id != session_id:
+        raise HTTPException(status_code=400, detail="The visit ID in the address and request must match.")
+
     background_tasks.add_task(
         _run_matching_and_store,
         session_id=session_id,
         approved_entities=body.approved_entities,
         evidence_spans=body.evidence_spans,
         db_path=app_settings.sqlite_db_path,
+        patient_pseudo=body.patient_pseudo,
     )
 
     return SessionCompleteResponse(
@@ -205,6 +221,7 @@ async def complete_session(
     status_code=status.HTTP_200_OK,
 )
 async def list_inbox(
+    include_archived: bool = False,
     current_user: TokenPayload = Depends(require_role(INBOX_ROLES)),
     db: aiosqlite.Connection = Depends(get_db),
 ) -> InboxListResponse:
@@ -220,7 +237,8 @@ async def list_inbox(
         InboxListResponse with items sorted by created_at descending.
     """
     async with db.execute(
-        "SELECT * FROM inbox_items ORDER BY created_at DESC"
+        "SELECT * FROM inbox_items WHERE (? OR archived_at IS NULL) ORDER BY created_at DESC",
+        (include_archived,),
     ) as cur:
         rows = await cur.fetchall()
 
@@ -233,11 +251,13 @@ async def list_inbox(
             session_id=row["session_id"],
             created_at=datetime.fromisoformat(row["created_at"]),
             status=InboxStatus(row["status"]),
+            archived_at=row["archived_at"],
             matches=[TrialMatch(**m) for m in matches_data],
             approved_entities=entities_data,
+            patient_pseudo=row["patient_pseudo"],
         ))
 
-    unread = sum(1 for i in items if i.status == InboxStatus.UNREAD)
+    unread = sum(1 for i in items if i.status == InboxStatus.UNREAD and i.archived_at is None)
     return InboxListResponse(items=items, total=len(items), unread_count=unread)
 
 
@@ -279,8 +299,10 @@ async def get_inbox_item(
         session_id=row["session_id"],
         created_at=datetime.fromisoformat(row["created_at"]),
         status=InboxStatus(row["status"]),
+        archived_at=row["archived_at"],
         matches=[TrialMatch(**m) for m in matches_data],
         approved_entities=entities_data,
+        patient_pseudo=row["patient_pseudo"],
     )
 
 
@@ -317,3 +339,44 @@ async def mark_reviewed(
     )
     await db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/inbox/{item_id}/archive", status_code=204)
+async def archive_item(
+    item_id: str,
+    current_user: TokenPayload = Depends(require_role(INBOX_ROLES)),
+    db: aiosqlite.Connection = Depends(get_db),
+) -> Response:
+    """Hide a reviewed item without deleting its result or patient history."""
+    async with db.execute("SELECT session_id, status, archived_at FROM inbox_items WHERE id = ?", (item_id,)) as cur:
+        row = await cur.fetchone()
+    if row is None:
+        raise HTTPException(404, "This inbox item was not found.")
+    if row["status"] != InboxStatus.REVIEWED.value:
+        raise HTTPException(409, "Mark this visit as reviewed before archiving it.")
+    if row["archived_at"] is None:
+        now = datetime.now(timezone.utc).isoformat()
+        await db.execute("UPDATE inbox_items SET archived_at = ? WHERE id = ?", (now, item_id))
+        await db.execute("INSERT INTO audit_log (id,session_id,user_id,action,timestamp,ip_address) VALUES (?,?,?,?,?,?)",
+                         (str(uuid.uuid4()), row["session_id"], current_user.sub, "INBOX_ARCHIVED", now, "internal"))
+        await db.commit()
+    return Response(status_code=204)
+
+
+@router.post("/inbox/{item_id}/restore", status_code=204)
+async def restore_item(
+    item_id: str,
+    current_user: TokenPayload = Depends(require_role(INBOX_ROLES)),
+    db: aiosqlite.Connection = Depends(get_db),
+) -> Response:
+    async with db.execute("SELECT session_id, archived_at FROM inbox_items WHERE id = ?", (item_id,)) as cur:
+        row = await cur.fetchone()
+    if row is None:
+        raise HTTPException(404, "This inbox item was not found.")
+    if row["archived_at"] is not None:
+        now = datetime.now(timezone.utc).isoformat()
+        await db.execute("UPDATE inbox_items SET archived_at = NULL WHERE id = ?", (item_id,))
+        await db.execute("INSERT INTO audit_log (id,session_id,user_id,action,timestamp,ip_address) VALUES (?,?,?,?,?,?)",
+                         (str(uuid.uuid4()), row["session_id"], current_user.sub, "INBOX_RESTORED", now, "internal"))
+        await db.commit()
+    return Response(status_code=204)

@@ -38,7 +38,7 @@ Use the current repository root in PowerShell:
 
 ```powershell
 git pull --ff-only
-docker compose build backend frontend
+docker compose --env-file backend/.env build backend frontend
 ```
 
 Edit `backend/.env` and set:
@@ -58,9 +58,11 @@ docker compose ps
 
 The model cache is in the persistent backend data volume. The first download can take several minutes and needs several GB of free disk. Start with 16 GB system memory and enough memory assigned to Docker; the basic low-memory AWS free-tier machine is not an appropriate expectation for all these models. These are planning requirements, not a measured cloud capacity guarantee. No GPU or paid inference API is required.
 
+Alternatively, `python scripts/setup_local.py --start --advanced` enables this setting, builds the images, prepares weights and starts the services. Add `--project-name` with the existing Compose project name when upgrading an older installation. The runtime keeps only two optional models cached in memory and loads others as needed. This trades some switching time for lower model residency; it does not cap total application memory.
+
 Open `http://localhost:3000/research`, sign in, and refresh the page after model preparation. With a development frontend, use its actual port, such as `http://localhost:3013/research`. The setup panel stays visible when required dependencies or cached model files are missing. The feature defaults to disabled and never returns fabricated model predictions when setup is incomplete.
 
-Docker Desktop was stopped during this development run. The real models were executed locally in Python; this Docker setup still needs a fresh local rehearsal on the deployment machine.
+The refreshed real models passed the Linux CPU evaluation and authenticated API checks on GitHub on November 8, 2026. The attempted full Docker rebuild on the laptop stopped when C: ran out of disk space; the upgraded local stack still needs its rehearsal after recovery. See [the release checklist](LOCAL_RELEASE_CHECKLIST.md). This is separate from the successful model evaluation.
 
 ## Reproduce the offline model evaluation
 

@@ -1,6 +1,8 @@
 """Lazy CPU-only transformer inference. Missing weights never become fake results."""
 from __future__ import annotations
 from functools import lru_cache
+from collections import OrderedDict
+import gc
 from .model_registry import MODELS
 
 
@@ -9,13 +11,22 @@ class ModelUnavailable(RuntimeError):
 
 
 class LocalTransformers:
-    def __init__(self, local_only=True):
+    def __init__(self, local_only=True, max_models=2):
+        if max_models < 1:
+            raise ValueError('max_models must be positive')
         self.local_only = local_only
-        self.loaded = {}
+        self.max_models = max_models
+        self.loaded = OrderedDict()
 
     def load(self, kind):
         if kind in self.loaded:
+            self.loaded.move_to_end(kind)
             return self.loaded[kind]
+        # The API serializes inference. Release the least recently used weights
+        # before allocating another model on memory-limited laptops.
+        while len(self.loaded) >= self.max_models:
+            self.loaded.popitem(last=False)
+            gc.collect()
         try:
             import torch
             from transformers import (AutoTokenizer, AutoModel, AutoModelForTokenClassification,

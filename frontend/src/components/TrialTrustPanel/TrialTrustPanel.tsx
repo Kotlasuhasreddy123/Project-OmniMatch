@@ -28,7 +28,7 @@ export function TrialTrustPanel({ freshness, criterionEvidence }: TrialTrustPane
       <div className={clsx("rounded-lg border p-3", color)}>
         <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
           <Icon className="h-4 w-4" aria-hidden="true" />
-          Outreach Gate {freshness.level}
+          {freshness.level === 'BLOCKED' ? 'Referral unavailable' : freshness.level === 'REVIEW' ? 'Check study details before contacting' : 'Registry checks passed — staff review required'}
         </h4>
         <p className="mt-1 text-sm">{freshness.reason}</p>
         <p className="mt-1 text-xs">Recommended action: {freshness.recommended_action.replaceAll("_", " ")}</p>

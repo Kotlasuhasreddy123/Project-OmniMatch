@@ -105,12 +105,13 @@ class TranscriptionResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 class ClinicalEntity(BaseModel):
-    term: str
+    term: str = Field(..., min_length=1, max_length=256)
     entity_type: EntityType
     negated: bool = False
     context: Literal["patient", "family", "hypothetical"] = "patient"
     confidence: float = Field(..., ge=0.0, le=1.0)
     status: EntityStatus = EntityStatus.PENDING
+    source: Literal["transcript", "manual", "history", "rules", "biomedical_transformer"] = "transcript"
 
 
 # ---------------------------------------------------------------------------
@@ -183,6 +184,7 @@ class MatchSearchRequest(BaseModel):
 
 
 class TrialMatch(BaseModel):
+    retrieval_method: Literal["semantic", "exact_condition"] = "semantic"
     nct_id: str
     title: str
     score: float = Field(..., ge=0.0, le=1.0)
@@ -231,8 +233,10 @@ class InboxItem(BaseModel):
     session_id: str
     created_at: datetime
     status: InboxStatus = InboxStatus.UNREAD
+    archived_at: datetime | None = None
     matches: list[TrialMatch]
     approved_entities: list[str]    # terms only, for display
+    patient_pseudo: str | None = None
 
 
 class InboxListResponse(BaseModel):
@@ -260,6 +264,10 @@ class SessionCompleteRequest(BaseModel):
     session_id: str
     approved_entities: list[ClinicalEntity]
     evidence_spans: list[EvidenceSpan] = Field(default_factory=list)
+    patient_pseudo: str | None = Field(
+        default=None, pattern=r"^DEMO-[A-Z0-9][A-Z0-9_-]{0,39}$",
+        description="Fictional patient label such as DEMO-001, never a real patient identifier.",
+    )
 
 
 class SessionCompleteResponse(BaseModel):
@@ -313,8 +321,18 @@ class TimelineEntry(BaseModel):
     session_id: str
 
 
+class TimelineVisit(BaseModel):
+    session_id: str
+    created_at: datetime
+    approved_terms: list[str]
+    study_count: int
+    reviewed: bool
+    archived: bool
+
+
 class PatientTimelineResponse(BaseModel):
     patient_pseudo: str
     entries: list[TimelineEntry]
+    visits: list[TimelineVisit] = Field(default_factory=list)
     total_entities: int
     unlock_events: list[dict] = Field(default_factory=list)

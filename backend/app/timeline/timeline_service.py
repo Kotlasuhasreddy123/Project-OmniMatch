@@ -1,16 +1,4 @@
-"""Longitudinal Patient Visit Timeline — NEW FEATURE differentiating OmniMatch.
-
-ALL existing ambient systems (Nuance DAX, Abridge, TrialMatchAI, PRISM) operate
-on single-session data. OmniMatch accumulates approved entities across multiple
-visits for the same pseudonymized patient, enabling:
-
-  1. Cross-visit entity merging (entity mentioned in visit 1 persists to visit 3)
-  2. "Eligibility Unlock" detection — when a new visit fills a previously-missing
-     criterion for an already-matched trial
-  3. A timeline view in the Inbox showing when each condition was first mentioned
-
-This is a capability gap identified in all reviewed literature as of 2025.
-"""
+"""Approved-term history for fictional patients, not a diagnosis or a new match query."""
 
 from __future__ import annotations
 
@@ -49,6 +37,10 @@ async def ensure_timeline_table() -> None:
     async with aiosqlite.connect(settings.sqlite_db_path) as db:
         await db.execute(CREATE_TIMELINE_TABLE)
         await db.execute(CREATE_TIMELINE_INDEX)
+        await db.execute("""CREATE TABLE IF NOT EXISTS timeline_visit_entities (
+            patient_pseudo TEXT NOT NULL, session_id TEXT NOT NULL, entity_term TEXT NOT NULL,
+            PRIMARY KEY (patient_pseudo, session_id, entity_term)
+        )""")
         await db.commit()
 
 
@@ -73,6 +65,14 @@ async def upsert_patient_entities(
         for entity in approved_entities:
             term = entity.get("term", "").lower().strip()
             if not term:
+                continue
+
+            # A retry of the same visit must not inflate the visit count.
+            recorded = await db.execute(
+                "INSERT OR IGNORE INTO timeline_visit_entities VALUES (?, ?, ?)",
+                (patient_pseudo, session_id, term),
+            )
+            if recorded.rowcount == 0:
                 continue
 
             async with db.execute(

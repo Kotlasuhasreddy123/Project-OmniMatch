@@ -1,9 +1,7 @@
 'use client';
 
 /**
- * Patient Timeline page — NEW FEATURE 3
- * Shows longitudinal entity history across all visits for a patient.
- * No existing ambient or trial-matching system offers this capability.
+ * Approved terms from fictional visits sharing a patient label.
  */
 
 import { useState, useEffect } from "react";
@@ -22,8 +20,8 @@ const TYPE_COLORS: Record<string, string> = {
 
 function TimelineEntryCard({ entry }: { entry: TimelineEntry }) {
   const typeColor = TYPE_COLORS[entry.entity_type] ?? "bg-gray-100 text-gray-600";
-  const firstSeen = new Date(entry.first_seen).toLocaleDateString();
-  const lastSeen = new Date(entry.last_seen).toLocaleDateString();
+  const firstSeen = new Date(entry.first_seen).toLocaleString();
+  const lastSeen = new Date(entry.last_seen).toLocaleString();
   const isRecurring = entry.mention_count > 1;
 
   return (
@@ -52,15 +50,15 @@ function TimelineEntryCard({ entry }: { entry: TimelineEntry }) {
         <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-500">
           <span className="flex items-center gap-1">
             <Clock className="h-3 w-3" aria-hidden="true" />
-            First: {firstSeen}
+            First recorded for this term: {firstSeen}
           </span>
-          {firstSeen !== lastSeen && (
+          {isRecurring && (
             <span className="flex items-center gap-1">
               <Clock className="h-3 w-3" aria-hidden="true" />
-              Last: {lastSeen}
+              Most recently recorded: {lastSeen}
             </span>
           )}
-          <span className="text-gray-400">Session: {entry.session_id}</span>
+          <span className="break-all text-gray-500">First session for this term: {entry.session_id}</span>
         </div>
       </div>
 
@@ -86,10 +84,23 @@ export default function TimelinePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const linkedPatient = new URLSearchParams(window.location.search).get("patient");
+    const initial = linkedPatient ?? sessionStorage.getItem("omni_last_patient") ?? "";
+    setQuery(initial);
+    if (linkedPatient) {
+      setLoading(true);
+      getPatientTimeline(linkedPatient).then((result) => { setTimeline(result); setPatientPseudo(linkedPatient); })
+        .catch((err) => setError(err instanceof Error ? err.message : "Could not load history. Sign in and try again."))
+        .finally(() => setLoading(false));
+    }
+  }, []);
+
   const handleSearch = async () => {
     if (!query.trim()) return;
     setLoading(true);
     setError(null);
+    setTimeline(null);
     try {
       const result = await getPatientTimeline(query.trim());
       setTimeline(result);
@@ -115,24 +126,23 @@ export default function TimelinePage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Patient Visit Timeline</h1>
         <p className="mt-1 text-sm text-gray-500">
-          View cumulative clinical entities across all visit sessions for a patient.
-          This longitudinal view is unique to OmniMatch — no single-session system provides this.
+          See each visit and its approved terms under the same patient ID. A new symptom is first recorded in the visit where it was added, even if another visit happened earlier on the same day.
         </p>
       </div>
 
       {/* Search */}
       <div className="flex gap-3">
         <div className="flex-1">
-          <label htmlFor="patient-search" className="sr-only">Patient pseudonym</label>
+          <label htmlFor="patient-search" className="block text-sm font-medium mb-1">Demo patient ID</label>
           <input
             id="patient-search"
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => setQuery(e.target.value.toUpperCase())}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            placeholder="Enter patient pseudonym (e.g. REDACTED or session-derived ID)"
+            placeholder="Use the label from the visit, for example DEMO-001"
             className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-            aria-label="Patient pseudonym search"
+            aria-label="Demo patient ID search"
           />
         </div>
         <button
@@ -145,16 +155,32 @@ export default function TimelinePage() {
           {loading ? "Loading…" : "Search"}
         </button>
       </div>
+      <p className="text-sm text-gray-600">Enter this label on New Session before sending each visit. The session ID is different for every visit. Older inbox records were not linked to a patient, and we have kept them unchanged.</p>
 
       {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
 
       {timeline && (
         <div className="space-y-6" aria-label={`Timeline for ${patientPseudo}`}>
+          <h2 className="text-lg font-semibold">Approved history for {patientPseudo}</h2>
+          <div className="rounded-xl border border-blue-200 bg-white p-4 space-y-2">
+            <a href={`/session?patient=${encodeURIComponent(patientPseudo)}`} className="inline-block rounded bg-blue-600 px-4 py-2 text-sm text-white focus-visible:ring-2 focus-visible:ring-blue-500">Record follow-up or add a written update</a>
+            <p className="text-sm text-gray-600">Use the same patient ID. On the review screen, select Load previous approved terms if you want to include relevant history, then approve it again. Earlier visits stay unchanged.</p>
+          </div>
+          <section aria-label="Visits in time order" className="space-y-3">
+            <h2 className="font-semibold">Visits in time order ({timeline.visits?.length ?? 0})</h2>
+            {(timeline.visits ?? []).map((visit, index) => <article key={visit.session_id} className="rounded-xl border bg-white p-4 space-y-1">
+              <h3 className="font-semibold">Visit {index + 1} · {new Date(visit.created_at).toLocaleString()}</h3>
+              <p className="text-sm">Approved terms: {visit.approved_terms.join(", ") || "None"}</p>
+              <p className="text-sm text-gray-600">{visit.study_count} study suggestion{visit.study_count === 1 ? "" : "s"} · {visit.reviewed ? "Reviewed" : "Awaiting review"}{visit.archived ? " · Archived from inbox" : ""}</p>
+              <p className="break-all text-xs text-gray-500">Session: {visit.session_id}</p>
+            </article>)}
+          </section>
+          {timeline.entries.length === 0 && <p role="status" className="rounded-lg border border-gray-200 bg-white p-4">No approved terms saved for this ID yet. Complete and send a visit using this exact label, then search again. Recording alone does not save a timeline entry.</p>}
           {/* Summary */}
           <div className="flex flex-wrap gap-4">
             <div className="rounded-xl border border-gray-200 bg-white px-5 py-4">
               <p className="text-2xl font-bold text-gray-900">{timeline.total_entities}</p>
-              <p className="text-sm text-gray-500">Total unique entities</p>
+              <p className="text-sm text-gray-500">Distinct approved terms</p>
             </div>
             <div className="rounded-xl border border-gray-200 bg-white px-5 py-4">
               <p className="text-2xl font-bold text-blue-600">
@@ -195,8 +221,8 @@ export default function TimelinePage() {
       {!timeline && !loading && (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 py-16 text-center">
           <Clock className="h-12 w-12 text-gray-300" aria-hidden="true" />
-          <p className="mt-3 text-base font-medium text-gray-500">Enter a patient pseudonym to view their visit timeline</p>
-          <p className="mt-1 text-sm text-gray-400">Entities accumulate across multiple sessions, unlocking richer trial matching over time.</p>
+          <p className="mt-3 text-base font-medium text-gray-600">Find a fictional patient using the label you entered for the visit</p>
+          <p className="mt-1 text-sm text-gray-600">For example DEMO-001. Use the same label on a second visit to build a shared history.</p>
         </div>
       )}
     </div>
