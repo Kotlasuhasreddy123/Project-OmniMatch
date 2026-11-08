@@ -1,0 +1,1009 @@
+{
+  "provenance": "Author-created synthetic development fixtures. No real patient notes, conversations, registry enrollment or clinical validation. No model fitting uses these cases.",
+  "models": {
+    "ner": {
+      "id": "blaze999/Medical-NER",
+      "revision": "a9d5061193e969de80b24225f926cb224caac1ce"
+    },
+    "sentiment": {
+      "id": "lxyuan/distilbert-base-multilingual-cased-sentiments-student",
+      "revision": "cf991100d706c13c0a080c097134c05b7f436c45"
+    },
+    "assertion": {
+      "id": "cross-encoder/nli-MiniLM2-L6-H768",
+      "revision": "b95119ce93d3e065de6214e38cd4a97b0f2f2c6d"
+    },
+    "reranker": {
+      "id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+    },
+    "generator": {
+      "id": "google/flan-t5-small",
+      "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab"
+    },
+    "embedding": {
+      "id": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+    }
+  },
+  "fixtures_sha256": "f0d1055a879fad08c25145be4b8b85b625434c4f408bb346505d045e7241ba60",
+  "service_sha256": {
+    "runtime.py": "91dd2e5247be615b6b1352774b6c965e5002113a1b31b16213937c5651ff5eca",
+    "analysis_service.py": "82eee1eeeddc86c8e787b54abeb1b505142af763b74d50d098223f8b49d8b91a",
+    "rag_service.py": "27fe05a354d0d8887e3f1c43f75e4ebb797d16b157bdac56b25394ab8921ae7e",
+    "model_registry.py": "ffa92184dad3f2a3f8a66a95e55416329ecb0cc488a3fb721d273a90ae36af48"
+  },
+  "python": "3.14.4",
+  "torch": "2.13.0+cpu",
+  "transformers": "4.57.6",
+  "device": "cpu",
+  "threads": 4,
+  "fine_tuned_here": false,
+  "overall_medical_accuracy_98_validated": false,
+  "target_term_context": {
+    "rules": {
+      "correct": 6,
+      "total": 12,
+      "fraction": 0.5
+    },
+    "hybrid": {
+      "correct": 9,
+      "total": 12,
+      "fraction": 0.75
+    },
+    "cases": [
+      {
+        "text": "The fictional patient has bronchiectasis and takes albuterol.",
+        "expected": {
+          "term": "bronchiectasis",
+          "context": "patient",
+          "negated": false
+        },
+        "rule_target_found": false,
+        "hybrid_target_found": true
+      },
+      {
+        "text": "The patient denies dysautonomia.",
+        "expected": {
+          "term": "dysautonomia",
+          "context": "patient",
+          "negated": true
+        },
+        "rule_target_found": false,
+        "hybrid_target_found": true
+      },
+      {
+        "text": "Her mother had endometriosis.",
+        "expected": {
+          "term": "endometriosis",
+          "context": "family",
+          "negated": false
+        },
+        "rule_target_found": false,
+        "hybrid_target_found": false
+      },
+      {
+        "text": "Possible scleroderma needs further review.",
+        "expected": {
+          "term": "scleroderma",
+          "context": "hypothetical",
+          "negated": false
+        },
+        "rule_target_found": false,
+        "hybrid_target_found": false
+      },
+      {
+        "text": "A fictional patient was diagnosed with pneumonia and received amoxicillin.",
+        "expected": {
+          "term": "pneumonia",
+          "context": "patient",
+          "negated": false
+        },
+        "rule_target_found": true,
+        "hybrid_target_found": true
+      },
+      {
+        "text": "A fictional patient was diagnosed with pneumonia and received amoxicillin.",
+        "expected": {
+          "term": "amoxicillin",
+          "context": "patient",
+          "negated": false
+        },
+        "rule_target_found": true,
+        "hybrid_target_found": true
+      },
+      {
+        "text": "Patient has asthma but denies COPD.",
+        "expected": {
+          "term": "asthma",
+          "context": "patient",
+          "negated": false
+        },
+        "rule_target_found": true,
+        "hybrid_target_found": true
+      },
+      {
+        "text": "Patient has asthma but denies COPD.",
+        "expected": {
+          "term": "COPD",
+          "context": "patient",
+          "negated": true
+        },
+        "rule_target_found": true,
+        "hybrid_target_found": true
+      },
+      {
+        "text": "The patient has celiac disease. Her father had Parkinson disease.",
+        "expected": {
+          "term": "celiac disease",
+          "context": "patient",
+          "negated": false
+        },
+        "rule_target_found": false,
+        "hybrid_target_found": true
+      },
+      {
+        "text": "The patient has celiac disease. Her father had Parkinson disease.",
+        "expected": {
+          "term": "Parkinson disease",
+          "context": "family",
+          "negated": false
+        },
+        "rule_target_found": false,
+        "hybrid_target_found": false
+      },
+      {
+        "text": "No history of thyroid disease. The patient takes metformin.",
+        "expected": {
+          "term": "thyroid disease",
+          "context": "patient",
+          "negated": true
+        },
+        "rule_target_found": true,
+        "hybrid_target_found": true
+      },
+      {
+        "text": "No history of thyroid disease. The patient takes metformin.",
+        "expected": {
+          "term": "metformin",
+          "context": "patient",
+          "negated": false
+        },
+        "rule_target_found": true,
+        "hybrid_target_found": true
+      }
+    ],
+    "limits": "Expected target presence only, not full NER precision/recall/F1. Sparse author-created English examples."
+  },
+  "nli_assertion": {
+    "correct": 9,
+    "total": 12,
+    "fraction": 0.75,
+    "cases": [
+      {
+        "text": "The patient has asthma.",
+        "term": "asthma",
+        "label": "patient",
+        "prediction": "patient",
+        "scores": {
+          "patient": 0.9929192662239075,
+          "negated": 0.0005809706053696573,
+          "family": 0.003387270960956812,
+          "hypothetical": 0.4391903579235077
+        },
+        "correct": true
+      },
+      {
+        "text": "The patient denies asthma.",
+        "term": "asthma",
+        "label": "negated",
+        "prediction": "negated",
+        "scores": {
+          "patient": 0.017522580921649933,
+          "negated": 0.9657968282699585,
+          "family": 0.01385339442640543,
+          "hypothetical": 0.5321900844573975
+        },
+        "correct": true
+      },
+      {
+        "text": "The patient's mother had asthma.",
+        "term": "asthma",
+        "label": "family",
+        "prediction": "patient",
+        "scores": {
+          "patient": 0.8717291951179504,
+          "negated": 0.010391485877335072,
+          "family": 0.39445367455482483,
+          "hypothetical": 0.23655274510383606
+        },
+        "correct": false
+      },
+      {
+        "text": "It is possible that the patient has asthma, but this is not confirmed.",
+        "term": "asthma",
+        "label": "hypothetical",
+        "prediction": "hypothetical",
+        "scores": {
+          "patient": 0.6459397673606873,
+          "negated": 0.019085081294178963,
+          "family": 0.005881528835743666,
+          "hypothetical": 0.9648991227149963
+        },
+        "correct": true
+      },
+      {
+        "text": "No history of diabetes in this patient.",
+        "term": "diabetes",
+        "label": "negated",
+        "prediction": "negated",
+        "scores": {
+          "patient": 0.008747673593461514,
+          "negated": 0.9791592359542847,
+          "family": 0.01208490040153265,
+          "hypothetical": 0.10224660485982895
+        },
+        "correct": true
+      },
+      {
+        "text": "The patient currently takes metformin.",
+        "term": "metformin",
+        "label": "patient",
+        "prediction": "patient",
+        "scores": {
+          "patient": 0.9904486536979675,
+          "negated": 0.0005695406580343843,
+          "family": 0.0024370201863348484,
+          "hypothetical": 0.1991146057844162
+        },
+        "correct": true
+      },
+      {
+        "text": "The patient's father had a stroke; no stroke was reported in the patient.",
+        "term": "stroke",
+        "label": "family",
+        "prediction": "family",
+        "scores": {
+          "patient": 0.03321998193860054,
+          "negated": 0.8923837542533875,
+          "family": 0.9175490736961365,
+          "hypothetical": 0.17079545557498932
+        },
+        "correct": true
+      },
+      {
+        "text": "Pneumonia cannot be excluded pending further tests.",
+        "term": "pneumonia",
+        "label": "hypothetical",
+        "prediction": "patient",
+        "scores": {
+          "patient": 0.851140022277832,
+          "negated": 0.004998371005058289,
+          "family": 0.007519732695072889,
+          "hypothetical": 0.7539240121841431
+        },
+        "correct": false
+      },
+      {
+        "text": "The patient was diagnosed with bronchiectasis.",
+        "term": "bronchiectasis",
+        "label": "patient",
+        "prediction": "patient",
+        "scores": {
+          "patient": 0.9880483746528625,
+          "negated": 0.0005457693478092551,
+          "family": 0.00208385125733912,
+          "hypothetical": 0.24784831702709198
+        },
+        "correct": true
+      },
+      {
+        "text": "The patient does not have COPD.",
+        "term": "COPD",
+        "label": "negated",
+        "prediction": "negated",
+        "scores": {
+          "patient": 0.001152334501966834,
+          "negated": 0.9904845952987671,
+          "family": 0.0080869747325778,
+          "hypothetical": 0.2063142955303192
+        },
+        "correct": true
+      },
+      {
+        "text": "Her sister has endometriosis; the patient has no such history.",
+        "term": "endometriosis",
+        "label": "family",
+        "prediction": "family",
+        "scores": {
+          "patient": 0.14574341475963593,
+          "negated": 0.6427575945854187,
+          "family": 0.9013766646385193,
+          "hypothetical": 0.16005371510982513
+        },
+        "correct": true
+      },
+      {
+        "text": "If the patient develops arthritis in the future, further review will be needed.",
+        "term": "arthritis",
+        "label": "hypothetical",
+        "prediction": "patient",
+        "scores": {
+          "patient": 0.8787581920623779,
+          "negated": 0.008028990589082241,
+          "family": 0.009200832806527615,
+          "hypothetical": 0.7197405695915222
+        },
+        "correct": false
+      }
+    ],
+    "limits": "General SNLI/MultiNLI checkpoint; context suggestions only, never automatic clinical corrections."
+  },
+  "general_tone": {
+    "correct": 7,
+    "total": 12,
+    "fraction": 0.5833333333333334,
+    "cases": [
+      {
+        "text": "The explanation was wonderful and I feel very well supported.",
+        "label": "positive",
+        "prediction": "positive",
+        "display_label": "positive",
+        "scores": {
+          "positive": 0.687775194644928,
+          "neutral": 0.0794277936220169,
+          "negative": 0.23279708623886108
+        },
+        "correct": true
+      },
+      {
+        "text": "Thank you, the instructions were clear and helpful.",
+        "label": "positive",
+        "prediction": "positive",
+        "display_label": "positive",
+        "scores": {
+          "positive": 0.9639050364494324,
+          "neutral": 0.0269338209182024,
+          "negative": 0.009161184541881084
+        },
+        "correct": true
+      },
+      {
+        "text": "I am delighted with how kindly the team explained the research.",
+        "label": "positive",
+        "prediction": "positive",
+        "display_label": "positive",
+        "scores": {
+          "positive": 0.8215288519859314,
+          "neutral": 0.07066010683774948,
+          "negative": 0.10781111568212509
+        },
+        "correct": true
+      },
+      {
+        "text": "I am upset because these instructions are confusing and frustrating.",
+        "label": "negative",
+        "prediction": "negative",
+        "display_label": "negative",
+        "scores": {
+          "positive": 0.024101553484797478,
+          "neutral": 0.029278529807925224,
+          "negative": 0.9466199278831482
+        },
+        "correct": true
+      },
+      {
+        "text": "I hate the long wait and the unhelpful responses.",
+        "label": "negative",
+        "prediction": "negative",
+        "display_label": "negative",
+        "scores": {
+          "positive": 0.014462034218013287,
+          "neutral": 0.022876068949699402,
+          "negative": 0.9626619219779968
+        },
+        "correct": true
+      },
+      {
+        "text": "The communication was terrible and disappointing.",
+        "label": "negative",
+        "prediction": "negative",
+        "display_label": "negative",
+        "scores": {
+          "positive": 0.005610247142612934,
+          "neutral": 0.012789995409548283,
+          "negative": 0.981599748134613
+        },
+        "correct": true
+      },
+      {
+        "text": "The appointment is scheduled for Monday.",
+        "label": "neutral",
+        "prediction": "positive",
+        "display_label": "unclear",
+        "scores": {
+          "positive": 0.43986836075782776,
+          "neutral": 0.31198930740356445,
+          "negative": 0.24814239144325256
+        },
+        "correct": false
+      },
+      {
+        "text": "The document contains three study requirements.",
+        "label": "neutral",
+        "prediction": "positive",
+        "display_label": "unclear",
+        "scores": {
+          "positive": 0.555445671081543,
+          "neutral": 0.24708114564418793,
+          "negative": 0.19747325778007507
+        },
+        "correct": false
+      },
+      {
+        "text": "The fictional patient takes metformin once daily.",
+        "label": "neutral",
+        "prediction": "negative",
+        "display_label": "unclear",
+        "scores": {
+          "positive": 0.37924259901046753,
+          "neutral": 0.19872485101222992,
+          "negative": 0.4220324754714966
+        },
+        "correct": false
+      },
+      {
+        "text": "The medical test was negative for infection.",
+        "label": "neutral",
+        "prediction": "negative",
+        "display_label": "negative",
+        "scores": {
+          "positive": 0.05630386620759964,
+          "neutral": 0.10062400996685028,
+          "negative": 0.8430721163749695
+        },
+        "correct": false
+      },
+      {
+        "text": "No history of diabetes was recorded.",
+        "label": "neutral",
+        "prediction": "neutral",
+        "display_label": "neutral",
+        "scores": {
+          "positive": 0.1352003812789917,
+          "neutral": 0.7187356352806091,
+          "negative": 0.1460639238357544
+        },
+        "correct": true
+      },
+      {
+        "text": "The study coordinator provided a printed information sheet.",
+        "label": "neutral",
+        "prediction": "positive",
+        "display_label": "unclear",
+        "scores": {
+          "positive": 0.4707302153110504,
+          "neutral": 0.2862427234649658,
+          "negative": 0.24302707612514496
+        },
+        "correct": false
+      }
+    ],
+    "unclear_count": 4,
+    "limits": "General wording labels, not patient emotion, psychiatric state or urgency; medical-negative wording can be confusing."
+  },
+  "rag": {
+    "expected_source_or_abstention": {
+      "correct": 11,
+      "total": 12,
+      "fraction": 0.9166666666666666
+    },
+    "citation_integrity": {
+      "correct": 8,
+      "total": 8,
+      "fraction": 1.0
+    },
+    "cases": [
+      {
+        "question": "What HbA1c level is required in the type 2 diabetes study?",
+        "terms": [
+          "type 2 diabetes",
+          "metformin"
+        ],
+        "expected_trial": "DEMO-T2D-001",
+        "expected_quote": "HbA1c above 7",
+        "correct": true,
+        "response": {
+          "answer": "Study record excerpts for review:\n* HbA1c above 7 percent [S1]",
+          "sources": [
+            {
+              "nct_id": "DEMO-T2D-001",
+              "title": "SIMULATED Type 2 Diabetes Lifestyle Study",
+              "field": "eligibility_criteria",
+              "section": "inclusion",
+              "start": 60,
+              "end": 83,
+              "quote": "* HbA1c above 7 percent",
+              "quote_sha256": "1550a7bc317404a2d5dc517708ec4c207b55a6d18418119827dca6ba882788cb",
+              "source_id": "S1",
+              "rerank_score": 5.459033012390137
+            }
+          ],
+          "abstained": false,
+          "generation_mode": "extractive_grounding_fallback",
+          "generator_used": true,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          },
+          "generation_prompt_truncated": false,
+          "models": {
+            "embedding": {
+              "id": "sentence-transformers/all-MiniLM-L6-v2",
+              "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+            },
+            "reranker": {
+              "id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+              "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+            },
+            "generator": {
+              "id": "google/flan-t5-small",
+              "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab"
+            }
+          },
+          "limits": [
+            "Only retrieved study fields are searched; no enrollment or eligibility decision is made.",
+            "Sentiment never affects retrieval, eligibility or ranking.",
+            "Generated paraphrases are rejected; fallback excerpts preserve the source wording."
+          ]
+        }
+      },
+      {
+        "question": "Which diabetes medication is listed as an inclusion requirement?",
+        "terms": [
+          "type 2 diabetes",
+          "metformin"
+        ],
+        "expected_trial": "DEMO-T2D-001",
+        "expected_quote": "Metformin treatment",
+        "correct": true,
+        "response": {
+          "answer": "Study record excerpts for review:\n* Metformin treatment [S1]\n* HbA1c above 7 percent [S2]\n* Type 2 diabetes [S3]",
+          "sources": [
+            {
+              "nct_id": "DEMO-T2D-001",
+              "title": "SIMULATED Type 2 Diabetes Lifestyle Study",
+              "field": "eligibility_criteria",
+              "section": "inclusion",
+              "start": 38,
+              "end": 59,
+              "quote": "* Metformin treatment",
+              "quote_sha256": "19b27e5a5fd091800e021177e3d2b3c5df169115ccbab9e5f2d65b35e7236b30",
+              "source_id": "S1",
+              "rerank_score": 4.377240180969238
+            },
+            {
+              "nct_id": "DEMO-T2D-001",
+              "title": "SIMULATED Type 2 Diabetes Lifestyle Study",
+              "field": "eligibility_criteria",
+              "section": "inclusion",
+              "start": 60,
+              "end": 83,
+              "quote": "* HbA1c above 7 percent",
+              "quote_sha256": "1550a7bc317404a2d5dc517708ec4c207b55a6d18418119827dca6ba882788cb",
+              "source_id": "S2",
+              "rerank_score": 2.8421339988708496
+            },
+            {
+              "nct_id": "DEMO-T2D-001",
+              "title": "SIMULATED Type 2 Diabetes Lifestyle Study",
+              "field": "eligibility_criteria",
+              "section": "inclusion",
+              "start": 20,
+              "end": 37,
+              "quote": "* Type 2 diabetes",
+              "quote_sha256": "cf9d6b79905b42093d95287ede7b4261390de6e37a789d08818c49409fdb0f35",
+              "source_id": "S3",
+              "rerank_score": 2.4818782806396484
+            }
+          ],
+          "abstained": false,
+          "generation_mode": "extractive_grounding_fallback",
+          "generator_used": true,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          },
+          "generation_prompt_truncated": false,
+          "models": {
+            "embedding": {
+              "id": "sentence-transformers/all-MiniLM-L6-v2",
+              "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+            },
+            "reranker": {
+              "id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+              "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+            },
+            "generator": {
+              "id": "google/flan-t5-small",
+              "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab"
+            }
+          },
+          "limits": [
+            "Only retrieved study fields are searched; no enrollment or eligibility decision is made.",
+            "Sentiment never affects retrieval, eligibility or ranking.",
+            "Generated paraphrases are rejected; fallback excerpts preserve the source wording."
+          ]
+        }
+      },
+      {
+        "question": "Which kidney condition is listed as an exclusion?",
+        "terms": [
+          "type 2 diabetes",
+          "metformin"
+        ],
+        "expected_trial": "DEMO-T2D-001",
+        "expected_quote": "Kidney disease",
+        "correct": true,
+        "response": {
+          "answer": "Study record excerpts for review:\n* Kidney disease [S1]",
+          "sources": [
+            {
+              "nct_id": "DEMO-T2D-001",
+              "title": "SIMULATED Type 2 Diabetes Lifestyle Study",
+              "field": "eligibility_criteria",
+              "section": "exclusion",
+              "start": 104,
+              "end": 120,
+              "quote": "* Kidney disease",
+              "quote_sha256": "9c55e9720ff8804a580589bd618040d8eb645d46ec172cc3c82d1f07b32652a2",
+              "source_id": "S1",
+              "rerank_score": 3.418889045715332
+            }
+          ],
+          "abstained": false,
+          "generation_mode": "generated_quote_verified",
+          "generator_used": true,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          },
+          "generation_prompt_truncated": false,
+          "models": {
+            "embedding": {
+              "id": "sentence-transformers/all-MiniLM-L6-v2",
+              "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+            },
+            "reranker": {
+              "id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+              "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+            },
+            "generator": {
+              "id": "google/flan-t5-small",
+              "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab"
+            }
+          },
+          "limits": [
+            "Only retrieved study fields are searched; no enrollment or eligibility decision is made.",
+            "Sentiment never affects retrieval, eligibility or ranking.",
+            "Generated paraphrases are rejected; fallback excerpts preserve the source wording."
+          ]
+        }
+      },
+      {
+        "question": "Which inhaler medication is listed in the asthma inclusion rules?",
+        "terms": [
+          "asthma",
+          "albuterol"
+        ],
+        "expected_trial": "DEMO-ASTHMA-003",
+        "expected_quote": "Albuterol use",
+        "correct": false,
+        "response": {
+          "answer": "I could not find sufficiently relevant evidence in the retrieved study fields. Try a specific study question or review the registry directly.",
+          "sources": [],
+          "abstained": true,
+          "generation_mode": "low_relevance",
+          "generator_used": false,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          }
+        }
+      },
+      {
+        "question": "Which condition is excluded in the asthma study?",
+        "terms": [
+          "asthma",
+          "albuterol"
+        ],
+        "expected_trial": "DEMO-ASTHMA-003",
+        "expected_quote": "COPD",
+        "correct": true,
+        "response": {
+          "answer": "Study record excerpts for review:\n* COPD [S1]",
+          "sources": [
+            {
+              "nct_id": "DEMO-ASTHMA-003",
+              "title": "SIMULATED Asthma Symptom Study",
+              "field": "eligibility_criteria",
+              "section": "exclusion",
+              "start": 65,
+              "end": 71,
+              "quote": "* COPD",
+              "quote_sha256": "0df89c86031d784e2bfc27770410ac423d1e953d2d6e0d287c2e3a34322c945d",
+              "source_id": "S1",
+              "rerank_score": 4.9758710861206055
+            }
+          ],
+          "abstained": false,
+          "generation_mode": "generated_quote_verified",
+          "generator_used": true,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          },
+          "generation_prompt_truncated": false,
+          "models": {
+            "embedding": {
+              "id": "sentence-transformers/all-MiniLM-L6-v2",
+              "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+            },
+            "reranker": {
+              "id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+              "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+            },
+            "generator": {
+              "id": "google/flan-t5-small",
+              "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab"
+            }
+          },
+          "limits": [
+            "Only retrieved study fields are searched; no enrollment or eligibility decision is made.",
+            "Sentiment never affects retrieval, eligibility or ranking.",
+            "Generated paraphrases are rejected; fallback excerpts preserve the source wording."
+          ]
+        }
+      },
+      {
+        "question": "What measurement is needed for the hypertension study?",
+        "terms": [
+          "hypertension"
+        ],
+        "expected_trial": "DEMO-HTN-002",
+        "expected_quote": "Blood pressure measurement",
+        "correct": true,
+        "response": {
+          "answer": "Study record excerpts for review:\n* Blood pressure measurement [S1]",
+          "sources": [
+            {
+              "nct_id": "DEMO-HTN-002",
+              "title": "SIMULATED Hypertension Monitoring Study",
+              "field": "eligibility_criteria",
+              "section": "inclusion",
+              "start": 35,
+              "end": 63,
+              "quote": "* Blood pressure measurement",
+              "quote_sha256": "109534f783ad9de80ce2e8f8f5f3cf61ac8a303237b6eb187988326e3294d192",
+              "source_id": "S1",
+              "rerank_score": 2.731318473815918
+            }
+          ],
+          "abstained": false,
+          "generation_mode": "extractive_grounding_fallback",
+          "generator_used": true,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          },
+          "generation_prompt_truncated": false,
+          "models": {
+            "embedding": {
+              "id": "sentence-transformers/all-MiniLM-L6-v2",
+              "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+            },
+            "reranker": {
+              "id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+              "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+            },
+            "generator": {
+              "id": "google/flan-t5-small",
+              "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab"
+            }
+          },
+          "limits": [
+            "Only retrieved study fields are searched; no enrollment or eligibility decision is made.",
+            "Sentiment never affects retrieval, eligibility or ranking.",
+            "Generated paraphrases are rejected; fallback excerpts preserve the source wording."
+          ]
+        }
+      },
+      {
+        "question": "Which past event is listed as an exclusion for the hypertension study?",
+        "terms": [
+          "hypertension"
+        ],
+        "expected_trial": "DEMO-HTN-002",
+        "expected_quote": "History of stroke",
+        "correct": true,
+        "response": {
+          "answer": "Study record excerpts for review:\n* History of stroke [S1]",
+          "sources": [
+            {
+              "nct_id": "DEMO-HTN-002",
+              "title": "SIMULATED Hypertension Monitoring Study",
+              "field": "eligibility_criteria",
+              "section": "exclusion",
+              "start": 84,
+              "end": 103,
+              "quote": "* History of stroke",
+              "quote_sha256": "56491e710ca5866155a24e1e1ae6a69766086c5a669860e38f23abdfd47cdbd5",
+              "source_id": "S1",
+              "rerank_score": 2.9675121307373047
+            }
+          ],
+          "abstained": false,
+          "generation_mode": "extractive_grounding_fallback",
+          "generator_used": true,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          },
+          "generation_prompt_truncated": false,
+          "models": {
+            "embedding": {
+              "id": "sentence-transformers/all-MiniLM-L6-v2",
+              "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+            },
+            "reranker": {
+              "id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+              "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+            },
+            "generator": {
+              "id": "google/flan-t5-small",
+              "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab"
+            }
+          },
+          "limits": [
+            "Only retrieved study fields are searched; no enrollment or eligibility decision is made.",
+            "Sentiment never affects retrieval, eligibility or ranking.",
+            "Generated paraphrases are rejected; fallback excerpts preserve the source wording."
+          ]
+        }
+      },
+      {
+        "question": "Will I develop cancer in the future?",
+        "terms": [
+          "asthma"
+        ],
+        "expect_abstain": true,
+        "correct": true,
+        "response": {
+          "answer": "Ask about study records and their requirements. This assistant does not diagnose, forecast disease or prescribe treatment.",
+          "sources": [],
+          "abstained": true,
+          "generation_mode": "out_of_scope",
+          "generator_used": false,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false
+          }
+        }
+      },
+      {
+        "question": "Prescribe a medication for me.",
+        "terms": [
+          "asthma"
+        ],
+        "expect_abstain": true,
+        "correct": true,
+        "response": {
+          "answer": "Ask about study records and their requirements. This assistant does not diagnose, forecast disease or prescribe treatment.",
+          "sources": [],
+          "abstained": true,
+          "generation_mode": "out_of_scope",
+          "generator_used": false,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false
+          }
+        }
+      },
+      {
+        "question": "Diagnose my current illness.",
+        "terms": [
+          "asthma"
+        ],
+        "expect_abstain": true,
+        "correct": true,
+        "response": {
+          "answer": "Ask about study records and their requirements. This assistant does not diagnose, forecast disease or prescribe treatment.",
+          "sources": [],
+          "abstained": true,
+          "generation_mode": "out_of_scope",
+          "generator_used": false,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false
+          }
+        }
+      },
+      {
+        "question": "Who won the football championship?",
+        "terms": [
+          "asthma"
+        ],
+        "expect_abstain": true,
+        "correct": true,
+        "response": {
+          "answer": "I could not find sufficiently relevant evidence in the retrieved study fields. Try a specific study question or review the registry directly.",
+          "sources": [],
+          "abstained": true,
+          "generation_mode": "low_relevance",
+          "generator_used": false,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          }
+        }
+      },
+      {
+        "question": "What are the results of a migraine trial?",
+        "terms": [
+          "asthma"
+        ],
+        "expect_abstain": true,
+        "correct": true,
+        "response": {
+          "answer": "I could not find sufficiently relevant evidence in the retrieved study fields. Try a specific study question or review the registry directly.",
+          "sources": [],
+          "abstained": true,
+          "generation_mode": "low_relevance",
+          "generator_used": false,
+          "scope": {
+            "retrieved_studies": 3,
+            "passage_limit": 120,
+            "entire_registry_searched": false,
+            "passages_considered": 16,
+            "passages_truncated": false
+          }
+        }
+      }
+    ],
+    "limits": "Fixed fictional corpus, expected source phrase or abstention only. Not clinical answer accuracy or registry-wide recall."
+  },
+  "elapsed_seconds_including_first_load": 21.55,
+  "limitations": [
+    "No training or parameter tuning used these cases.",
+    "This is development evidence, not independent clinical validation.",
+    "Neither pretrained models nor RAG establish universal 98% performance.",
+    "Docker/WorkOS/live registry integration is not exercised by this offline model harness."
+  ]
+}

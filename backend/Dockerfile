@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install --upgrade pip wheel "setuptools<81"
 
 # Install Python deps — split into two steps so torch (large) caches separately
-COPY requirements.txt .
+COPY requirements.txt requirements-advanced.txt ./
 
 # Step 1: Install torch CPU separately (large file, ~190MB)
 RUN pip install --no-cache-dir \
@@ -33,7 +33,7 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir --no-build-isolation "openai-whisper==20231117"
 
 # Step 3: Install all other requirements
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-advanced.txt
 
 # Pre-download spaCy model
 RUN python -m spacy download en_core_web_sm
@@ -58,6 +58,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Copy application source
 COPY app/ ./app/
+COPY prepare_advanced_models.py ./
 
 ENV PYTHONPATH="/app"
 ENV XDG_CACHE_HOME="/app/data/model-cache"

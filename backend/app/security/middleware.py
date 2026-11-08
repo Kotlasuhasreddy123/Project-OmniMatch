@@ -28,6 +28,8 @@ RATE_LIMITS = {
     "/api/v1/audio/transcribe": (10, 60), # 10 requests per 60 seconds
     "/api/v1/nlp/extract": (20, 60),      # 20 requests per 60 seconds
     "/api/v1/match/search": (20, 60),     # 20 requests per 60 seconds
+    "/api/v1/understanding/analyze": (6, 60),
+    "/api/v1/understanding/answer": (10, 60),
     "default": (60, 60),                  # 60 requests per 60 seconds default
 }
 

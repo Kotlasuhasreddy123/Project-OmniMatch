@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export function PortalBoundary({ children }: { children: React.ReactNode }) {
   const path = usePathname();
-  const localOnly = ["/session", "/verify", "/inbox", "/timeline"].some(
+  const localOnly = ["/session", "/verify", "/inbox", "/timeline", "/research"].some(
     (route) => path === route || path === `${route}/`,
   );
   if (process.env.NEXT_PUBLIC_PORTAL_MODE === "true" && localOnly) {

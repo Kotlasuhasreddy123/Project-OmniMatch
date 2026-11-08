@@ -17,6 +17,9 @@ import type {
   SessionCompleteResponse,
   TokenResponse,
   TranscriptionResponse,
+  AdvancedModelStatus,
+  NoteUnderstanding,
+  StudyEvidenceAnswer,
 } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -91,6 +94,21 @@ export class ApiError extends Error {
     super(message);
     this.name = "ApiError";
   }
+}
+
+export function getAdvancedModelStatus(): Promise<AdvancedModelStatus> {
+  return apiFetch('/api/v1/understanding/status');
+}
+export function analyzeNote(text: string): Promise<NoteUnderstanding> {
+  return apiFetch('/api/v1/understanding/analyze', {
+    method: 'POST', body: JSON.stringify({ text, synthetic_only: true }),
+  });
+}
+export function askStudyEvidence(question: string, approvedEntities: ClinicalEntity[]): Promise<StudyEvidenceAnswer> {
+  return apiFetch('/api/v1/understanding/answer', {
+    method: 'POST', body: JSON.stringify({ question, synthetic_only: true,
+      approved_entities: approvedEntities.filter(entity => entity.status === 'approved' && entity.context === 'patient' && !entity.negated) }),
+  });
 }
 
 // ---------------------------------------------------------------------------

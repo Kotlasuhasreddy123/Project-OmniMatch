@@ -12,6 +12,8 @@ See [the evaluation and training plan](docs/VALIDATION_AND_TRAINING_PLAN.md) for
 
 ## Latest model work
 
+Optional local transformer mode now adds medical DeBERTa NER, NLI context review, DistilBERT general wording tone, and source-checked RAG with BM25/dense retrieval, BERT-family reranking and FLAN-T5 drafts. Open `/research` after following [advanced setup](docs/ADVANCED_NLP_AND_RAG.md). It defaults to disabled, requires approved email access and locally cached models, and never auto-approves findings. The real-checkpoint development results are published on `/models`; no 98% clinical accuracy is established.
+
 The active English vocabulary and context rules improved the legacy 100-transcript development negation recall from 29.7% to 70.3% (F1 77.6%). The broader target remains unmet. The focused 72/72 checks are a separate regression metric. A new `/models` page presents the inventory and evidence; no 98% clinical accuracy is claimed.
 
 ## Visual results upgrade

@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     app_secret_key: str = "dev-secret-key-change-in-production"
     app_allowed_origins: str = "http://localhost:3000"
     demo_mode: bool = False
+    advanced_nlp_enabled: bool = False
 
     # JWT
     jwt_secret_key: str = "dev-jwt-secret-change-in-production"
