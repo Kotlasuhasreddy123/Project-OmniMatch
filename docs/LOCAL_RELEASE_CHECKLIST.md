@@ -65,4 +65,6 @@ Use [the installation guide](INSTALL_ON_YOUR_COMPUTER.md) for details and [the A
 
 Before resuming locally, free at least 20–25 GB through Windows Storage settings or move files you choose to another drive. Preserve project folders and Docker data volumes. Restart Docker Desktop, then use the existing-installation command above. Do not assume the old frontend/backend are running: they were stopped before the attempted upgrade.
 
+The installer now checks project-drive space before starting a build and stops with instructions below 20 GiB free, or 25 GiB with optional advanced models. A test verifies that low space prevents any Docker command. Docker may store its disk image on a different drive; also check that drive separately.
+
 WorkOS IDs remain blank until the owner configures them. Complete an approved-account email sign-in and the demonstration checklist after disk recovery. User acceptance, deployment and the unmet medical-accuracy target remain in progress.

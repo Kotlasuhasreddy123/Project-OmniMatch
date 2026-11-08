@@ -37,6 +37,12 @@ def main() -> int:
         except Exception as exc:
             print(f"Verification could not complete: {exc}. Check docker compose ps and docker compose logs --tail=100 backend.")
             return 1
+    if args.start:
+        required_gib = 25 if args.advanced else 20
+        free_bytes = shutil.disk_usage(ROOT).free
+        if free_bytes < required_gib * 1024**3:
+            print(f"Build stopped before starting Docker: {free_bytes / 1024**3:.1f} GiB free on the project drive. Free at least {required_gib} GiB, preserving project files and Docker volumes, then retry.")
+            return 1
     if not shutil.which("docker"):
         print("Install Docker Desktop (Windows/macOS) or Docker Engine with Compose (Linux), then run this command again.")
         return 1
