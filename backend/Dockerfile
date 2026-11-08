@@ -35,8 +35,7 @@ RUN pip install --no-cache-dir --no-build-isolation "openai-whisper==20231117"
 # Step 3: Install all other requirements
 RUN pip install --no-cache-dir -r requirements.txt -r requirements-advanced.txt
 
-# Pre-download spaCy model
-RUN python -m spacy download en_core_web_sm
+# The current extractor uses explicit context rules; no unused spaCy weights.
 
 # ---------------------------------------------------------------------------
 # Stage 2: runtime

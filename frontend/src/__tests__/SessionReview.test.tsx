@@ -39,6 +39,7 @@ test("clinician correction is used for entity extraction before navigation", asy
     target: { value: "I have diabetes and take metformin." },
   });
   fireEvent.click(screen.getByRole("button", { name: "Save corrected transcript" }));
+  fireEvent.change(screen.getByRole('textbox', { name: 'Demo patient ID' }), { target: { value: 'DEMO-REVIEW' } });
   fireEvent.click(screen.getByRole("button", { name: "Extract entities from reviewed transcript" }));
 
   await waitFor(() => {

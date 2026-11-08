@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { InboxDashboard } from "@/components/InboxDashboard/InboxDashboard";
-import { getInbox, markReviewed, ApiError } from "@/lib/apiClient";
+import { getInbox, markReviewed, archiveInboxItem, ApiError } from "@/lib/apiClient";
 import { getCurrentUser } from "@/lib/auth";
 import type { InboxItem } from "@/types";
 
@@ -20,6 +20,7 @@ export default function InboxPage() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [includeArchived, setIncludeArchived] = useState(false);
 
   const fetchInbox = useCallback(async () => {
     const user = getCurrentUser();
@@ -29,7 +30,7 @@ export default function InboxPage() {
     }
 
     try {
-      const resp = await getInbox();
+      const resp = await getInbox(includeArchived);
       setItems(resp.items);
       setUnreadCount(resp.unread_count);
       setAuthError(null);
@@ -40,11 +41,13 @@ export default function InboxPage() {
             ? "You must be signed in to view the inbox."
             : "You do not have permission to view the inbox."
         );
+      } else {
+        setAuthError(err instanceof Error ? err.message : 'Could not load the inbox. Please refresh.');
       }
     } finally {
       setIsLoading(false);
     }
-  }, [router]);
+  }, [router, includeArchived]);
 
   // Initial load + polling
   useEffect(() => {
@@ -85,10 +88,15 @@ export default function InboxPage() {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <label className="mb-4 flex items-center gap-2 text-sm">
+        <input type="checkbox" checked={includeArchived} onChange={event => setIncludeArchived(event.target.checked)} />
+        Show archived visits (saved in the database)
+      </label>
       <InboxDashboard
         items={items}
         unreadCount={unreadCount}
         onMarkReviewed={handleMarkReviewed}
+        onArchive={async (id, restore) => { await archiveInboxItem(id, restore); await fetchInbox(); }}
         isLoading={isLoading}
       />
     </div>

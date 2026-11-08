@@ -186,7 +186,8 @@ export async function searchTrials(
 export async function completeSession(
   sessionId: string,
   approvedEntities: ClinicalEntity[],
-  evidenceSpans: EvidenceSpan[] = []
+  evidenceSpans: EvidenceSpan[] = [],
+  patientPseudo?: string
 ): Promise<SessionCompleteResponse> {
   return apiFetch<SessionCompleteResponse>(
     `/api/v1/sessions/${sessionId}/complete`,
@@ -196,6 +197,7 @@ export async function completeSession(
         session_id: sessionId,
         approved_entities: approvedEntities,
         evidence_spans: evidenceSpans,
+        patient_pseudo: patientPseudo,
       }),
     }
   );
@@ -220,8 +222,12 @@ export async function recordEvidenceLedger(
 // Inbox
 // ---------------------------------------------------------------------------
 
-export async function getInbox(): Promise<InboxListResponse> {
-  return apiFetch<InboxListResponse>("/api/v1/inbox");
+export async function getInbox(includeArchived = false): Promise<InboxListResponse> {
+  return apiFetch<InboxListResponse>(`/api/v1/inbox?include_archived=${includeArchived}`);
+}
+
+export async function archiveInboxItem(id: string, restore = false): Promise<void> {
+  return apiFetch<void>(`/api/v1/inbox/${encodeURIComponent(id)}/${restore ? 'restore' : 'archive'}`, { method: 'POST' });
 }
 
 export async function getInboxItem(id: string): Promise<InboxItem> {

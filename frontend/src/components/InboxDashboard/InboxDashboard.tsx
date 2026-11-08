@@ -24,6 +24,7 @@ interface InboxDashboardProps {
   items: InboxItem[];
   unreadCount: number;
   onMarkReviewed: (id: string) => Promise<void>;
+  onArchive?: (id: string, restore: boolean) => Promise<void>;
   isLoading?: boolean;
 }
 
@@ -94,7 +95,7 @@ function TrialMatchCard({ match, inboxItemId, sessionId }: { match: TrialMatch; 
                 match.enrollment_readiness_score >= 70 ? "text-green-600" :
                 match.enrollment_readiness_score >= 45 ? "text-amber-600" : "text-red-500"
               )}>
-                {Math.round(match.enrollment_readiness_score)}% readiness
+                {Math.round(match.enrollment_readiness_score)}/100 review score
               </span>
             )}
             {/* NEW FEATURE 4: Geographic proximity */}
@@ -108,7 +109,7 @@ function TrialMatchCard({ match, inboxItemId, sessionId }: { match: TrialMatch; 
             )}
             <span>
               {match.missing_variables.length === 0
-                ? "All criteria covered"
+                ? "No missing fields detected by these rules"
                 : `${match.missing_variables.length} missing variable${match.missing_variables.length !== 1 ? "s" : ""}`}
             </span>
           </div>
@@ -188,17 +189,22 @@ function TrialMatchCard({ match, inboxItemId, sessionId }: { match: TrialMatch; 
 function InboxItemRow({
   item,
   onMarkReviewed,
+  onArchive,
 }: {
   item: InboxItem;
   onMarkReviewed: (id: string) => Promise<void>;
+  onArchive?: (id: string, restore: boolean) => Promise<void>;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [marking, setMarking] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   const handleMark = async () => {
     setMarking(true);
-    await onMarkReviewed(item.id);
-    setMarking(false);
+    setActionError(null);
+    try { await onMarkReviewed(item.id); }
+    catch (error) { setActionError(error instanceof Error ? error.message : 'Could not update this visit.'); }
+    finally { setMarking(false); }
   };
 
   const createdAt = new Date(item.created_at).toLocaleString();
@@ -241,7 +247,8 @@ function InboxItemRow({
               </span>
             )}
             <span className="text-sm font-semibold text-gray-900">
-              {item.matches.length} trial{item.matches.length !== 1 ? "s" : ""} matched
+              {item.patient_pseudo ? `${item.patient_pseudo} · ` : ''}{item.archived_at ? 'Archived · ' : ''}
+              {item.matches.length} possible stud{item.matches.length !== 1 ? "ies" : "y"}
             </span>
           </div>
 
@@ -292,8 +299,9 @@ function InboxItemRow({
           <h3 className="text-sm font-semibold text-gray-700">
             Matched Trials
           </h3>
+          {item.patient_pseudo && <a className="text-blue-700 underline" href={`/timeline?patient=${encodeURIComponent(item.patient_pseudo)}`}>View all visits for {item.patient_pseudo}</a>}
           {item.matches.length === 0 ? (
-            <p className="text-sm text-gray-500">No matches found for this session.</p>
+            <p className="text-sm text-gray-500">No suggestions in the current study index. This does not prove that no suitable study exists. Check the approved terms and available study coverage.</p>
           ) : (
             <div className="space-y-2">
               {item.matches.map((match) => (
@@ -324,6 +332,15 @@ function InboxItemRow({
               {marking ? "Marking…" : "Mark as Reviewed"}
             </button>
           )}
+          {item.status === 'reviewed' && onArchive && (
+            <button type="button" disabled={marking} className="rounded-lg border px-4 py-2 text-sm focus-visible:ring-2 focus-visible:ring-blue-500" onClick={async () => {
+              setMarking(true); setActionError(null);
+              try { await onArchive(item.id, Boolean(item.archived_at)); }
+              catch (error) { setActionError(error instanceof Error ? error.message : 'Could not archive this visit.'); }
+              finally { setMarking(false); }
+            }}>{item.archived_at ? 'Restore to inbox' : 'Archive reviewed visit'}</button>
+          )}
+          {actionError && <p role="alert" className="text-sm text-red-700">{actionError}</p>}
         </div>
       )}
     </article>
@@ -335,6 +352,7 @@ export function InboxDashboard({
   unreadCount,
   onMarkReviewed,
   isLoading = false,
+  onArchive,
 }: InboxDashboardProps) {
   return (
     <div className="space-y-6">
@@ -399,6 +417,7 @@ export function InboxDashboard({
               key={item.id}
               item={item}
               onMarkReviewed={onMarkReviewed}
+              onArchive={onArchive}
             />
           ))}
         </div>

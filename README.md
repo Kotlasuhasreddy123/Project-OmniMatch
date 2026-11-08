@@ -1,5 +1,7 @@
 # OmniMatch — synthetic-data classroom prototype
 
+**Current setup and repeat-visit demo:** [Local release checklist](docs/LOCAL_RELEASE_CHECKLIST.md), including passwordless configuration, optional models, archive/restore and remaining validation work.
+
 **Install locally:** [Windows, macOS and Linux instructions](docs/INSTALL_ON_YOUR_COMPUTER.md). No AWS account or paid API key is needed. [Which models are already trained, and on what data?](docs/MODELS_AND_DATA.md)
 
 The active learned models are pretrained Whisper (speech) and `all-MiniLM-L6-v2` (retrieval). Clinical extraction and eligibility checks use rules. A separate TF-IDF/logistic assertion candidate has now been trained on synthetic annotations; it scored 54/60 (90%) on a small internal test and is not connected to the live app. See [all models, training and measured results](docs/MODEL_TRAINING_RESULTS.md). Run `python backend/evaluate_context.py` for the reproducible synthetic context regression checks; see the model guide for the metric and its limits.

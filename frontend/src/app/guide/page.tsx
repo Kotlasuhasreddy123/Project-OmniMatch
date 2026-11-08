@@ -13,6 +13,10 @@ export default function GuidePage() {
           workflow. A study suggestion requires a person to verify its criteria
           and current recruitment information. The review score helps order
           suggestions; it is not a probability of enrollment.
+          The bundled study records are fictional. They are not past patient
+          cases or forecasts. For registry-backed records, check each study's
+          listed locations and eligibility rules; a suggested study does not
+          establish citizenship, travel or enrollment eligibility.
         </p>
       </section>
       <section id="models" className="rounded-2xl bg-white p-6">
@@ -47,9 +51,11 @@ export default function GuidePage() {
           </div>
         </dl>
         <p className="mt-5 text-sm leading-6 text-gray-600">
-          No custom weight training has been performed. These general pretrained
-          models do not establish accuracy across all medical specialties or
-          languages.
+          We trained a separate experimental context classifier on synthetic
+          annotations; it is not active in the visit pipeline. The optional
+          Research workspace adds pretrained medical NER, context review and
+          source-grounded answers. None of these results establish accuracy
+          across all medical specialties or languages.
         </p>
         <a
           className="mt-4 inline-block text-teal-800 underline"
@@ -61,7 +67,7 @@ export default function GuidePage() {
       <section>
         <h2 className="text-2xl font-semibold">Try the workflow</h2>
         <ol className="mt-4 list-decimal space-y-3 pl-5">
-          <li>Start a visit and grant consent before recording.</li>
+          <li>Give the fictional patient a label such as DEMO-001, then grant consent before recording.</li>
           <li>Speak a fictional medical history and check the transcript.</li>
           <li>Approve or reject each extracted term.</li>
           <li>Complete the visit and open the inbox.</li>
@@ -69,6 +75,8 @@ export default function GuidePage() {
             Use the visual overview to compare suggestions, then open a visit to
             inspect evidence and missing information.
           </li>
+          <li>For later information, start another visit with the same patient label. History keeps each visit separate, including visits on the same day.</li>
+          <li>After reviewing a visit, archive it to clear the inbox. The saved record stays in history and can be restored.</li>
         </ol>
       </section>
       <section>

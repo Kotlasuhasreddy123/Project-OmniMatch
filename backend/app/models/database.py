@@ -78,4 +78,11 @@ async def init_db() -> None:
         await db.execute(CREATE_INBOX_TABLE)
         await db.execute(CREATE_SESSIONS_TABLE)
         await db.execute(CREATE_EVIDENCE_LEDGER_TABLE)
+        # Additive migration: retain all existing demo inbox data.
+        async with db.execute("PRAGMA table_info(inbox_items)") as cur:
+            columns = {row[1] for row in await cur.fetchall()}
+        if "patient_pseudo" not in columns:
+            await db.execute("ALTER TABLE inbox_items ADD COLUMN patient_pseudo TEXT")
+        if "archived_at" not in columns:
+            await db.execute("ALTER TABLE inbox_items ADD COLUMN archived_at TEXT")
         await db.commit()

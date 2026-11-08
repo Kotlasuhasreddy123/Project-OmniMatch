@@ -11,6 +11,8 @@ import { getOrCreateSessionId } from "@/lib/session";
 import { getCurrentUser } from "@/lib/auth";
 import { Loader2, ChevronRight } from "lucide-react";
 import type { WordConfidence } from "@/types";
+import { PatientIdentity } from "@/components/PatientIdentity/PatientIdentity";
+import { getPatientLabel, savePatientLabel, PATIENT_LABEL_PATTERN } from "@/lib/patient";
 
 type SessionStep = "capture" | "transcribing" | "review" | "extracting";
 
@@ -23,7 +25,10 @@ export default function SessionPage() {
       router.replace("/login");
       return;
     }
-    setSessionId(getOrCreateSessionId());
+    const id = getOrCreateSessionId();
+    const linked = new URLSearchParams(window.location.search).get("patient") ?? "";
+    if (PATIENT_LABEL_PATTERN.test(linked) && !getPatientLabel(id)) savePatientLabel(id, linked);
+    setSessionId(id);
   }, [router]);
 
   const { consentGranted, toggleConsent, isLogging, error: consentError } =
@@ -68,6 +73,10 @@ export default function SessionPage() {
 
   const handleProceed = useCallback(async () => {
     if (!sessionId || !transcription.trim()) return;
+    if (!PATIENT_LABEL_PATTERN.test(getPatientLabel(sessionId))) {
+      setError("Enter a demo patient ID above, such as DEMO-001, before continuing.");
+      return;
+    }
     setError(null);
     setStep("extracting");
     setStatusMessage("Extracting clinical entities…");
@@ -89,12 +98,15 @@ export default function SessionPage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">New Visit Session</h1>
+        <p className="mt-2 text-sm text-gray-600">Label the patient, grant consent, record, check the words, then approve the terms. For a follow-up visit, use the same patient ID. Every completed visit has its own session ID.</p>
         {sessionId && (
           <p className="mt-1 text-sm text-gray-500">
             Session ID: <code className="text-xs">{sessionId}</code>
           </p>
         )}
       </div>
+
+      {sessionId && <PatientIdentity sessionId={sessionId} />}
 
       <ConsentToggle
         consentGranted={consentGranted}
@@ -103,10 +115,17 @@ export default function SessionPage() {
         error={consentError}
       />
 
-      <AudioRecorder
+      {step === "capture" && <AudioRecorder
         consentGranted={consentGranted}
         onRecordingComplete={handleRecordingComplete}
-      />
+      />}
+      {step === "capture" && <details className="rounded-xl border bg-white p-4">
+        <summary className="cursor-pointer font-medium focus-visible:ring-2 focus-visible:ring-blue-500">Add a written visit note instead</summary>
+        <p className="my-2 text-sm text-gray-600">Use this for information mentioned after recording, or when a microphone is unavailable. It creates a new reviewed visit; it does not rewrite earlier results.</p>
+        <label htmlFor="written-note" className="block text-sm font-medium">Visit note (synthetic details)</label>
+        <textarea id="written-note" value={transcription} maxLength={50000} onChange={(e) => setTranscription(e.target.value)} className="my-2 w-full rounded border p-3 focus-visible:ring-2 focus-visible:ring-blue-500" rows={5} />
+        <button disabled={!consentGranted || !transcription.trim()} onClick={() => { setWordConfidences([]); setStep("review"); }} className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-blue-500">Review written note</button>
+      </details>}
 
       {isProcessing && (
         <div
