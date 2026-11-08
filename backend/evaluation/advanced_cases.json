@@ -1,0 +1,55 @@
+{
+  "provenance": "Author-created synthetic development fixtures. No real patient notes, conversations, registry enrollment or clinical validation. No model fitting uses these cases.",
+  "ner": [
+    {"text":"The fictional patient has bronchiectasis and takes albuterol.","expected":[{"term":"bronchiectasis","context":"patient","negated":false}]},
+    {"text":"The patient denies dysautonomia.","expected":[{"term":"dysautonomia","context":"patient","negated":true}]},
+    {"text":"Her mother had endometriosis.","expected":[{"term":"endometriosis","context":"family","negated":false}]},
+    {"text":"Possible scleroderma needs further review.","expected":[{"term":"scleroderma","context":"hypothetical","negated":false}]},
+    {"text":"A fictional patient was diagnosed with pneumonia and received amoxicillin.","expected":[{"term":"pneumonia","context":"patient","negated":false},{"term":"amoxicillin","context":"patient","negated":false}]},
+    {"text":"Patient has asthma but denies COPD.","expected":[{"term":"asthma","context":"patient","negated":false},{"term":"COPD","context":"patient","negated":true}]},
+    {"text":"The patient has celiac disease. Her father had Parkinson disease.","expected":[{"term":"celiac disease","context":"patient","negated":false},{"term":"Parkinson disease","context":"family","negated":false}]},
+    {"text":"No history of thyroid disease. The patient takes metformin.","expected":[{"term":"thyroid disease","context":"patient","negated":true},{"term":"metformin","context":"patient","negated":false}]}
+  ],
+  "assertion": [
+    {"text":"The patient has asthma.","term":"asthma","label":"patient"},
+    {"text":"The patient denies asthma.","term":"asthma","label":"negated"},
+    {"text":"The patient's mother had asthma.","term":"asthma","label":"family"},
+    {"text":"It is possible that the patient has asthma, but this is not confirmed.","term":"asthma","label":"hypothetical"},
+    {"text":"No history of diabetes in this patient.","term":"diabetes","label":"negated"},
+    {"text":"The patient currently takes metformin.","term":"metformin","label":"patient"},
+    {"text":"The patient's father had a stroke; no stroke was reported in the patient.","term":"stroke","label":"family"},
+    {"text":"Pneumonia cannot be excluded pending further tests.","term":"pneumonia","label":"hypothetical"},
+    {"text":"The patient was diagnosed with bronchiectasis.","term":"bronchiectasis","label":"patient"},
+    {"text":"The patient does not have COPD.","term":"COPD","label":"negated"},
+    {"text":"Her sister has endometriosis; the patient has no such history.","term":"endometriosis","label":"family"},
+    {"text":"If the patient develops arthritis in the future, further review will be needed.","term":"arthritis","label":"hypothetical"}
+  ],
+  "sentiment": [
+    {"text":"The explanation was wonderful and I feel very well supported.","label":"positive"},
+    {"text":"Thank you, the instructions were clear and helpful.","label":"positive"},
+    {"text":"I am delighted with how kindly the team explained the research.","label":"positive"},
+    {"text":"I am upset because these instructions are confusing and frustrating.","label":"negative"},
+    {"text":"I hate the long wait and the unhelpful responses.","label":"negative"},
+    {"text":"The communication was terrible and disappointing.","label":"negative"},
+    {"text":"The appointment is scheduled for Monday.","label":"neutral"},
+    {"text":"The document contains three study requirements.","label":"neutral"},
+    {"text":"The fictional patient takes metformin once daily.","label":"neutral"},
+    {"text":"The medical test was negative for infection.","label":"neutral"},
+    {"text":"No history of diabetes was recorded.","label":"neutral"},
+    {"text":"The study coordinator provided a printed information sheet.","label":"neutral"}
+  ],
+  "rag": [
+    {"question":"What HbA1c level is required in the type 2 diabetes study?","terms":["type 2 diabetes","metformin"],"expected_trial":"DEMO-T2D-001","expected_quote":"HbA1c above 7"},
+    {"question":"Which diabetes medication is listed as an inclusion requirement?","terms":["type 2 diabetes","metformin"],"expected_trial":"DEMO-T2D-001","expected_quote":"Metformin treatment"},
+    {"question":"Which kidney condition is listed as an exclusion?","terms":["type 2 diabetes","metformin"],"expected_trial":"DEMO-T2D-001","expected_quote":"Kidney disease"},
+    {"question":"Which inhaler medication is listed in the asthma inclusion rules?","terms":["asthma","albuterol"],"expected_trial":"DEMO-ASTHMA-003","expected_quote":"Albuterol use"},
+    {"question":"Which condition is excluded in the asthma study?","terms":["asthma","albuterol"],"expected_trial":"DEMO-ASTHMA-003","expected_quote":"COPD"},
+    {"question":"What measurement is needed for the hypertension study?","terms":["hypertension"],"expected_trial":"DEMO-HTN-002","expected_quote":"Blood pressure measurement"},
+    {"question":"Which past event is listed as an exclusion for the hypertension study?","terms":["hypertension"],"expected_trial":"DEMO-HTN-002","expected_quote":"History of stroke"},
+    {"question":"Will I develop cancer in the future?","terms":["asthma"],"expect_abstain":true},
+    {"question":"Prescribe a medication for me.","terms":["asthma"],"expect_abstain":true},
+    {"question":"Diagnose my current illness.","terms":["asthma"],"expect_abstain":true},
+    {"question":"Who won the football championship?","terms":["asthma"],"expect_abstain":true},
+    {"question":"What are the results of a migraine trial?","terms":["asthma"],"expect_abstain":true}
+  ]
+}

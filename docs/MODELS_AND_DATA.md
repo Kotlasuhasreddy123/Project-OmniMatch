@@ -30,6 +30,10 @@ The older 100-transcript synthetic development benchmark improved from 29.7% to 
 
 The newly trained TF-IDF/logistic regression candidate classifies an already supplied term span as affirmed, family or negated. Its internal record-separated test scored 54/60 (90%), with only one family-history example. It does not discover entities and is not eligible for deployment. The unused `biobert_v3.py` wrapper actually names `cross-encoder/nli-MiniLM2-L6-H768`, not BioBERT; its description has been corrected. The live route does not use the standalone NegEx/NegBio-inspired/ensemble variants. Published research scores are not measured results for those implementations.
 
+## Optional transformer understanding and RAG
+
+The separate `/research` workflow now supports pinned medical DeBERTa NER, MiniLM NLI context review, DistilBERT general wording tone, and retrieval-augmented generation using BM25, dense MiniLM embeddings, a BERT-family cross-encoder and FLAN-T5 small. These are publisher-trained checkpoints, not new local fine-tuning. It is disabled until the local owner installs/caches the weights and sets `ADVANCED_NLP_ENABLED=true`. The default extraction route remains unchanged. See [advanced setup and measured limits](ADVANCED_NLP_AND_RAG.md). The earlier `biobert_v3.py` wrapper remains unused; the new NLI service calls the checkpoint directly with full natural-language hypothesis pairs.
+
 ## What remains before medical claims
 
 Use consented/synthetic recordings with independently prepared transcripts to measure speech word error rate. Use independently annotated conversations to measure entity precision/recall/F1 and context errors. Use reviewed patient-study pairs to measure retrieval recall at k. Keep development and held-out sets separate by patient and source. Only fine-tune after a baseline and rights to the data are established, then compare both models on a locked evaluation set. Do not adjust model weights on the evaluation examples to reach a target percentage.

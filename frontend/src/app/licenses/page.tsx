@@ -1,6 +1,36 @@
 import Link from "next/link";
 const components = [
   [
+    "Medical-NER (DeBERTa)",
+    "MIT (publisher-declared)",
+    "https://huggingface.co/blaze999/Medical-NER",
+  ],
+  [
+    "NLI MiniLM",
+    "Apache-2.0",
+    "https://huggingface.co/cross-encoder/nli-MiniLM2-L6-H768",
+  ],
+  [
+    "DistilBERT sentiment student",
+    "Apache-2.0",
+    "https://huggingface.co/lxyuan/distilbert-base-multilingual-cased-sentiments-student",
+  ],
+  [
+    "MS MARCO MiniLM reranker",
+    "Apache-2.0",
+    "https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2",
+  ],
+  [
+    "FLAN-T5 small",
+    "Apache-2.0",
+    "https://huggingface.co/google/flan-t5-small",
+  ],
+  [
+    "Transformers library",
+    "Apache-2.0",
+    "https://github.com/huggingface/transformers/blob/main/LICENSE",
+  ],
+  [
     "OmniMatch source",
     "MIT",
     "https://github.com/Kotlasuhasreddy123/Project-OmniMatch/blob/main/LICENSE",

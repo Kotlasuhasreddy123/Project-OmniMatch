@@ -25,6 +25,7 @@ from app.timeline.router import router as timeline_router
 from app.trials.router import router as trials_router
 from app.trials.qdrant_service import get_qdrant_service
 from app.transcription.whisper_service import get_whisper_model, is_whisper_loaded
+from app.understanding.router import router as understanding_router
 from app.timeline.timeline_service import ensure_timeline_table
 from app.digest.digest_service import ensure_referrals_table
 
@@ -138,6 +139,7 @@ app.include_router(auth_router)
 app.include_router(consent_router)
 app.include_router(audio_router)
 app.include_router(nlp_router)
+app.include_router(understanding_router)
 app.include_router(trials_router)
 app.include_router(matching_router)
 app.include_router(inbox_router)

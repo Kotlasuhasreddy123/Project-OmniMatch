@@ -51,6 +51,7 @@ export default function RootLayout({
                 Timeline
               </Link>
               <Link href="/models" className="text-gray-600 hover:text-blue-600">Models</Link>
+              <Link href="/research" className="text-gray-600 hover:text-blue-600">Text & evidence</Link>
               <Link href="/validation" className="text-gray-600 hover:text-blue-600">Validation</Link>
               <Link href="/login" className="font-semibold text-teal-800">Access</Link>
             </nav>

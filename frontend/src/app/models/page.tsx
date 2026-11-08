@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ModelEvidence } from "@/components/ModelEvidence";
+import { AdvancedModelEvidence } from "@/components/AdvancedModelEvidence";
 
 const rows = [
   [
@@ -27,10 +28,10 @@ const rows = [
     "Fitted on synthetic classroom annotations with record-separated partitions. Below the requested 98%; not connected to the live API.",
   ],
   [
-    "NLI MiniLM wrapper",
-    "Unused experiment",
-    "Optional assertion experiment",
-    "The checkpoint named in legacy biobert_v3.py is cross-encoder/nli-MiniLM2-L6-H768, not BioBERT. No local medical validation.",
+    "NLI MiniLM context review",
+    "Optional local transformer mode",
+    "Compare text with context hypotheses",
+    "The new local text-understanding service uses a pinned cross-encoder/nli-MiniLM2-L6-H768 checkpoint. The old biobert_v3.py wrapper stays unused and is not BioBERT. No clinical validation is claimed.",
   ],
 ];
 export default function ModelsPage() {
@@ -62,6 +63,7 @@ export default function ModelsPage() {
         ))}
       </div>
       <ModelEvidence />
+      <AdvancedModelEvidence />
       <p className="rounded-2xl bg-amber-50 p-6 leading-7">
         spaCy is installed but no trained spaCy medical model is loaded by the
         live endpoint. Qdrant is a database. Eligibility scores and the

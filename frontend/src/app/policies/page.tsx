@@ -19,7 +19,7 @@ const sections = [
   ],
   [
     "AI disclosure and limits",
-    "Whisper and MiniLM are pretrained general models. Clinical extraction and eligibility checks use programmed rules and a limited study catalog. Ranking scores order suggestions and are not disease probabilities, diagnostic accuracy, or chances of enrollment. The example-results page labels its invented display values. Clinical validation across every specialty and language has not been completed. No future disease forecast or medicine recommendation is generated.",
+    "Whisper and MiniLM are pretrained general models. Default extraction and eligibility checks use programmed rules and a limited study catalog. Optional local transformer mode adds medical NER, advisory context/tone models and source-checked study generation. It requires explicit term approval; tone never determines eligibility. Generated drafts that fail source checks are replaced with cited excerpts. Ranking scores order suggestions and are not disease probabilities, diagnostic accuracy, or chances of enrollment. The example-results page labels its invented display values. Clinical validation across every specialty and language has not been completed. No future disease forecast or medicine recommendation is generated.",
   ],
   [
     "Acceptable use",

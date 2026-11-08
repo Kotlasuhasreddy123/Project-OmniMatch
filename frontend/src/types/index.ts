@@ -52,6 +52,35 @@ export interface ClinicalEntity {
   status: EntityStatus;
 }
 
+export interface DeepEntity extends ClinicalEntity {
+  source: string;
+  start: number | null;
+  end: number | null;
+}
+export interface AdvancedModelStatus {
+  enabled: boolean;
+  dependencies_ready: boolean;
+  local_only: boolean;
+  models: { task: string; id: string; revision: string; cached: boolean }[];
+}
+export interface NoteUnderstanding {
+  entities: DeepEntity[];
+  assertion_reviews: { term: string; start: number; rule_label: string; nli_label: string; disagreement: boolean; low_separation: boolean; entailment_scores: Record<string, number> }[];
+  assertion_reviewed_count: number;
+  assertion_unreviewed_count: number;
+  sentiment: { label: string; scores: Record<string, number>; partial: boolean; input_characters: number; meaning: string };
+  limits: string[];
+}
+export interface StudyEvidenceAnswer {
+  answer: string;
+  abstained: boolean;
+  generation_mode: string;
+  generator_used: boolean;
+  generation_prompt_truncated?: boolean;
+  sources: { source_id: string; nct_id: string; title: string; field: string; section: string; start: number; end: number; quote: string; quote_sha256: string; rerank_score: number }[];
+  scope: { retrieved_studies: number; passages_considered?: number; passages_truncated?: boolean; entire_registry_searched: boolean };
+}
+
 // ---------------------------------------------------------------------------
 // Renewed Feature 8: Evidence Ledger
 // ---------------------------------------------------------------------------
