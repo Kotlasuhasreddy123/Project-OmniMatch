@@ -22,7 +22,7 @@ openssl rand -hex 32
 openssl rand -hex 32
 ```
 
-Edit backend/.env. Set APP_SECRET_KEY and JWT_SECRET_KEY to the two separate generated secrets. Keep DEMO_MODE=true. Do not commit this file. If your checkout contains the app inside Chatgpt/omnimatch-renewed, change into that directory before copying the environment file. The root application is a separate older version; deploy the reviewed renewed application.
+Edit backend/.env. Set APP_SECRET_KEY and JWT_SECRET_KEY to the two separate generated secrets. Keep DEMO_MODE=true. Do not commit this file. A fresh clone of the GitHub repository contains backend, frontend and docker-compose.yml at its root. Run the commands from that root. If you also have an older local project copy, use the reviewed Git checkout rather than mixing its files with the older copy.
 
 ## 3. Private deployment for rehearsal
 

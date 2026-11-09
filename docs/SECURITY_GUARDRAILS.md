@@ -46,3 +46,5 @@ curl.exe -i -X POST -H "Origin: https://unapproved.example" -H "Content-Type: ap
 For development tests, run `python -m pytest tests -q` from the backend environment and `npm run test:run -- --runInBand` from the frontend. Real-model and real-FFmpeg checks require the packaged model environment and cached weights. The repository CI runs the matching verification workflows.
 
 Report a suspected issue using [SECURITY_RESPONSE.md](SECURITY_RESPONSE.md). Do not send recordings, secrets or patient information in issue reports.
+
+Recorded checks and unresolved items: [Security verification](SECURITY_VERIFICATION.md).
