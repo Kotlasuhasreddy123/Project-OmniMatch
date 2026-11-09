@@ -44,6 +44,7 @@ export interface TranscriptionResponse {
 // ---------------------------------------------------------------------------
 
 export interface ClinicalEntity {
+  terminology_note?: string | null;
   term: string;
   entity_type: EntityType;
   negated: boolean;

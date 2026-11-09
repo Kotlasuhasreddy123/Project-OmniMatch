@@ -26,6 +26,14 @@ const pendingEntity: ClinicalEntity = {
   status: "pending",
 };
 
+it('shows terminology ambiguity and still waits for an explicit review', () => {
+  const approve = jest.fn();
+  render(<EntityChip entity={{ ...pendingEntity, term: 'scleroderma', terminology_note: 'Verify the condition subtype.' }} onApprove={approve} onReject={jest.fn()} />);
+  expect(screen.getByText('Verify the condition subtype.')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Approve entity: scleroderma' })).toBeEnabled();
+  expect(approve).not.toHaveBeenCalled();
+});
+
 const negatedEntity: ClinicalEntity = {
   term: "hypertension",
   entity_type: "DISEASE",

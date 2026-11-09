@@ -29,10 +29,13 @@
   "fixtures_sha256": "f0d1055a879fad08c25145be4b8b85b625434c4f408bb346505d045e7241ba60",
   "service_sha256": {
     "runtime.py": "5009c183e889802c83c310a5a124e8f048f2eafa1762f5beb1fd1d1dafd11bca",
-    "analysis_service.py": "82eee1eeeddc86c8e787b54abeb1b505142af763b74d50d098223f8b49d8b91a",
-    "rag_service.py": "b5963072c1df357035210e8868cfc34a17b322438d834c7f2dd2e7c3b420f954",
+    "analysis_service.py": "e4cc0a8d0093d8aa18c1514b210db955ce0f271146d249170b57a6878dc274a8",
+    "rag_service.py": "2614a2e3b94837818ec51032c16fe05aaac8428824177a5edf0f83e4e63310e6",
     "model_registry.py": "ffa92184dad3f2a3f8a66a95e55416329ecb0cc488a3fb721d273a90ae36af48",
-    "../security/model_policy.py": "dbf71e89d2f1b3e77f13594447c25378211e3364f95c71a6a8a31b196a1951c2"
+    "../security/model_policy.py": "dbf71e89d2f1b3e77f13594447c25378211e3364f95c71a6a8a31b196a1951c2",
+    "../nlp/negex_pipeline.py": "8eadf2858b46c5cabe7170ccd11cac892015575505f0a57023455f1eb079332c",
+    "../nlp/vocabulary.py": "6523c9411dba14db92377f5be2955f4ee168e4958aa63323c2848acf21b6daac",
+    "../data/disease_ontology_lexicon.json": "717c976a06d49a43a1c26990cca6203497284ec8abdcf3226a7c2f10011f0741"
   },
   "python": "3.11.18",
   "torch": "2.15.0+cpu",
@@ -43,14 +46,14 @@
   "overall_medical_accuracy_98_validated": false,
   "target_term_context": {
     "rules": {
-      "correct": 6,
+      "correct": 11,
       "total": 12,
-      "fraction": 0.5
+      "fraction": 0.9166666666666666
     },
     "hybrid": {
-      "correct": 9,
+      "correct": 12,
       "total": 12,
-      "fraction": 0.75
+      "fraction": 1.0
     },
     "cases": [
       {
@@ -60,7 +63,7 @@
           "context": "patient",
           "negated": false
         },
-        "rule_target_found": false,
+        "rule_target_found": true,
         "hybrid_target_found": true
       },
       {
@@ -80,8 +83,8 @@
           "context": "family",
           "negated": false
         },
-        "rule_target_found": false,
-        "hybrid_target_found": false
+        "rule_target_found": true,
+        "hybrid_target_found": true
       },
       {
         "text": "Possible scleroderma needs further review.",
@@ -90,8 +93,8 @@
           "context": "hypothetical",
           "negated": false
         },
-        "rule_target_found": false,
-        "hybrid_target_found": false
+        "rule_target_found": true,
+        "hybrid_target_found": true
       },
       {
         "text": "A fictional patient was diagnosed with pneumonia and received amoxicillin.",
@@ -140,7 +143,7 @@
           "context": "patient",
           "negated": false
         },
-        "rule_target_found": false,
+        "rule_target_found": true,
         "hybrid_target_found": true
       },
       {
@@ -150,8 +153,8 @@
           "context": "family",
           "negated": false
         },
-        "rule_target_found": false,
-        "hybrid_target_found": false
+        "rule_target_found": true,
+        "hybrid_target_found": true
       },
       {
         "text": "No history of thyroid disease. The patient takes metformin.",
@@ -188,9 +191,9 @@
         "prediction": "patient",
         "scores": {
           "patient": 0.9929192662239075,
-          "negated": 0.0005809697322547436,
-          "family": 0.00338728167116642,
-          "hypothetical": 0.4391922950744629
+          "negated": 0.0005809703143313527,
+          "family": 0.003387277014553547,
+          "hypothetical": 0.43919068574905396
         },
         "correct": true
       },
@@ -200,10 +203,10 @@
         "label": "negated",
         "prediction": "negated",
         "scores": {
-          "patient": 0.017522627487778664,
+          "patient": 0.017522528767585754,
           "negated": 0.9657968282699585,
-          "family": 0.013853366486728191,
-          "hypothetical": 0.5321900844573975
+          "family": 0.013853364624083042,
+          "hypothetical": 0.5321899652481079
         },
         "correct": true
       },
@@ -213,10 +216,10 @@
         "label": "family",
         "prediction": "patient",
         "scores": {
-          "patient": 0.8717287182807922,
-          "negated": 0.010391440242528915,
-          "family": 0.39445382356643677,
-          "hypothetical": 0.23655344545841217
+          "patient": 0.8717286586761475,
+          "negated": 0.010391484946012497,
+          "family": 0.394454687833786,
+          "hypothetical": 0.23655246198177338
         },
         "correct": false
       },
@@ -226,10 +229,10 @@
         "label": "hypothetical",
         "prediction": "hypothetical",
         "scores": {
-          "patient": 0.6459397673606873,
-          "negated": 0.01908506080508232,
-          "family": 0.005881531164050102,
-          "hypothetical": 0.9648990035057068
+          "patient": 0.6459386944770813,
+          "negated": 0.0190849918872118,
+          "family": 0.005881527438759804,
+          "hypothetical": 0.9648991227149963
         },
         "correct": true
       },
@@ -239,10 +242,10 @@
         "label": "negated",
         "prediction": "negated",
         "scores": {
-          "patient": 0.00874769501388073,
+          "patient": 0.008747677318751812,
           "negated": 0.9791592359542847,
-          "family": 0.01208492647856474,
-          "hypothetical": 0.10224677622318268
+          "family": 0.012084896676242352,
+          "hypothetical": 0.10224662721157074
         },
         "correct": true
       },
@@ -254,8 +257,8 @@
         "scores": {
           "patient": 0.9904486536979675,
           "negated": 0.0005695412401109934,
-          "family": 0.0024370213504880667,
-          "hypothetical": 0.1991150826215744
+          "family": 0.0024370152968913317,
+          "hypothetical": 0.19911502301692963
         },
         "correct": true
       },
@@ -265,10 +268,10 @@
         "label": "family",
         "prediction": "family",
         "scores": {
-          "patient": 0.033219702541828156,
-          "negated": 0.8923834562301636,
+          "patient": 0.033219799399375916,
+          "negated": 0.8923835754394531,
           "family": 0.9175488948822021,
-          "hypothetical": 0.17079564929008484
+          "hypothetical": 0.170795738697052
         },
         "correct": true
       },
@@ -278,10 +281,10 @@
         "label": "hypothetical",
         "prediction": "patient",
         "scores": {
-          "patient": 0.8511401414871216,
-          "negated": 0.004998375661671162,
-          "family": 0.007519761566072702,
-          "hypothetical": 0.7539228796958923
+          "patient": 0.8511402606964111,
+          "negated": 0.004998371005058289,
+          "family": 0.0075197466649115086,
+          "hypothetical": 0.7539238333702087
         },
         "correct": false
       },
@@ -292,9 +295,9 @@
         "prediction": "patient",
         "scores": {
           "patient": 0.9880483746528625,
-          "negated": 0.0005457688239403069,
-          "family": 0.0020838479977101088,
-          "hypothetical": 0.2478477954864502
+          "negated": 0.0005457693478092551,
+          "family": 0.0020838517230004072,
+          "hypothetical": 0.24784773588180542
         },
         "correct": true
       },
@@ -306,8 +309,8 @@
         "scores": {
           "patient": 0.0011523333378136158,
           "negated": 0.9904845952987671,
-          "family": 0.008086968213319778,
-          "hypothetical": 0.20631469786167145
+          "family": 0.00808696448802948,
+          "hypothetical": 0.206314817070961
         },
         "correct": true
       },
@@ -317,10 +320,10 @@
         "label": "family",
         "prediction": "family",
         "scores": {
-          "patient": 0.14574286341667175,
-          "negated": 0.6427566409111023,
-          "family": 0.9013766050338745,
-          "hypothetical": 0.16005417704582214
+          "patient": 0.14574362337589264,
+          "negated": 0.6427568793296814,
+          "family": 0.901376485824585,
+          "hypothetical": 0.16005371510982513
         },
         "correct": true
       },
@@ -330,10 +333,10 @@
         "label": "hypothetical",
         "prediction": "patient",
         "scores": {
-          "patient": 0.8787580728530884,
-          "negated": 0.00802898220717907,
-          "family": 0.009200864471495152,
-          "hypothetical": 0.7197406888008118
+          "patient": 0.8787582516670227,
+          "negated": 0.008029007352888584,
+          "family": 0.009200849570333958,
+          "hypothetical": 0.7197412848472595
         },
         "correct": false
       }
@@ -351,9 +354,9 @@
         "prediction": "positive",
         "display_label": "positive",
         "scores": {
-          "positive": 0.6877753734588623,
-          "neutral": 0.07942777872085571,
-          "negative": 0.23279684782028198
+          "positive": 0.687775194644928,
+          "neutral": 0.0794277936220169,
+          "negative": 0.23279699683189392
         },
         "correct": true
       },
@@ -364,8 +367,8 @@
         "display_label": "positive",
         "scores": {
           "positive": 0.9639050364494324,
-          "neutral": 0.026933807879686356,
-          "negative": 0.009161176159977913
+          "neutral": 0.0269338209182024,
+          "negative": 0.009161184541881084
         },
         "correct": true
       },
@@ -387,8 +390,8 @@
         "prediction": "negative",
         "display_label": "negative",
         "scores": {
-          "positive": 0.024101540446281433,
-          "neutral": 0.029278522357344627,
+          "positive": 0.024101564660668373,
+          "neutral": 0.029278535395860672,
           "negative": 0.9466199278831482
         },
         "correct": true
@@ -399,8 +402,8 @@
         "prediction": "negative",
         "display_label": "negative",
         "scores": {
-          "positive": 0.014462034218013287,
-          "neutral": 0.02287607453763485,
+          "positive": 0.01446202676743269,
+          "neutral": 0.022876065224409103,
           "negative": 0.9626619219779968
         },
         "correct": true
@@ -411,8 +414,8 @@
         "prediction": "negative",
         "display_label": "negative",
         "scores": {
-          "positive": 0.00561024434864521,
-          "neutral": 0.012789995409548283,
+          "positive": 0.005610241554677486,
+          "neutral": 0.01278998889029026,
           "negative": 0.981599748134613
         },
         "correct": true
@@ -423,7 +426,7 @@
         "prediction": "positive",
         "display_label": "unclear",
         "scores": {
-          "positive": 0.4398682713508606,
+          "positive": 0.439868301153183,
           "neutral": 0.31198933720588684,
           "negative": 0.24814236164093018
         },
@@ -435,9 +438,9 @@
         "prediction": "positive",
         "display_label": "unclear",
         "scores": {
-          "positive": 0.555445671081543,
-          "neutral": 0.24708114564418793,
-          "negative": 0.19747325778007507
+          "positive": 0.5554454922676086,
+          "neutral": 0.24708113074302673,
+          "negative": 0.19747331738471985
         },
         "correct": false
       },
@@ -447,9 +450,9 @@
         "prediction": "negative",
         "display_label": "unclear",
         "scores": {
-          "positive": 0.37924259901046753,
-          "neutral": 0.1987248659133911,
-          "negative": 0.42203253507614136
+          "positive": 0.3792426288127899,
+          "neutral": 0.19872483611106873,
+          "negative": 0.42203256487846375
         },
         "correct": false
       },
@@ -459,9 +462,9 @@
         "prediction": "negative",
         "display_label": "negative",
         "scores": {
-          "positive": 0.05630382522940636,
-          "neutral": 0.10062393546104431,
-          "negative": 0.8430722951889038
+          "positive": 0.05630386620759964,
+          "neutral": 0.10062400996685028,
+          "negative": 0.8430721163749695
         },
         "correct": false
       },
@@ -471,9 +474,9 @@
         "prediction": "neutral",
         "display_label": "neutral",
         "scores": {
-          "positive": 0.13520047068595886,
-          "neutral": 0.7187357544898987,
-          "negative": 0.14606381952762604
+          "positive": 0.13520051538944244,
+          "neutral": 0.7187355756759644,
+          "negative": 0.14606396853923798
         },
         "correct": true
       },
@@ -483,9 +486,9 @@
         "prediction": "positive",
         "display_label": "unclear",
         "scores": {
-          "positive": 0.47073015570640564,
+          "positive": 0.4707302153110504,
           "neutral": 0.2862427234649658,
-          "negative": 0.24302710592746735
+          "negative": 0.24302707612514496
         },
         "correct": false
       }
@@ -495,13 +498,13 @@
   },
   "rag": {
     "expected_source_or_abstention": {
-      "correct": 11,
+      "correct": 12,
       "total": 12,
-      "fraction": 0.9166666666666666
+      "fraction": 1.0
     },
     "citation_integrity": {
-      "correct": 8,
-      "total": 8,
+      "correct": 9,
+      "total": 9,
       "fraction": 1.0
     },
     "cases": [
@@ -527,7 +530,7 @@
               "quote": "* HbA1c above 7 percent",
               "quote_sha256": "1550a7bc317404a2d5dc517708ec4c207b55a6d18418119827dca6ba882788cb",
               "source_id": "S1",
-              "rerank_score": 5.459034442901611
+              "rerank_score": 4.73942756652832
             }
           ],
           "abstained": false,
@@ -584,7 +587,7 @@
               "quote": "* Metformin treatment",
               "quote_sha256": "19b27e5a5fd091800e021177e3d2b3c5df169115ccbab9e5f2d65b35e7236b30",
               "source_id": "S1",
-              "rerank_score": 4.3772382736206055
+              "rerank_score": 4.430593013763428
             },
             {
               "nct_id": "DEMO-T2D-001",
@@ -596,7 +599,7 @@
               "quote": "* HbA1c above 7 percent",
               "quote_sha256": "1550a7bc317404a2d5dc517708ec4c207b55a6d18418119827dca6ba882788cb",
               "source_id": "S2",
-              "rerank_score": 2.8421311378479004
+              "rerank_score": 2.156773567199707
             },
             {
               "nct_id": "DEMO-T2D-001",
@@ -608,7 +611,7 @@
               "quote": "* Type 2 diabetes",
               "quote_sha256": "cf9d6b79905b42093d95287ede7b4261390de6e37a789d08818c49409fdb0f35",
               "source_id": "S3",
-              "rerank_score": 2.4818766117095947
+              "rerank_score": 1.1937675476074219
             }
           ],
           "abstained": false,
@@ -665,7 +668,7 @@
               "quote": "* Kidney disease",
               "quote_sha256": "9c55e9720ff8804a580589bd618040d8eb645d46ec172cc3c82d1f07b32652a2",
               "source_id": "S1",
-              "rerank_score": 3.4188899993896484
+              "rerank_score": 3.0630764961242676
             }
           ],
           "abstained": false,
@@ -708,20 +711,53 @@
         ],
         "expected_trial": "DEMO-ASTHMA-003",
         "expected_quote": "Albuterol use",
-        "correct": false,
+        "correct": true,
         "response": {
-          "answer": "I could not find sufficiently relevant evidence in the retrieved study fields. Try a specific study question or review the registry directly.",
-          "sources": [],
-          "abstained": true,
-          "generation_mode": "low_relevance",
-          "generator_used": false,
+          "answer": "Study record excerpts for review:\n* Albuterol use [S1]",
+          "sources": [
+            {
+              "nct_id": "DEMO-ASTHMA-003",
+              "title": "SIMULATED Asthma Symptom Study",
+              "field": "eligibility_criteria",
+              "section": "inclusion",
+              "start": 29,
+              "end": 44,
+              "quote": "* Albuterol use",
+              "quote_sha256": "c7c74f243a28a47119386fb120670a03a562bb03fd319200a72f7eb0a08d6448",
+              "source_id": "S1",
+              "rerank_score": 1.3932030200958252
+            }
+          ],
+          "abstained": false,
+          "generation_mode": "extractive_grounding_fallback",
+          "generator_used": true,
           "scope": {
             "retrieved_studies": 3,
             "passage_limit": 120,
             "entire_registry_searched": false,
             "passages_considered": 16,
             "passages_truncated": false
-          }
+          },
+          "generation_prompt_truncated": false,
+          "models": {
+            "embedding": {
+              "id": "sentence-transformers/all-MiniLM-L6-v2",
+              "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+            },
+            "reranker": {
+              "id": "cross-encoder/ms-marco-MiniLM-L6-v2",
+              "revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a"
+            },
+            "generator": {
+              "id": "google/flan-t5-small",
+              "revision": "0fc9ddf78a1e988dac52e2dac162b0ede4fd74ab"
+            }
+          },
+          "limits": [
+            "Only retrieved study fields are searched; no enrollment or eligibility decision is made.",
+            "Sentiment never affects retrieval, eligibility or ranking.",
+            "Generated paraphrases are rejected; fallback excerpts preserve the source wording."
+          ]
         }
       },
       {
@@ -746,7 +782,7 @@
               "quote": "* COPD",
               "quote_sha256": "0df89c86031d784e2bfc27770410ac423d1e953d2d6e0d287c2e3a34322c945d",
               "source_id": "S1",
-              "rerank_score": 4.975869178771973
+              "rerank_score": 4.57219123840332
             }
           ],
           "abstained": false,
@@ -802,7 +838,7 @@
               "quote": "* Blood pressure measurement",
               "quote_sha256": "109534f783ad9de80ce2e8f8f5f3cf61ac8a303237b6eb187988326e3294d192",
               "source_id": "S1",
-              "rerank_score": 2.731318473815918
+              "rerank_score": 1.6220098733901978
             }
           ],
           "abstained": false,
@@ -858,7 +894,7 @@
               "quote": "* History of stroke",
               "quote_sha256": "56491e710ca5866155a24e1e1ae6a69766086c5a669860e38f23abdfd47cdbd5",
               "source_id": "S1",
-              "rerank_score": 2.967512369155884
+              "rerank_score": 1.9438817501068115
             }
           ],
           "abstained": false,
@@ -1000,7 +1036,7 @@
     ],
     "limits": "Fixed fictional corpus, expected source phrase or abstention only. Not clinical answer accuracy or registry-wide recall."
   },
-  "elapsed_seconds_including_first_load": 24.34,
+  "elapsed_seconds_including_first_load": 262.63,
   "limitations": [
     "No training or parameter tuning used these cases.",
     "This is development evidence, not independent clinical validation.",

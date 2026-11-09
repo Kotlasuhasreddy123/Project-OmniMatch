@@ -1,13 +1,20 @@
 import Link from "next/link";
+import terminology from "@/data/terminologyEvidence.json";
 import { ModelEvidence } from "@/components/ModelEvidence";
 import { AdvancedModelEvidence } from "@/components/AdvancedModelEvidence";
 
 const rows = [
   [
-    "Whisper base",
+    "Human Disease Ontology terminology",
+    "Active · CC0 reference data",
+    "Broader English disease-name coverage",
+    `The pinned source has ${terminology.active_concepts.toLocaleString()} active concepts. We import ${terminology.unambiguous_terms.toLocaleString()} unambiguous English term variants; ${terminology.ambiguous_terms} ambiguous terms show a subtype-review note. This is terminology data, not trained weights or clinical validation.`,
+  ],
+  [
+    "Whisper small",
     "Active · pretrained",
     "Speech → reviewed transcript",
-    "Publisher-trained multilingual speech weights. No project fine-tuning; clinical word error rate is not measured.",
+    "Accuracy-focused pretrained multilingual weights. On eight synthetic TTS notes, small had 3.3% word error versus 8.9% for base, at higher latency. This is not clinical speech validation; base remains configurable.",
   ],
   [
     "all-MiniLM-L6-v2",

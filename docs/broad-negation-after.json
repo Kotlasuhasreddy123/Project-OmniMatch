@@ -1,14 +1,15 @@
 {
   "dataset_sha256": "b358335baa3498760d3d760d916852c24888cf66a271eb71f0ecca456719af5e",
-  "rules_sha256": "f71430db7f2dab13e7c14f2fa27b7a68e717e133697a0e6869ef5a9ba7e437f4",
-  "vocabulary_sha256": "12b7c968af8e46038cb21707520040a96420e4ccf2f7db5fcaba6acbfc70129f",
+  "rules_sha256": "8eadf2858b46c5cabe7170ccd11cac892015575505f0a57023455f1eb079332c",
+  "vocabulary_sha256": "6523c9411dba14db92377f5be2955f4ee168e4958aa63323c2848acf21b6daac",
+  "ontology_sha256": "717c976a06d49a43a1c26990cca6203497284ec8abdcf3226a7c2f10011f0741",
   "record_count": 100,
-  "true_positive": 111,
-  "false_positive": 17,
-  "false_negative": 47,
-  "precision": 0.8671875,
-  "recall": 0.7025316455696202,
-  "f1": 0.7762237762237761,
+  "true_positive": 130,
+  "false_positive": 18,
+  "false_negative": 28,
+  "precision": 0.8783783783783784,
+  "recall": 0.8227848101265823,
+  "f1": 0.8496732026143792,
   "legacy_95_recall_target_met": false,
   "failures": [
     {
@@ -40,20 +41,6 @@
       ]
     },
     {
-      "id": "T030",
-      "missing": [
-        "graves disease"
-      ],
-      "extra": []
-    },
-    {
-      "id": "T031",
-      "missing": [
-        "status asthmaticus"
-      ],
-      "extra": []
-    },
-    {
       "id": "T032",
       "missing": [],
       "extra": [
@@ -79,8 +66,7 @@
     {
       "id": "T036",
       "missing": [
-        "psychosis",
-        "substance abuse"
+        "psychosis"
       ],
       "extra": []
     },
@@ -95,7 +81,6 @@
     {
       "id": "T039",
       "missing": [
-        "latex allergy",
         "sulfa"
       ],
       "extra": []
@@ -103,7 +88,6 @@
     {
       "id": "T040",
       "missing": [
-        "alcohol abuse",
         "tobacco"
       ],
       "extra": []
@@ -112,20 +96,6 @@
       "id": "T041",
       "missing": [
         "hypoglycemic"
-      ],
-      "extra": []
-    },
-    {
-      "id": "T043",
-      "missing": [
-        "deep vein thrombosis"
-      ],
-      "extra": []
-    },
-    {
-      "id": "T044",
-      "missing": [
-        "preeclampsia"
       ],
       "extra": []
     },
@@ -165,13 +135,6 @@
       ]
     },
     {
-      "id": "T065",
-      "missing": [
-        "lymphoma"
-      ],
-      "extra": []
-    },
-    {
       "id": "T066",
       "missing": [
         "cognitive impairment"
@@ -190,7 +153,6 @@
     {
       "id": "T068",
       "missing": [
-        "pyelonephritis",
         "sepsis"
       ],
       "extra": []
@@ -205,31 +167,14 @@
     {
       "id": "T070",
       "missing": [
-        "adrenal crisis",
-        "cushing syndrome"
+        "adrenal crisis"
       ],
       "extra": []
     },
     {
       "id": "T071",
       "missing": [
-        "aortic dissection",
         "lens dislocation"
-      ],
-      "extra": []
-    },
-    {
-      "id": "T072",
-      "missing": [
-        "hemophilia",
-        "thrombocytopenia"
-      ],
-      "extra": []
-    },
-    {
-      "id": "T073",
-      "missing": [
-        "lewy body"
       ],
       "extra": []
     },
@@ -243,26 +188,22 @@
     {
       "id": "T076",
       "missing": [
-        "gi symptoms",
-        "lymphoma"
+        "gi symptoms"
       ],
       "extra": []
     },
     {
       "id": "T077",
-      "missing": [
-        "barrett esophagus"
-      ],
+      "missing": [],
       "extra": [
         "endoscopy"
       ]
     },
     {
       "id": "T078",
-      "missing": [
-        "endometrial hyperplasia"
-      ],
+      "missing": [],
       "extra": [
+        "infertility",
         "ultrasound"
       ]
     },
@@ -319,8 +260,7 @@
       "id": "T091",
       "missing": [
         "bladder dysfunction",
-        "bowel dysfunction",
-        "cauda equina"
+        "bowel dysfunction"
       ],
       "extra": []
     },
@@ -328,13 +268,6 @@
       "id": "T092",
       "missing": [
         "aortic involvement"
-      ],
-      "extra": []
-    },
-    {
-      "id": "T093",
-      "missing": [
-        "respiratory failure"
       ],
       "extra": []
     },

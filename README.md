@@ -44,7 +44,7 @@ See [the demo guide](docs/team-share/OmniMatch%20October%2020%20Live%20Demo%20Gu
 
 ## What is actually verified
 
-- In Docker, the backend health endpoint reports Qdrant connected and the Whisper base model loaded.
+- In Docker, the backend health endpoint reports Qdrant connected and the configured Whisper speech model loaded.
 - A synthetic end-to-end text workflow produced an inbox item within 60 seconds in one local run.
 - A synthetic speech sample was transcribed in memory by Whisper in one local run.
 - Browser review requires explicit approval of patient entities before submission. Negated and family-history mentions are excluded from the matching payload.
@@ -59,3 +59,5 @@ The backend is FastAPI and Python; the frontend is Next.js and TypeScript; Qdran
 The prior Kiro-era README is retained at [docs/README_Historical.md](docs/README_Historical.md) for provenance. Its performance figures and broad claims are **not validated results**.
 
 Security setup and remaining deployment checks: [Security guardrails](docs/SECURITY_GUARDRAILS.md).
+
+Latest terminology and speech work: [Accuracy update and limitations](docs/ACCURACY_UPGRADE.md).

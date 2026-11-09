@@ -1,7 +1,8 @@
 {
   "dataset_version": "1.0",
   "dataset_sha256": "3a86692c735d51aa4288ac4e05569f1ad39e0e4ddc342a72bfad4521a110676d",
-  "rules_sha256": "4cb18ad47ce5cba4906b176c82b8d755819722b5dbad76bedeac1e4fd40c1931",
+  "rules_sha256": "8eadf2858b46c5cabe7170ccd11cac892015575505f0a57023455f1eb079332c",
+  "vocabulary_sha256": "6523c9411dba14db92377f5be2955f4ee168e4958aa63323c2848acf21b6daac",
   "provenance": "Authored synthetic regression fixtures; no patient records, recordings, registry studies or external training corpus.",
   "case_count": 69,
   "metric": "Expected target term present with the expected context and negation",

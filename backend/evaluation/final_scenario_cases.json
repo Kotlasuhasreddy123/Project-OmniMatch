@@ -1,0 +1,804 @@
+{
+  "provenance": "Author-created English synthetic development regression, created to exercise terminology/context changes. Templated and not independent clinical validation; no model fitting uses these cases.",
+  "cases": [
+    {
+      "id": "FINAL-001",
+      "text": "The fictional patient has pulmonary alveolar proteinosis.",
+      "expected": [
+        {
+          "term": "pulmonary alveolar proteinosis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-002",
+      "text": "The fictional patient denies pulmonary alveolar proteinosis.",
+      "expected": [
+        {
+          "term": "pulmonary alveolar proteinosis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-003",
+      "text": "Her mother was diagnosed with pulmonary alveolar proteinosis.",
+      "expected": [
+        {
+          "term": "pulmonary alveolar proteinosis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-004",
+      "text": "Possible pulmonary alveolar proteinosis needs review.",
+      "expected": [
+        {
+          "term": "pulmonary alveolar proteinosis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-005",
+      "text": "The fictional patient has cystinuria.",
+      "expected": [
+        {
+          "term": "cystinuria",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-006",
+      "text": "The fictional patient denies cystinuria.",
+      "expected": [
+        {
+          "term": "cystinuria",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-007",
+      "text": "Her mother was diagnosed with cystinuria.",
+      "expected": [
+        {
+          "term": "cystinuria",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-008",
+      "text": "Possible cystinuria needs review.",
+      "expected": [
+        {
+          "term": "cystinuria",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-009",
+      "text": "The fictional patient has endometriosis.",
+      "expected": [
+        {
+          "term": "endometriosis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-010",
+      "text": "The fictional patient denies endometriosis.",
+      "expected": [
+        {
+          "term": "endometriosis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-011",
+      "text": "Her mother was diagnosed with endometriosis.",
+      "expected": [
+        {
+          "term": "endometriosis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-012",
+      "text": "Possible endometriosis needs review.",
+      "expected": [
+        {
+          "term": "endometriosis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-013",
+      "text": "The fictional patient has scleroderma.",
+      "expected": [
+        {
+          "term": "scleroderma",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-014",
+      "text": "The fictional patient denies scleroderma.",
+      "expected": [
+        {
+          "term": "scleroderma",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-015",
+      "text": "Her mother was diagnosed with scleroderma.",
+      "expected": [
+        {
+          "term": "scleroderma",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-016",
+      "text": "Possible scleroderma needs review.",
+      "expected": [
+        {
+          "term": "scleroderma",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-017",
+      "text": "The fictional patient has retinitis pigmentosa.",
+      "expected": [
+        {
+          "term": "retinitis pigmentosa",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-018",
+      "text": "The fictional patient denies retinitis pigmentosa.",
+      "expected": [
+        {
+          "term": "retinitis pigmentosa",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-019",
+      "text": "Her mother was diagnosed with retinitis pigmentosa.",
+      "expected": [
+        {
+          "term": "retinitis pigmentosa",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-020",
+      "text": "Possible retinitis pigmentosa needs review.",
+      "expected": [
+        {
+          "term": "retinitis pigmentosa",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-021",
+      "text": "The fictional patient has ankylosing spondylitis.",
+      "expected": [
+        {
+          "term": "ankylosing spondylitis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-022",
+      "text": "The fictional patient denies ankylosing spondylitis.",
+      "expected": [
+        {
+          "term": "ankylosing spondylitis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-023",
+      "text": "Her mother was diagnosed with ankylosing spondylitis.",
+      "expected": [
+        {
+          "term": "ankylosing spondylitis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-024",
+      "text": "Possible ankylosing spondylitis needs review.",
+      "expected": [
+        {
+          "term": "ankylosing spondylitis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-025",
+      "text": "The fictional patient has autoimmune hepatitis.",
+      "expected": [
+        {
+          "term": "autoimmune hepatitis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-026",
+      "text": "The fictional patient denies autoimmune hepatitis.",
+      "expected": [
+        {
+          "term": "autoimmune hepatitis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-027",
+      "text": "Her mother was diagnosed with autoimmune hepatitis.",
+      "expected": [
+        {
+          "term": "autoimmune hepatitis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-028",
+      "text": "Possible autoimmune hepatitis needs review.",
+      "expected": [
+        {
+          "term": "autoimmune hepatitis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-029",
+      "text": "The fictional patient has myasthenia gravis.",
+      "expected": [
+        {
+          "term": "myasthenia gravis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-030",
+      "text": "The fictional patient denies myasthenia gravis.",
+      "expected": [
+        {
+          "term": "myasthenia gravis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-031",
+      "text": "Her mother was diagnosed with myasthenia gravis.",
+      "expected": [
+        {
+          "term": "myasthenia gravis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-032",
+      "text": "Possible myasthenia gravis needs review.",
+      "expected": [
+        {
+          "term": "myasthenia gravis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-033",
+      "text": "The fictional patient has hereditary angioedema.",
+      "expected": [
+        {
+          "term": "hereditary angioedema",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-034",
+      "text": "The fictional patient denies hereditary angioedema.",
+      "expected": [
+        {
+          "term": "hereditary angioedema",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-035",
+      "text": "Her mother was diagnosed with hereditary angioedema.",
+      "expected": [
+        {
+          "term": "hereditary angioedema",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-036",
+      "text": "Possible hereditary angioedema needs review.",
+      "expected": [
+        {
+          "term": "hereditary angioedema",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-037",
+      "text": "The fictional patient has pernicious anemia.",
+      "expected": [
+        {
+          "term": "pernicious anemia",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-038",
+      "text": "The fictional patient denies pernicious anemia.",
+      "expected": [
+        {
+          "term": "pernicious anemia",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-039",
+      "text": "Her mother was diagnosed with pernicious anemia.",
+      "expected": [
+        {
+          "term": "pernicious anemia",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-040",
+      "text": "Possible pernicious anemia needs review.",
+      "expected": [
+        {
+          "term": "pernicious anemia",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-041",
+      "text": "The fictional patient has juvenile idiopathic arthritis.",
+      "expected": [
+        {
+          "term": "juvenile idiopathic arthritis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-042",
+      "text": "The fictional patient denies juvenile idiopathic arthritis.",
+      "expected": [
+        {
+          "term": "juvenile idiopathic arthritis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-043",
+      "text": "Her mother was diagnosed with juvenile idiopathic arthritis.",
+      "expected": [
+        {
+          "term": "juvenile idiopathic arthritis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-044",
+      "text": "Possible juvenile idiopathic arthritis needs review.",
+      "expected": [
+        {
+          "term": "juvenile idiopathic arthritis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-045",
+      "text": "The fictional patient has chronic pancreatitis.",
+      "expected": [
+        {
+          "term": "chronic pancreatitis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-046",
+      "text": "The fictional patient denies chronic pancreatitis.",
+      "expected": [
+        {
+          "term": "chronic pancreatitis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-047",
+      "text": "Her mother was diagnosed with chronic pancreatitis.",
+      "expected": [
+        {
+          "term": "chronic pancreatitis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-048",
+      "text": "Possible chronic pancreatitis needs review.",
+      "expected": [
+        {
+          "term": "chronic pancreatitis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-049",
+      "text": "The fictional patient has eosinophilic esophagitis.",
+      "expected": [
+        {
+          "term": "eosinophilic esophagitis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-050",
+      "text": "The fictional patient denies eosinophilic esophagitis.",
+      "expected": [
+        {
+          "term": "eosinophilic esophagitis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-051",
+      "text": "Her mother was diagnosed with eosinophilic esophagitis.",
+      "expected": [
+        {
+          "term": "eosinophilic esophagitis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-052",
+      "text": "Possible eosinophilic esophagitis needs review.",
+      "expected": [
+        {
+          "term": "eosinophilic esophagitis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-053",
+      "text": "The fictional patient has focal segmental glomerulosclerosis.",
+      "expected": [
+        {
+          "term": "focal segmental glomerulosclerosis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-054",
+      "text": "The fictional patient denies focal segmental glomerulosclerosis.",
+      "expected": [
+        {
+          "term": "focal segmental glomerulosclerosis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-055",
+      "text": "Her mother was diagnosed with focal segmental glomerulosclerosis.",
+      "expected": [
+        {
+          "term": "focal segmental glomerulosclerosis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-056",
+      "text": "Possible focal segmental glomerulosclerosis needs review.",
+      "expected": [
+        {
+          "term": "focal segmental glomerulosclerosis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-057",
+      "text": "The fictional patient has dermatomyositis.",
+      "expected": [
+        {
+          "term": "dermatomyositis",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-058",
+      "text": "The fictional patient denies dermatomyositis.",
+      "expected": [
+        {
+          "term": "dermatomyositis",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-059",
+      "text": "Her mother was diagnosed with dermatomyositis.",
+      "expected": [
+        {
+          "term": "dermatomyositis",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-060",
+      "text": "Possible dermatomyositis needs review.",
+      "expected": [
+        {
+          "term": "dermatomyositis",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-061",
+      "text": "The fictional patient has wilson disease.",
+      "expected": [
+        {
+          "term": "wilson disease",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-062",
+      "text": "The fictional patient denies wilson disease.",
+      "expected": [
+        {
+          "term": "wilson disease",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-063",
+      "text": "Her mother was diagnosed with wilson disease.",
+      "expected": [
+        {
+          "term": "wilson disease",
+          "context": "family",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-064",
+      "text": "Possible wilson disease needs review.",
+      "expected": [
+        {
+          "term": "wilson disease",
+          "context": "hypothetical",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-065",
+      "text": "Mother reports endometriosis, the patient denies asthma.",
+      "expected": [
+        {
+          "term": "endometriosis",
+          "context": "family",
+          "negated": false
+        },
+        {
+          "term": "asthma",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-066",
+      "text": "No asthma, the patient reports migraine.",
+      "expected": [
+        {
+          "term": "asthma",
+          "context": "patient",
+          "negated": true
+        },
+        {
+          "term": "migraine",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-067",
+      "text": "Her father has Parkinson disease and the patient takes metformin.",
+      "expected": [
+        {
+          "term": "parkinson disease",
+          "context": "family",
+          "negated": false
+        },
+        {
+          "term": "metformin",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-068",
+      "text": "The patient denies diabetes and has hypertension.",
+      "expected": [
+        {
+          "term": "diabetes",
+          "context": "patient",
+          "negated": true
+        },
+        {
+          "term": "hypertension",
+          "context": "patient",
+          "negated": false
+        }
+      ]
+    },
+    {
+      "id": "FINAL-069",
+      "text": "Her sister developed cystinuria. The patient has no kidney disease.",
+      "expected": [
+        {
+          "term": "cystinuria",
+          "context": "family",
+          "negated": false
+        },
+        {
+          "term": "kidney disease",
+          "context": "patient",
+          "negated": true
+        }
+      ]
+    },
+    {
+      "id": "FINAL-070",
+      "text": "The appointment starts Monday.",
+      "expected": []
+    },
+    {
+      "id": "FINAL-071",
+      "text": "Please save this fictional note.",
+      "expected": []
+    },
+    {
+      "id": "FINAL-072",
+      "text": "The study team will review the paperwork.",
+      "expected": []
+    }
+  ]
+}
