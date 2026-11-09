@@ -311,6 +311,15 @@ class TestEntityRejection:
 class TestSyncSpeed:
 
     @pytest.mark.asyncio
+    async def test_demo_mode_blocks_live_sync(self, client, admin_headers, monkeypatch):
+        from app.config import settings
+        monkeypatch.setattr(settings, 'demo_mode', True)
+        with patch('app.trials.router._run_sync', new_callable=AsyncMock) as sync:
+            response = await client.post('/api/v1/trials/sync', headers=admin_headers)
+        assert response.status_code == 409
+        sync.assert_not_awaited()
+
+    @pytest.mark.asyncio
     async def test_sync_completes_with_mocked_api(self, client, admin_headers):
         """TEST-04: Sync with mocked API must return quickly (<<15 min)."""
         mock_study = {

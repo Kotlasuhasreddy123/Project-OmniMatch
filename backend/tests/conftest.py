@@ -42,6 +42,9 @@ async def app(tmp_db_path: str, monkeypatch, identity_key) -> FastAPI:
     # Re-import to pick up new env values (or patch settings directly)
     from app import config as cfg
     cfg.settings.sqlite_db_path = tmp_db_path
+    # Unit tests must not inherit the operator's local demo/live-sync mode.
+    # Tests for the demo boundary and real local stack explicitly enable it.
+    monkeypatch.setattr(cfg.settings, 'demo_mode', False)
 
     from app.main import app as _app
     from app.models.database import init_db

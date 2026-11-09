@@ -2,6 +2,8 @@
 
 OmniMatch is a synthetic-patient research project. The software checks and model scores answer different questions. Passing application tests does not establish 98% medical accuracy.
 
+**Current status:** the local stack is now running and its full Docker rehearsal passed. See [the results and current startup commands](LOCAL_REHEARSAL_RESULTS.md). WorkOS email access and the medical-accuracy target remain unfinished.
+
 ## Install or upgrade
 
 Install Git, Python 3.10+ and Docker Desktop. Start Docker Desktop. In PowerShell:
@@ -59,12 +61,12 @@ Use [the installation guide](INSTALL_ON_YOUR_COMPUTER.md) for details and [the A
 - Backend: 211 tests passed on GitHub's Linux runner, one optional test skipped and the known broad NLP target recorded as an expected failure.
 - Real pinned CPU transformer evaluation and authenticated API checks passed separately. The evidence file records the new run after the memory-cache change. These checks are not live WorkOS or clinical validation.
 - Five focused lifecycle checks passed locally, including a repeated migration of a legacy database.
-- The fresh local Docker rebuild stopped when the Windows C: drive reached 0 bytes free. Docker returned an EOF/502 error. The upgraded local stack has not passed its full rehearsal.
+- The first local Docker rebuild stopped when C: filled up. That storage problem and the later memory-related build failure were resolved; the successful subsequent rehearsal is documented in [the results](LOCAL_REHEARSAL_RESULTS.md).
 - A SQLite backup was made inside the existing data volume before stopping the old frontend/backend. A Qdrant snapshot was also created. No database volumes were deleted.
 - Automatic approval review blocked deletion of generated build caches. No cleanup was performed.
 
-Before resuming locally, free at least 20–25 GB through Windows Storage settings or move files you choose to another drive. Preserve project folders and Docker data volumes. Restart Docker Desktop, then use the existing-installation command above. Do not assume the old frontend/backend are running: they were stopped before the attempted upgrade.
+For a future rebuild, keep at least 20–25 GB free and preserve Docker data volumes. The updated frontend/backend are now running; use the current laptop startup commands in the results document.
 
 The installer now checks project-drive space before starting a build and stops with instructions below 20 GiB free, or 25 GiB with optional advanced models. A test verifies that low space prevents any Docker command. Docker may store its disk image on a different drive; also check that drive separately.
 
-WorkOS IDs remain blank until the owner configures them. Complete an approved-account email sign-in and the demonstration checklist after disk recovery. User acceptance, deployment and the unmet medical-accuracy target remain in progress.
+WorkOS IDs remain blank until the owner configures them. Complete an approved-account email sign-in and the demonstration checklist next. User acceptance, public application deployment and the unmet medical-accuracy target remain in progress.

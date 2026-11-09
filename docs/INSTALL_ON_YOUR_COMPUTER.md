@@ -5,7 +5,7 @@ No AWS account or paid API key is needed for the local synthetic-data demo. The 
 ## Requirements
 
 - Windows: Docker Desktop using Linux containers/WSL 2. macOS: Docker Desktop. Linux: Docker Engine and Compose v2 with permission to run Docker.
-- Start with 16 GB system RAM and allocate at least 8 GB to Docker. CPU inference is supported; no GPU is required. Allow roughly 15–25 GB free disk for images, packages and model caches. These are planning estimates; measure actual use on your computer.
+- Start with 16 GB system RAM and leave room for other applications. This laptop completed its rehearsal with a 4 GB WSL memory limit, four CPUs and 8 GB swap after the default limit caused memory pressure; see [the measured local setup](LOCAL_REHEARSAL_RESULTS.md). Larger workloads may need more resources. CPU inference is supported; no GPU is required. Allow at least 20–25 GB free disk for a build. These are planning estimates, not a capacity guarantee.
 - Internet access for the first build and model downloads. Whisper and MiniLM weights are cached in the backend data volume. Optional registry sync/external research links still need internet. First installation can take several minutes or longer on a slow connection.
 - Free local ports 3000, 8000, 6333 and 6334. If another OmniMatch copy is running, stop that copy first; do not delete its volumes.
 
