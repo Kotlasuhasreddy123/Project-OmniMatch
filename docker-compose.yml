@@ -18,6 +18,8 @@ services:
     cap_drop: ['ALL']
     pids_limit: 256
     restart: unless-stopped
+    environment:
+      QDRANT__TELEMETRY_DISABLED: "true"
     ports:
       - "127.0.0.1:6333:6333"     # Local REST API
       - "127.0.0.1:6334:6334"     # Local gRPC

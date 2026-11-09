@@ -154,6 +154,8 @@ def test_production_fails_closed_without_storage_and_https():
         workos_organization_id='org_test', app_secret_key='a'*64, jwt_secret_key='b'*64)
     validate_production(configured)
     with pytest.raises(RuntimeError):
+        validate_production(configured.model_copy(update={'jwt_secret_key': configured.app_secret_key}))
+    with pytest.raises(RuntimeError):
         validate_production(configured.model_copy(update={'encrypted_storage_confirmed': False}))
     with pytest.raises(RuntimeError):
         validate_production(configured.model_copy(update={'app_allowed_origins': 'http://app.example.org'}))

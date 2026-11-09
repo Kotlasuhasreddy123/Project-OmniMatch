@@ -30,7 +30,7 @@ RUN pip install --no-cache-dir \
     "torch==2.15.0+cpu"
 
 # Step 2: Install openai-whisper after torch is in place
-RUN pip install --no-cache-dir --no-build-isolation "openai-whisper==20231117"
+RUN pip install --no-cache-dir --no-build-isolation "openai-whisper==20250625" "triton==3.9.0"
 
 # Step 3: Install all other requirements
 RUN pip install --no-cache-dir -r requirements.txt -r requirements-advanced.txt && \
@@ -64,6 +64,8 @@ COPY prepare_advanced_models.py ./
 ENV PYTHONPATH="/app"
 ENV XDG_CACHE_HOME="/app/data/model-cache"
 ENV HF_HOME="/app/data/model-cache/huggingface"
+ENV HF_HUB_DISABLE_TELEMETRY="1"
+ENV DO_NOT_TRACK="1"
 
 # Create data directory for SQLite
 RUN mkdir -p /app/data

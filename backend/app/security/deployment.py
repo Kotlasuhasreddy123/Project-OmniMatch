@@ -12,5 +12,5 @@ def validate_production(settings):
         raise RuntimeError('Production requires explicit HTTPS browser origins.')
     if not settings.workos_client_id or not settings.workos_organization_id:
         raise RuntimeError('Production requires configured owner-approved account access.')
-    if any(len(value) < 32 or 'change' in value.lower() for value in [settings.app_secret_key, settings.jwt_secret_key]):
+    if settings.app_secret_key == settings.jwt_secret_key or any(len(value) < 32 or 'change' in value.lower() for value in [settings.app_secret_key, settings.jwt_secret_key]):
         raise RuntimeError('Production requires independent random application secrets.')

@@ -50,6 +50,7 @@ The repository includes a Caddy/Compose overlay to configure the two HTTPS domai
 ```bash
 cp deploy/aws.env.example deploy/aws.env
 # Edit deploy/aws.env with your app and API domains.
+# Verify encrypted EBS and backups, then set ENCRYPTED_STORAGE_CONFIRMED=true.
 docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml config --quiet
 docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml up -d --build
 docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml ps
@@ -71,6 +72,8 @@ api.YOUR_DOMAIN {
 ```
 
 Replace both domain placeholders and verify DNS before enabling the proxy. Configure [passwordless organization roles and owner approval](PASSWORDLESS_ACCESS.md). Review backend configuration before allowing external users. HTTPS is necessary for browser microphone access on a public domain.
+
+Production startup also requires configured WorkOS client/organization IDs, explicit HTTPS origins and two different random secrets. See [security guardrails](SECURITY_GUARDRAILS.md). Startup refuses missing prerequisites; the storage confirmation flag does not perform encryption.
 
 ## 5. Acceptance checks
 

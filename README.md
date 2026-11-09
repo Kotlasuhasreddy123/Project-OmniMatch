@@ -57,3 +57,5 @@ Performance on a small, synthetic benchmark is not evidence of clinical safety o
 The backend is FastAPI and Python; the frontend is Next.js and TypeScript; Qdrant holds the local demo index. `docker-compose.yml` starts all three services. Backend tests run with `docker compose -p omnimatch-test -f docker-compose.test.yml run --rm --no-deps backend-test`. Frontend tests run from `frontend` with `npm run test:run -- --runInBand` after installing dependencies. The production frontend build is `npm run build`.
 
 The prior Kiro-era README is retained at [docs/README_Historical.md](docs/README_Historical.md) for provenance. Its performance figures and broad claims are **not validated results**.
+
+Security setup and remaining deployment checks: [Security guardrails](docs/SECURITY_GUARDRAILS.md).
