@@ -14,6 +14,7 @@ from functools import lru_cache
 import numpy as np
 
 logger = logging.getLogger(__name__)
+MAX_AUDIO_SECONDS = 300
 
 # Lazy import to avoid loading Whisper at module import time
 _whisper_module = None
@@ -82,7 +83,8 @@ class TranscriptionService:
         # stdin/stdout only: no filename or temporary audio file is created.
         try:
             decoded = subprocess.run(
-                ["ffmpeg", "-nostdin", "-loglevel", "error", "-i", "pipe:0",
+                ["ffmpeg", "-nostdin", "-loglevel", "error", '-protocol_whitelist', 'pipe',
+                 '-max_alloc', '67108864', '-threads', '2', "-i", "pipe:0", '-t', str(MAX_AUDIO_SECONDS + 1),
                  "-f", "f32le", "-ac", "1", "-ar", "16000", "pipe:1"],
                 input=raw_bytes, capture_output=True, check=True, timeout=120,
             )
@@ -91,6 +93,8 @@ class TranscriptionService:
         audio_numpy = np.frombuffer(decoded.stdout, dtype=np.float32).copy()
         if audio_numpy.size == 0:
             raise ValueError("Decoded audio is empty")
+        if audio_numpy.size > 16_000 * MAX_AUDIO_SECONDS:
+            raise ValueError('Recording exceeds five minutes')
 
         # Transcribe — audio stays in RAM as numpy array
         result = model.transcribe(audio_numpy, fp16=False, word_timestamps=True)

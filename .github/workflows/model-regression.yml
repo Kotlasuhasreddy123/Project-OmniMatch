@@ -16,7 +16,7 @@ jobs:
           python-version: "3.11"
       - run: python backend/evaluate_context.py
       - run: python -m unittest discover -s scripts -p "test_*.py"
-      - run: pip install pytest==8.2.2 pytest-asyncio==0.23.7
+      - run: pip install pytest==9.2.0 pytest-asyncio==1.4.1.post1
       - run: python scripts/export_model_evidence.py
       - run: python scripts/export_advanced_evidence.py
       - run: python backend/evaluate_candidate_extra.py --output /tmp/extra-corpus-report.json

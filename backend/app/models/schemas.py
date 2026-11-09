@@ -6,7 +6,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator, field_validator
 
 
 # ---------------------------------------------------------------------------
@@ -105,13 +105,21 @@ class TranscriptionResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 class ClinicalEntity(BaseModel):
-    term: str = Field(..., min_length=1, max_length=256)
+    term: str = Field(..., min_length=1, max_length=256, pattern=r'^[^\x00-\x1f\x7f]+$')
     entity_type: EntityType
     negated: bool = False
     context: Literal["patient", "family", "hypothetical"] = "patient"
     confidence: float = Field(..., ge=0.0, le=1.0)
     status: EntityStatus = EntityStatus.PENDING
     source: Literal["transcript", "manual", "history", "rules", "biomedical_transformer"] = "transcript"
+
+    @field_validator('term')
+    @classmethod
+    def nonblank_term(cls, value):
+        value = value.strip()
+        if not value:
+            raise ValueError('A term is required')
+        return value
 
 
 # ---------------------------------------------------------------------------
@@ -128,9 +136,15 @@ class EvidenceSpan(BaseModel):
     entity_term: str = Field(..., min_length=1, max_length=256)
     start_char: int = Field(..., ge=0)
     end_char: int = Field(..., gt=0)
-    excerpt_sha256: str = Field(..., min_length=64, max_length=64)
+    excerpt_sha256: str = Field(..., pattern=r'^[a-fA-F0-9]{64}$')
     confidence: float = Field(..., ge=0.0, le=1.0)
     human_verified: bool = True
+
+    @model_validator(mode='after')
+    def bounded_offsets(self):
+        if not 0 <= self.start_char < self.end_char <= 50_000:
+            raise ValueError('Invalid evidence offsets')
+        return self
 
 
 class CriterionEvidence(BaseModel):
@@ -146,8 +160,8 @@ class CriterionEvidence(BaseModel):
 
 class EvidenceLedgerRequest(BaseModel):
     session_id: str = Field(..., min_length=1, max_length=128)
-    approved_entities: list[ClinicalEntity]
-    evidence_spans: list[EvidenceSpan] = Field(default_factory=list)
+    approved_entities: list[ClinicalEntity] = Field(max_length=100)
+    evidence_spans: list[EvidenceSpan] = Field(default_factory=list, max_length=128)
 
 
 class EvidenceLedgerResponse(BaseModel):
@@ -160,7 +174,7 @@ class EvidenceLedgerResponse(BaseModel):
 
 class NLPExtractRequest(BaseModel):
     transcription: str = Field(..., min_length=1, max_length=50_000)
-    session_id: str
+    session_id: str = Field(min_length=1, max_length=128, pattern=r'^[A-Za-z0-9_-]+$')
 
 
 class NLPExtractResponse(BaseModel):
@@ -176,9 +190,9 @@ class NLPExtractResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 class MatchSearchRequest(BaseModel):
-    approved_entities: list[ClinicalEntity]
-    session_id: str
-    evidence_spans: list[EvidenceSpan] = Field(default_factory=list)
+    approved_entities: list[ClinicalEntity] = Field(max_length=100)
+    session_id: str = Field(min_length=1, max_length=128, pattern=r'^[A-Za-z0-9_-]+$')
+    evidence_spans: list[EvidenceSpan] = Field(default_factory=list, max_length=128)
     # Validation of approved vs rejected status is handled in the route handler,
     # not here, so the router can return HTTP 400 (not 422) with a clear message.
 
@@ -261,9 +275,9 @@ class SyncResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 class SessionCompleteRequest(BaseModel):
-    session_id: str
-    approved_entities: list[ClinicalEntity]
-    evidence_spans: list[EvidenceSpan] = Field(default_factory=list)
+    session_id: str = Field(min_length=1, max_length=128, pattern=r'^[A-Za-z0-9_-]+$')
+    approved_entities: list[ClinicalEntity] = Field(max_length=100)
+    evidence_spans: list[EvidenceSpan] = Field(default_factory=list, max_length=128)
     patient_pseudo: str | None = Field(
         default=None, pattern=r"^DEMO-[A-Z0-9][A-Z0-9_-]{0,39}$",
         description="Fictional patient label such as DEMO-001, never a real patient identifier.",
@@ -292,13 +306,13 @@ class HealthResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 class ReferralRequest(BaseModel):
-    inbox_item_id: str
-    nct_id: str
-    session_id: str
-    patient_pseudo: str = "REDACTED"
-    trial_title: str
-    met_criteria: list[str] = Field(default_factory=list)
-    webhook_url: str | None = None
+    inbox_item_id: str = Field(min_length=1, max_length=128)
+    nct_id: str = Field(min_length=1, max_length=128)
+    session_id: str = Field(min_length=1, max_length=128)
+    patient_pseudo: str = Field(default='REDACTED', max_length=64)
+    trial_title: str = Field(max_length=512)
+    met_criteria: list[str] = Field(default_factory=list, max_length=64)
+    webhook_url: str | None = Field(default=None, max_length=2048)
 
 
 class ReferralResponse(BaseModel):

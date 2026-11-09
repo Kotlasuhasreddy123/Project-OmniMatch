@@ -79,7 +79,8 @@ async function apiFetch<T>(
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new ApiError(res.status, err.detail ?? "Request failed");
+    throw new ApiError(res.status, typeof err.detail === 'string' ? err.detail :
+      res.status === 422 ? 'Check the input values and try again.' : 'Request failed');
   }
 
   if (res.status === 204) return undefined as T;

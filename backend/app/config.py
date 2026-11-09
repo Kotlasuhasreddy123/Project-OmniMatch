@@ -1,6 +1,7 @@
 """Application configuration loaded from environment variables via pydantic-settings."""
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Literal
 
 
 class Settings(BaseSettings):
@@ -14,11 +15,16 @@ class Settings(BaseSettings):
     )
 
     # Application
-    app_env: str = "development"
+    app_env: Literal['development', 'test', 'production'] = 'development'
+    encrypted_storage_confirmed: bool = False
     app_secret_key: str = "dev-secret-key-change-in-production"
     app_allowed_origins: str = "http://localhost:3000"
     demo_mode: bool = False
     advanced_nlp_enabled: bool = False
+    app_allowed_hosts: str = 'localhost,127.0.0.1,::1'
+    outbound_webhooks_enabled: bool = False
+    referral_webhook_url: str = ''
+    webhook_allowed_hosts: str = ''
 
     # JWT
     jwt_secret_key: str = "dev-jwt-secret-change-in-production"
@@ -58,6 +64,10 @@ class Settings(BaseSettings):
     def allowed_origins_list(self) -> list[str]:
         """Parse comma-separated origins string into a list."""
         return [o.strip() for o in self.app_allowed_origins.split(",")]
+
+    @property
+    def allowed_hosts_list(self) -> list[str]:
+        return [host.strip().lower() for host in self.app_allowed_hosts.split(',') if host.strip()]
 
 
 settings = Settings()

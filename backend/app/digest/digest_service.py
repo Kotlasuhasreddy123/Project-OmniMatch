@@ -22,6 +22,7 @@ import aiosqlite
 import httpx
 
 from app.config import settings
+from app.security.webhooks import post_configured_webhook
 
 logger = logging.getLogger(__name__)
 
@@ -95,18 +96,11 @@ async def initiate_referral(
     webhook_status = "pending"
 
     if webhook_url:
-        try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                resp = await client.post(
-                    webhook_url,
-                    json=referral_payload,
-                    headers={"Content-Type": "application/json"},
-                )
-                webhook_fired = resp.status_code < 300
-                webhook_status = "sent" if webhook_fired else f"failed_{resp.status_code}"
-        except Exception as exc:
-            logger.warning("Referral webhook failed: %s", exc)
-            webhook_status = "failed_network"
+        webhook_fired = await post_configured_webhook(webhook_url, {
+            'referral_id': referral_id, 'nct_id': nct_id, 'initiated_at': now,
+            'note': 'Coordinator review requested. Sign in to OmniMatch to review.',
+        })
+        webhook_status = 'sent' if webhook_fired else 'disabled_or_failed'
 
     async with aiosqlite.connect(settings.sqlite_db_path) as db:
         await db.execute(
@@ -160,19 +154,4 @@ async def send_daily_digest(
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
-    try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            resp = await client.post(
-                digest_webhook_url,
-                json=payload,
-                headers={"Content-Type": "application/json"},
-            )
-            success = resp.status_code < 300
-            if success:
-                logger.info("Daily digest sent successfully.")
-            else:
-                logger.warning("Daily digest webhook returned %d", resp.status_code)
-            return success
-    except Exception as exc:
-        logger.error("Daily digest failed: %s", exc)
-        return False
+    return await post_configured_webhook(digest_webhook_url, payload)

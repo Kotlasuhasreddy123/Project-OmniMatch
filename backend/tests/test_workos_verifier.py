@@ -4,7 +4,8 @@ import pytest
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from fastapi import HTTPException
-from jose import jwt, jwk
+import jwt
+from jwt.algorithms import RSAAlgorithm
 from app.auth import workos_verifier as verifier
 from app.models.schemas import UserRole
 
@@ -14,7 +15,7 @@ def signed(monkeypatch):
     private = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     pem = private.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
     public = private.public_key().public_bytes(serialization.Encoding.PEM, serialization.PublicFormat.SubjectPublicKeyInfo)
-    key = jwk.construct(public, 'RS256').to_dict()
+    key = RSAAlgorithm.to_jwk(private.public_key(), as_dict=True)
     key['kid'] = 'test-key'
     monkeypatch.setattr(verifier.settings, 'workos_client_id', 'client_test')
     monkeypatch.setattr(verifier.settings, 'workos_organization_id', 'org_test')
@@ -41,6 +42,7 @@ async def test_staff_and_admin(signed):
     ({'exp': 1}, 401), ({'client_id': 'client_other'}, 401), ({'iss': 'https://example.com'}, 401),
     ({'sid': None}, 401), ({'org_id': 'org_other'}, 403), ({'permissions': []}, 403),
     ({'permissions': ['omnimatch:admin']}, 403), ({'permissions': 'omnimatch:access'}, 403),
+    ({'iat': int(time.time()) + 3600}, 401), ({'sub': ''}, 401), ({'sid': ''}, 401),
 ])
 async def test_reject_claims(signed, changes, status):
     with pytest.raises(HTTPException) as error:
@@ -60,7 +62,7 @@ async def test_tampered_signature(signed):
 
 @pytest.mark.asyncio
 async def test_no_symmetric_fallback(signed):
-    token = jwt.encode({'sub': 'fake'}, 'test-secret', algorithm='HS256', headers={'kid': 'test-key'})
+    token = jwt.encode({'sub': 'fake'}, 'test-secret-for-rejected-hs256-signature'*2, algorithm='HS256', headers={'kid': 'test-key'})
     with pytest.raises(HTTPException) as error:
         await verifier.verify_workos_token(token)
     assert error.value.status_code == 401

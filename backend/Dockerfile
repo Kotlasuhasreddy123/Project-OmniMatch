@@ -27,13 +27,14 @@ COPY requirements.txt requirements-advanced.txt ./
 # Step 1: Install torch CPU separately (large file, ~190MB)
 RUN pip install --no-cache-dir \
     --extra-index-url https://download.pytorch.org/whl/cpu \
-    "torch==2.3.1+cpu"
+    "torch==2.15.0+cpu"
 
 # Step 2: Install openai-whisper after torch is in place
 RUN pip install --no-cache-dir --no-build-isolation "openai-whisper==20231117"
 
 # Step 3: Install all other requirements
-RUN pip install --no-cache-dir -r requirements.txt -r requirements-advanced.txt
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-advanced.txt && \
+    pip install --no-cache-dir --upgrade "pip==26.3" "setuptools==84.2.1"
 
 # The current extractor uses explicit context rules; no unused spaCy weights.
 
@@ -52,6 +53,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy installed packages from builder's system python (not a venv)
+RUN python -m pip uninstall -y pip setuptools
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
@@ -76,4 +78,4 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')" || exit 1
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--limit-concurrency", "32", "--no-server-header", "--no-proxy-headers", "--no-access-log"]

@@ -7,6 +7,9 @@ import asyncio
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
+from fastapi import Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.auth.consent_router import router as consent_router
@@ -21,6 +24,7 @@ from app.models.database import init_db
 from app.models.schemas import HealthResponse
 from app.nlp.router import router as nlp_router
 from app.security.middleware import RateLimitMiddleware, SecurityHeadersMiddleware
+from app.security.boundaries import RequestBoundaryMiddleware
 from app.timeline.router import router as timeline_router
 from app.trials.router import router as trials_router
 from app.trials.qdrant_service import get_qdrant_service
@@ -34,6 +38,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 logger = logging.getLogger(__name__)
+logging.getLogger('httpx').setLevel(logging.WARNING)
 
 # ---------------------------------------------------------------------------
 # APScheduler for daily ClinicalTrials.gov sync
@@ -112,9 +117,9 @@ app = FastAPI(
         "CPSC-69100 Master's Project — HealthTech Innovation Labs."
     ),
     version="1.0.0",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json",
+    docs_url=None if settings.app_env == 'production' else '/api/docs',
+    redoc_url=None if settings.app_env == 'production' else '/api/redoc',
+    openapi_url=None if settings.app_env == 'production' else '/api/openapi.json',
 )
 
 from app.security.middleware import RateLimitMiddleware, SecurityHeadersMiddleware
@@ -123,16 +128,28 @@ from app.security.middleware import RateLimitMiddleware, SecurityHeadersMiddlewa
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins_list,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_credentials=False,
+    allow_methods=['GET', 'POST', 'DELETE', 'OPTIONS'],
+    allow_headers=['Authorization', 'Content-Type'],
 )
 
-# Security headers on every response
+# Rate limiting (in-process; use Redis-backed in multi-worker prod)
+app.add_middleware(RequestBoundaryMiddleware)
+app.add_middleware(RateLimitMiddleware)
+# Outermost headers also cover rejected origins, rate limits and oversized bodies.
 app.add_middleware(SecurityHeadersMiddleware)
 
-# Rate limiting (in-process; use Redis-backed in multi-worker prod)
-app.add_middleware(RateLimitMiddleware)
+
+@app.exception_handler(RequestValidationError)
+async def private_validation_error(request: Request, exc: RequestValidationError):
+    errors = [{'loc': error['loc'], 'type': error['type'], 'msg': 'Invalid value.'} for error in exc.errors()]
+    return JSONResponse(status_code=422, content={'detail': errors})
+
+
+@app.exception_handler(Exception)
+async def private_server_error(request: Request, exc: Exception):
+    logger.error('Unhandled API failure: %s', type(exc).__name__)
+    return JSONResponse(status_code=500, content={'detail': 'The request could not be completed. Please retry.'})
 
 # Register all routers
 app.include_router(auth_router)
@@ -156,6 +173,8 @@ app.include_router(timeline_router)  # NEW: longitudinal timeline (Feature 3)
 async def on_startup() -> None:
     """Initialize database tables, Qdrant collection, and APScheduler on startup."""
     logger.info("OmniMatch API starting up...")
+    from app.security.deployment import validate_production
+    validate_production(settings)
     await init_db()
     logger.info("SQLite tables initialized.")
 

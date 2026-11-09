@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import re
 import time
-from collections import defaultdict
+from collections import OrderedDict
 from typing import Callable
 
 from fastapi import HTTPException, Request, Response, status
@@ -21,7 +21,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 # In-process rate limiter (production: use Redis via fastapi-limiter)
 # ---------------------------------------------------------------------------
 
-_rate_store: dict[str, list[float]] = defaultdict(list)
+_rate_store: dict[str, list[float]] = OrderedDict()
+MAX_RATE_KEYS = 4096
 
 RATE_LIMITS = {
     "/api/v1/auth/login": (5, 60),       # 5 requests per 60 seconds
@@ -30,6 +31,7 @@ RATE_LIMITS = {
     "/api/v1/match/search": (20, 60),     # 20 requests per 60 seconds
     "/api/v1/understanding/analyze": (6, 60),
     "/api/v1/understanding/answer": (10, 60),
+    '/api/v1/referrals': (10, 60),
     "default": (60, 60),                  # 60 requests per 60 seconds default
 }
 
@@ -52,11 +54,20 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         # Find applicable rate limit
         limit, window = RATE_LIMITS.get(path, RATE_LIMITS["default"])
-        key = f"{client_ip}:{path}"
-        now = time.time()
+        # Dynamic IDs and unknown paths share a bucket; path rotation cannot
+        # allocate unlimited state or bypass the default limit.
+        bucket = path if path in RATE_LIMITS else 'default'
+        key = f"{client_ip}:{bucket}"
+        now = time.monotonic()
+        if key not in _rate_store and len(_rate_store) >= MAX_RATE_KEYS:
+            stale = [entry for entry, stamps in _rate_store.items() if not stamps or now - stamps[-1] >= 60]
+            for entry in stale:
+                del _rate_store[entry]
+            if len(_rate_store) >= MAX_RATE_KEYS:
+                return Response('Request capacity reached. Retry shortly.', status_code=429, headers={'Retry-After': '60'})
 
         # Sliding window: keep only timestamps within the window
-        _rate_store[key] = [t for t in _rate_store[key] if now - t < window]
+        _rate_store[key] = [t for t in _rate_store.get(key, []) if now - t < window]
 
         if len(_rate_store[key]) >= limit:
             return Response(
@@ -76,10 +87,14 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
-        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["X-XSS-Protection"] = "0"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Permissions-Policy"] = "microphone=(self)"
         response.headers["Cache-Control"] = "no-store"
+        response.headers['Content-Security-Policy'] = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'"
+        if request.url.path in {'/api/docs', '/api/redoc'}:
+            response.headers['Content-Security-Policy'] = "default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https://fastapi.tiangolo.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'"
+        response.headers['Cross-Origin-Resource-Policy'] = 'same-origin'
         # Remove server version disclosure
         if "server" in response.headers:
             del response.headers["server"]

@@ -14,6 +14,7 @@ from app.config import settings
 from app.models.database import get_db
 from app.models.schemas import TokenPayload, TranscriptionResponse
 from app.transcription.whisper_service import get_transcription_service
+from app.security.boundaries import bounded_inference
 
 router = APIRouter(prefix="/api/v1/audio", tags=["Audio"])
 
@@ -76,11 +77,13 @@ async def transcribe_audio(
 
     try:
         service = get_transcription_service(settings.whisper_model)
-        result = service.transcribe_buffer(audio_buffer)
+        result = await bounded_inference(lambda: service.transcribe_buffer(audio_buffer))
+    except HTTPException:
+        raise
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Transcription failed: {str(exc)}",
+            detail='Audio could not be processed. Use a valid recording of up to five minutes.',
         )
     finally:
         # Release buffer from memory whether transcription succeeded or failed
