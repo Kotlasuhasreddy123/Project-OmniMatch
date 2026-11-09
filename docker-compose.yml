@@ -14,7 +14,12 @@ services:
   qdrant:
     image: qdrant/qdrant:v1.10.0
     container_name: omni_qdrant
+    security_opt: ['no-new-privileges:true']
+    cap_drop: ['ALL']
+    pids_limit: 256
     restart: unless-stopped
+    environment:
+      QDRANT__TELEMETRY_DISABLED: "true"
     ports:
       - "127.0.0.1:6333:6333"     # Local REST API
       - "127.0.0.1:6334:6334"     # Local gRPC
@@ -35,6 +40,12 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: omni_backend
+    security_opt: ['no-new-privileges:true']
+    cap_drop: ['ALL']
+    pids_limit: 256
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=256m
     restart: unless-stopped
     depends_on:
       qdrant:
@@ -76,6 +87,13 @@ services:
         NEXT_PUBLIC_WORKOS_CLIENT_ID: ${WORKOS_CLIENT_ID:-}
         NEXT_PUBLIC_WORKOS_ORG_ID: ${WORKOS_ORGANIZATION_ID:-}
     container_name: omni_frontend
+    security_opt: ['no-new-privileges:true']
+    cap_drop: ['ALL']
+    pids_limit: 256
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+      - /app/.next/cache:rw,noexec,nosuid,size=64m,uid=1001,gid=1001
     restart: unless-stopped
     depends_on:
       backend:

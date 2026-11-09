@@ -45,7 +45,7 @@ Start a session, grant consent and read a fictional example: “The patient has 
 
 ## Models and data
 
-Both learned models already have trained weights. See [models and original training sources](MODELS_AND_DATA.md). Installing/downloading a model or indexing a study does not retrain it. Raw audio is processed in memory; approved demo information and inbox/audit records are stored locally. Never enter real patient identifiers or recordings in this academic installation.
+The core speech and embedding models already have pretrained weights. Optional transformer features add the checkpoints listed in [advanced NLP and RAG](ADVANCED_NLP_AND_RAG.md). See [models and original training sources](MODELS_AND_DATA.md). Installing/downloading a model or indexing a study does not retrain it. Raw audio is processed in memory; approved demo information and inbox/audit records are stored locally. Never enter real patient identifiers or recordings in this academic installation.
 
 Run the offline text-context regression checks without starting Docker:
 

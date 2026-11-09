@@ -7,13 +7,14 @@ from __future__ import annotations
 
 import io
 import aiosqlite
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 
 from app.auth.jwt_handler import get_current_user
 from app.config import settings
 from app.models.database import get_db
 from app.models.schemas import TokenPayload, TranscriptionResponse
 from app.transcription.whisper_service import get_transcription_service
+from app.security.boundaries import bounded_inference
 
 router = APIRouter(prefix="/api/v1/audio", tags=["Audio"])
 
@@ -24,8 +25,8 @@ ALLOWED_MIME_TYPES = {"audio/wav", "audio/webm", "audio/ogg", "audio/mp4", "audi
 
 @router.post("/transcribe", response_model=TranscriptionResponse, status_code=status.HTTP_200_OK)
 async def transcribe_audio(
-    session_id: str,
     request: Request,
+    session_id: str = Query(..., min_length=1, max_length=128, pattern=r'^[A-Za-z0-9_-]+$'),
     current_user: TokenPayload = Depends(get_current_user),
     db: aiosqlite.Connection = Depends(get_db),
 ) -> TranscriptionResponse:
@@ -76,11 +77,13 @@ async def transcribe_audio(
 
     try:
         service = get_transcription_service(settings.whisper_model)
-        result = service.transcribe_buffer(audio_buffer)
+        result = await bounded_inference(lambda: service.transcribe_buffer(audio_buffer))
+    except HTTPException:
+        raise
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Transcription failed: {str(exc)}",
+            detail='Audio could not be processed. Use a valid recording of up to five minutes.',
         )
     finally:
         # Release buffer from memory whether transcription succeeded or failed

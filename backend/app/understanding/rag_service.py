@@ -9,6 +9,7 @@ import math
 import re
 from collections import Counter
 from .model_registry import MODELS
+from app.security.model_policy import instruction_like
 
 STOP_WORDS = set('the a an is are was were i my me am do does can could would should what which how of for in to and or with this that study trial patient'.split())
 
@@ -23,9 +24,13 @@ def passages_from_trials(trials, limit=120):
         identifier = trial.get('nct_id', '')
         if not re.fullmatch(r'(?:NCT\d{8}|DEMO-[A-Z0-9-]{1,64})', identifier):
             continue
+        if not isinstance(trial.get('title', ''), str) or instruction_like(trial.get('title', '')):
+            continue
         for field in ['title', 'brief_summary', 'eligibility_criteria']:
             raw = trial.get(field, '')
             if not isinstance(raw, str):
+                continue
+            if instruction_like(raw):
                 continue
             section = 'record'
             offset = 0
@@ -77,6 +82,9 @@ def normalized(text):
 
 def answer(question, approved_terms, trials, runtime):
     scope = {'retrieved_studies': len(trials), 'passage_limit': 120, 'entire_registry_searched': False}
+    if instruction_like(question):
+        return dict(answer='This request needs a staff review. Ask a question about study records without instructions to bypass safeguards.',
+                    sources=[], abstained=True, generation_mode='security_review_required', generator_used=False, scope=scope)
     if re.search(r'\b(?:prescrib\w*|diagnos\w*|predict\w*)\b|\bwill\s+i\s+(?:get|develop)\b|\bwhat\s+(?:medicine|drug)\s+should\b', question, re.I):
         return dict(answer='Ask about study records and their requirements. This assistant does not diagnose, forecast disease or prescribe treatment.',
                     sources=[], abstained=True, generation_mode='out_of_scope', generator_used=False, scope=scope)

@@ -12,6 +12,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.auth.jwt_handler import get_current_user, require_role
 from app.digest.digest_service import initiate_referral, send_daily_digest
 from app.models.database import get_db
+from app.config import settings
 from app.models.schemas import (
     ReferralRequest,
     ReferralResponse,
@@ -47,8 +48,10 @@ async def create_referral(
     Returns:
         ReferralResponse with referral_id, status, and webhook_fired flag.
     """
+    if body.webhook_url:
+        raise HTTPException(400, 'Webhook destinations must be configured by the installation owner.')
     async with db.execute(
-        "SELECT session_id, matches_json FROM inbox_items WHERE id = ?", (body.inbox_item_id,)
+        "SELECT session_id, matches_json, patient_pseudo FROM inbox_items WHERE id = ?", (body.inbox_item_id,)
     ) as cur:
         item = await cur.fetchone()
     if item is None or item["session_id"] != body.session_id:
@@ -67,10 +70,10 @@ async def create_referral(
         nct_id=body.nct_id,
         session_id=body.session_id,
         initiated_by=current_user.sub,
-        patient_pseudo=body.patient_pseudo,
-        trial_title=body.trial_title,
-        met_criteria=body.met_criteria,
-        webhook_url=body.webhook_url,
+        patient_pseudo=item['patient_pseudo'] or 'REDACTED',
+        trial_title=match.get('title', ''),
+        met_criteria=[row.get('criterion_text', '') for row in match.get('criterion_breakdown', []) if row.get('verdict') == 'MET'],
+        webhook_url=settings.referral_webhook_url or None,
     )
     return ReferralResponse(
         referral_id=result["referral_id"],

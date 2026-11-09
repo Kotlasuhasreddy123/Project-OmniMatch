@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { PortalBoundary } from "@/components/PortalBoundary";
+import { browserCsp } from '../../security-policy';
 
 export const metadata: Metadata = {
   title: "OmniMatch — Ambient AI Clinical Trial Routing",
@@ -16,6 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head><meta httpEquiv="Content-Security-Policy" content={browserCsp()} /></head>
       <body className="min-h-screen bg-gray-50 font-sans antialiased">
         {/* Skip navigation for accessibility */}
         <a

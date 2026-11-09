@@ -22,14 +22,14 @@ openssl rand -hex 32
 openssl rand -hex 32
 ```
 
-Edit backend/.env. Set APP_SECRET_KEY and JWT_SECRET_KEY to the two separate generated secrets. Keep DEMO_MODE=true. Do not commit this file. If your checkout contains the app inside Chatgpt/omnimatch-renewed, change into that directory before copying the environment file. The root application is a separate older version; deploy the reviewed renewed application.
+Edit backend/.env. Set APP_SECRET_KEY and JWT_SECRET_KEY to the two separate generated secrets. Keep DEMO_MODE=true. Do not commit this file. A fresh clone of the GitHub repository contains backend, frontend and docker-compose.yml at its root. Run the commands from that root. If you also have an older local project copy, use the reviewed Git checkout rather than mixing its files with the older copy.
 
 ## 3. Private deployment for rehearsal
 
 Keep APP_ALLOWED_ORIGINS=http://localhost:3000. On EC2:
 
 ```bash
-docker compose up -d --build
+docker compose --env-file backend/.env up -d --build
 docker compose ps
 docker compose logs --tail=100 backend
 curl --fail http://localhost:8000/api/v1/health
@@ -50,10 +50,13 @@ The repository includes a Caddy/Compose overlay to configure the two HTTPS domai
 ```bash
 cp deploy/aws.env.example deploy/aws.env
 # Edit deploy/aws.env with your app and API domains.
-docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml config --quiet
-docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml up -d --build
-docker compose --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml ps
+# Verify encrypted EBS and backups, then set ENCRYPTED_STORAGE_CONFIRMED=true.
+docker compose --env-file backend/.env --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml config --quiet
+docker compose --env-file backend/.env --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml up -d --build
+docker compose --env-file backend/.env --env-file deploy/aws.env -f docker-compose.yml -f deploy/compose.aws.yml ps
 ```
+
+Both environment files are required: backend/.env supplies the public WorkOS IDs to the frontend build, and deploy/aws.env supplies the domains and storage confirmation. Set WORKOS_CLIENT_ID and WORKOS_ORGANIZATION_ID in backend/.env before building.
 
 Create DNS A records for both domains pointing to your EC2 public IPv4 address. Allow TCP 80 and 443 in the EC2 security group; keep application/database ports private. Keep backend/.env configured with strong distinct secrets. The overlay sets browser API URL at build time, CORS origin, synthetic-data mode, and TLS 1.3. Caddy stores certificate state in named volumes. Verify certificate issuance and all browser calls before sharing the URL. This configuration requires testing on your AWS account; no account resources or certificates have been provisioned here.
 
@@ -63,14 +66,22 @@ For a host-installed Caddy proxy, the Caddyfile is:
 
 ```caddyfile
 app.YOUR_DOMAIN {
+    tls {
+        protocols tls1.3
+    }
     reverse_proxy 127.0.0.1:3000
 }
 api.YOUR_DOMAIN {
+    tls {
+        protocols tls1.3
+    }
     reverse_proxy 127.0.0.1:8000
 }
 ```
 
 Replace both domain placeholders and verify DNS before enabling the proxy. Configure [passwordless organization roles and owner approval](PASSWORDLESS_ACCESS.md). Review backend configuration before allowing external users. HTTPS is necessary for browser microphone access on a public domain.
+
+Production startup also requires configured WorkOS client/organization IDs, explicit HTTPS origins and two different random secrets. See [security guardrails](SECURITY_GUARDRAILS.md). Startup refuses missing prerequisites; the storage confirmation flag does not perform encryption.
 
 ## 5. Acceptance checks
 

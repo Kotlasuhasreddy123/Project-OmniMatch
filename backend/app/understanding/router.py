@@ -13,6 +13,7 @@ from .model_registry import MODELS
 from .runtime import get_runtime, ModelUnavailable
 from .analysis_service import analyze
 from .rag_service import answer
+from app.security.boundaries import bounded_inference
 
 router = APIRouter(prefix='/api/v1/understanding', tags=['Advanced text and evidence'],
                    dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.CLINICAL_STAFF]))])
@@ -47,7 +48,7 @@ async def compute(function):
         raise HTTPException(429, 'Another local model analysis is running. Please wait for it to finish.')
     async with _busy:
         try:
-            return await run_in_threadpool(function)
+            return await bounded_inference(function)
         except ModelUnavailable as exc:
             raise HTTPException(503, str(exc)) from exc
 

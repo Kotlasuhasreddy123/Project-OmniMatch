@@ -45,6 +45,7 @@ async def app(tmp_db_path: str, monkeypatch, identity_key) -> FastAPI:
     # Unit tests must not inherit the operator's local demo/live-sync mode.
     # Tests for the demo boundary and real local stack explicitly enable it.
     monkeypatch.setattr(cfg.settings, 'demo_mode', False)
+    monkeypatch.setattr(cfg.settings, 'app_allowed_hosts', 'localhost,127.0.0.1,test')
 
     from app.main import app as _app
     from app.models.database import init_db
@@ -79,11 +80,11 @@ async def client(app: FastAPI) -> AsyncGenerator[AsyncClient, None]:
 def identity_key():
     from cryptography.hazmat.primitives.asymmetric import rsa
     from cryptography.hazmat.primitives import serialization
-    from jose import jwk
+    from jwt.algorithms import RSAAlgorithm
     private = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     pem = private.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption())
     public = private.public_key().public_bytes(serialization.Encoding.PEM, serialization.PublicFormat.SubjectPublicKeyInfo)
-    key = jwk.construct(public, "RS256").to_dict()
+    key = RSAAlgorithm.to_jwk(private.public_key(), as_dict=True)
     key["kid"] = "test-key"
     return pem, key
 
@@ -91,7 +92,7 @@ def identity_key():
 def test_identity_token(identity_key, admin=False):
     """Locally signed test-provider token; no live account or production bypass."""
     import time
-    from jose import jwt
+    import jwt
     permissions = ["omnimatch:access"] + (["omnimatch:admin"] if admin else [])
     return jwt.encode(dict(sub="test_admin" if admin else "test_staff", sid="test_session",
         client_id="client_test", org_id="org_test", iss="https://api.workos.com",

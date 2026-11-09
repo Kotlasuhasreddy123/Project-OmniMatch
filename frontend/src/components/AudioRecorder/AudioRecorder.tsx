@@ -33,6 +33,7 @@ export function AudioRecorder({
       <h2 className="text-lg font-semibold text-gray-900">Ambient Audio Capture</h2>
       <p className="mt-1 text-sm text-gray-500">
         Audio is processed in memory only — no files are written to disk.
+        Record up to five minutes at a time. Use the same demo patient label for follow-up recordings.
       </p>
 
       <div className="mt-5 flex flex-col items-center gap-4">
