@@ -53,3 +53,7 @@ To use the faster speech profile, set `WHISPER_MODEL=base` in the ignored backen
 The broad recall target is still unmet. Independently labeled, permitted and representative encounters are needed before further fitting and a frozen external evaluation. Record speaker/encounter-separated partitions, medication and number errors, uncertainty, rare-family examples, retrieval relevance and user acceptance. Do not tune repeatedly on a final test set or average unrelated scores into a claim of clinical accuracy.
 
 Sources: [Disease Ontology pinned repository](https://github.com/DiseaseOntology/HumanDiseaseOntology/tree/bd7dcdf405e03d3f896089ece856209861946e56), [ConText research](https://pmc.ncbi.nlm.nih.gov/articles/PMC2757457/), and [Whisper research](https://proceedings.mlr.press/v202/radford23a.html).
+
+## Software verification
+
+The final local real-stack run completed with 250 backend tests passed and one expected failure for the unmet broad-recall target. Frontend verification completed with 69 tests passed. A test pass rate measures software checks, not medical model accuracy.
