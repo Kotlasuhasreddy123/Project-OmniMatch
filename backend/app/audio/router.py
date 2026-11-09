@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import io
 import aiosqlite
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 
 from app.auth.jwt_handler import get_current_user
 from app.config import settings
@@ -25,8 +25,8 @@ ALLOWED_MIME_TYPES = {"audio/wav", "audio/webm", "audio/ogg", "audio/mp4", "audi
 
 @router.post("/transcribe", response_model=TranscriptionResponse, status_code=status.HTTP_200_OK)
 async def transcribe_audio(
-    session_id: str,
     request: Request,
+    session_id: str = Query(..., min_length=1, max_length=128, pattern=r'^[A-Za-z0-9_-]+$'),
     current_user: TokenPayload = Depends(get_current_user),
     db: aiosqlite.Connection = Depends(get_db),
 ) -> TranscriptionResponse:

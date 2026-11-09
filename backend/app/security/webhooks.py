@@ -26,7 +26,8 @@ async def post_configured_webhook(url, payload):
         # The owner must use a trusted provider domain; an egress firewall is
         # still required to enforce destination IPs against DNS rebinding.
         async with httpx.AsyncClient(timeout=10, trust_env=False, follow_redirects=False) as client:
-            response = await client.post(url, json=payload)
-            return 200 <= response.status_code < 300
+            # Only the status is needed; never buffer an untrusted response body.
+            async with client.stream('POST', url, json=payload) as response:
+                return 200 <= response.status_code < 300
     except (ValueError, OSError, httpx.HTTPError):
         return False

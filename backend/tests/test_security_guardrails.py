@@ -116,7 +116,10 @@ async def test_webhook_redirects_and_environment_proxies_are_disabled(monkeypatc
     monkeypatch.setattr(settings, 'webhook_allowed_hosts', 'hooks.example.org')
     monkeypatch.setattr(webhooks.socket, 'getaddrinfo', lambda *a, **k: [(socket.AF_INET, socket.SOCK_STREAM, 6, '', ('93.184.216.34', 443))])
     connection = MagicMock()
-    connection.return_value.__aenter__ = AsyncMock(return_value=SimpleNamespace(post=AsyncMock(return_value=SimpleNamespace(status_code=302))))
+    stream = MagicMock()
+    stream.return_value.__aenter__ = AsyncMock(return_value=SimpleNamespace(status_code=302))
+    stream.return_value.__aexit__ = AsyncMock(return_value=False)
+    connection.return_value.__aenter__ = AsyncMock(return_value=SimpleNamespace(stream=stream))
     connection.return_value.__aexit__ = AsyncMock(return_value=False)
     monkeypatch.setattr(webhooks.httpx, 'AsyncClient', connection)
     assert not await webhooks.post_configured_webhook(settings.referral_webhook_url, {})
@@ -202,3 +205,23 @@ def test_audio_playlist_cannot_fetch_network_content(monkeypatch):
         server.shutdown()
         server.server_close()
         worker.join(timeout=2)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('session', ['', 'a'*129, 'bad/session'])
+async def test_audio_session_labels_are_bounded(client, auth_headers, session):
+    response = await client.post('/api/v1/audio/transcribe', params={'session_id': session},
+        headers={**auth_headers, 'Content-Type': 'audio/wav'}, content=b'fictional')
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_busy_model_rejects_work_without_starting_it():
+    from fastapi import HTTPException
+    from app.security.boundaries import bounded_inference, _inference_lock
+    task = MagicMock()
+    async with _inference_lock:
+        with pytest.raises(HTTPException) as failure:
+            await bounded_inference(task)
+    assert failure.value.status_code == 429
+    task.assert_not_called()

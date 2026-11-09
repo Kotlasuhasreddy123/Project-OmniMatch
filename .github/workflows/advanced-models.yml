@@ -2,7 +2,7 @@ name: Real local transformer verification
 on:
   workflow_dispatch:
   pull_request:
-    paths: ["backend/app/understanding/**", "backend/app/trials/qdrant_service.py", "backend/prepare_advanced_models.py", "backend/tests/test_local_stack.py", "backend/evaluate_advanced.py", "backend/evaluation/advanced_cases.json", "backend/requirements-advanced.txt", ".github/workflows/advanced-models.yml"]
+    paths: ["backend/app/security/**", "backend/tests/test_security_guardrails.py", "backend/requirements.txt", "backend/Dockerfile", "backend/app/understanding/**", "backend/app/trials/qdrant_service.py", "backend/prepare_advanced_models.py", "backend/tests/test_local_stack.py", "backend/evaluate_advanced.py", "backend/evaluation/advanced_cases.json", "backend/requirements-advanced.txt", ".github/workflows/advanced-models.yml"]
 permissions:
   contents: read
 jobs:

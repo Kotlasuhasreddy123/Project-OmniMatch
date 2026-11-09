@@ -30,12 +30,13 @@
   "service_sha256": {
     "runtime.py": "5009c183e889802c83c310a5a124e8f048f2eafa1762f5beb1fd1d1dafd11bca",
     "analysis_service.py": "82eee1eeeddc86c8e787b54abeb1b505142af763b74d50d098223f8b49d8b91a",
-    "rag_service.py": "27fe05a354d0d8887e3f1c43f75e4ebb797d16b157bdac56b25394ab8921ae7e",
-    "model_registry.py": "ffa92184dad3f2a3f8a66a95e55416329ecb0cc488a3fb721d273a90ae36af48"
+    "rag_service.py": "b5963072c1df357035210e8868cfc34a17b322438d834c7f2dd2e7c3b420f954",
+    "model_registry.py": "ffa92184dad3f2a3f8a66a95e55416329ecb0cc488a3fb721d273a90ae36af48",
+    "../security/model_policy.py": "dbf71e89d2f1b3e77f13594447c25378211e3364f95c71a6a8a31b196a1951c2"
   },
   "python": "3.11.18",
-  "torch": "2.3.1+cpu",
-  "transformers": "4.57.6",
+  "torch": "2.15.0+cpu",
+  "transformers": "5.22.2",
   "device": "cpu",
   "threads": 4,
   "fine_tuned_here": false,
@@ -188,8 +189,8 @@
         "scores": {
           "patient": 0.9929192662239075,
           "negated": 0.0005809697322547436,
-          "family": 0.0033872765488922596,
-          "hypothetical": 0.43919020891189575
+          "family": 0.00338728167116642,
+          "hypothetical": 0.4391922950744629
         },
         "correct": true
       },
@@ -199,10 +200,10 @@
         "label": "negated",
         "prediction": "negated",
         "scores": {
-          "patient": 0.017522526904940605,
-          "negated": 0.965796947479248,
-          "family": 0.013853373005986214,
-          "hypothetical": 0.5321899056434631
+          "patient": 0.017522627487778664,
+          "negated": 0.9657968282699585,
+          "family": 0.013853366486728191,
+          "hypothetical": 0.5321900844573975
         },
         "correct": true
       },
@@ -212,10 +213,10 @@
         "label": "family",
         "prediction": "patient",
         "scores": {
-          "patient": 0.8717286586761475,
-          "negated": 0.01039149984717369,
-          "family": 0.3944537341594696,
-          "hypothetical": 0.23655244708061218
+          "patient": 0.8717287182807922,
+          "negated": 0.010391440242528915,
+          "family": 0.39445382356643677,
+          "hypothetical": 0.23655344545841217
         },
         "correct": false
       },
@@ -225,9 +226,9 @@
         "label": "hypothetical",
         "prediction": "hypothetical",
         "scores": {
-          "patient": 0.6459388136863708,
-          "negated": 0.01908508501946926,
-          "family": 0.005881522316485643,
+          "patient": 0.6459397673606873,
+          "negated": 0.01908506080508232,
+          "family": 0.005881531164050102,
           "hypothetical": 0.9648990035057068
         },
         "correct": true
@@ -238,10 +239,10 @@
         "label": "negated",
         "prediction": "negated",
         "scores": {
-          "patient": 0.008747685700654984,
+          "patient": 0.00874769501388073,
           "negated": 0.9791592359542847,
-          "family": 0.012084895744919777,
-          "hypothetical": 0.10224667191505432
+          "family": 0.01208492647856474,
+          "hypothetical": 0.10224677622318268
         },
         "correct": true
       },
@@ -252,9 +253,9 @@
         "prediction": "patient",
         "scores": {
           "patient": 0.9904486536979675,
-          "negated": 0.0005695406580343843,
-          "family": 0.0024370269384235144,
-          "hypothetical": 0.19911490380764008
+          "negated": 0.0005695412401109934,
+          "family": 0.0024370213504880667,
+          "hypothetical": 0.1991150826215744
         },
         "correct": true
       },
@@ -264,10 +265,10 @@
         "label": "family",
         "prediction": "family",
         "scores": {
-          "patient": 0.033219803124666214,
-          "negated": 0.8923841118812561,
-          "family": 0.917549192905426,
-          "hypothetical": 0.1707952916622162
+          "patient": 0.033219702541828156,
+          "negated": 0.8923834562301636,
+          "family": 0.9175488948822021,
+          "hypothetical": 0.17079564929008484
         },
         "correct": true
       },
@@ -277,10 +278,10 @@
         "label": "hypothetical",
         "prediction": "patient",
         "scores": {
-          "patient": 0.8511396646499634,
-          "negated": 0.004998366814106703,
-          "family": 0.007519741076976061,
-          "hypothetical": 0.7539234161376953
+          "patient": 0.8511401414871216,
+          "negated": 0.004998375661671162,
+          "family": 0.007519761566072702,
+          "hypothetical": 0.7539228796958923
         },
         "correct": false
       },
@@ -292,8 +293,8 @@
         "scores": {
           "patient": 0.9880483746528625,
           "negated": 0.0005457688239403069,
-          "family": 0.002083854516968131,
-          "hypothetical": 0.2478482574224472
+          "family": 0.0020838479977101088,
+          "hypothetical": 0.2478477954864502
         },
         "correct": true
       },
@@ -303,10 +304,10 @@
         "label": "negated",
         "prediction": "negated",
         "scores": {
-          "patient": 0.001152334501966834,
+          "patient": 0.0011523333378136158,
           "negated": 0.9904845952987671,
-          "family": 0.008086985908448696,
-          "hypothetical": 0.2063143402338028
+          "family": 0.008086968213319778,
+          "hypothetical": 0.20631469786167145
         },
         "correct": true
       },
@@ -316,10 +317,10 @@
         "label": "family",
         "prediction": "family",
         "scores": {
-          "patient": 0.14574235677719116,
+          "patient": 0.14574286341667175,
           "negated": 0.6427566409111023,
-          "family": 0.9013769030570984,
-          "hypothetical": 0.16005325317382812
+          "family": 0.9013766050338745,
+          "hypothetical": 0.16005417704582214
         },
         "correct": true
       },
@@ -330,9 +331,9 @@
         "prediction": "patient",
         "scores": {
           "patient": 0.8787580728530884,
-          "negated": 0.008028963580727577,
-          "family": 0.009200834669172764,
-          "hypothetical": 0.71974116563797
+          "negated": 0.00802898220717907,
+          "family": 0.009200864471495152,
+          "hypothetical": 0.7197406888008118
         },
         "correct": false
       }
@@ -350,9 +351,9 @@
         "prediction": "positive",
         "display_label": "positive",
         "scores": {
-          "positive": 0.6877753138542175,
-          "neutral": 0.07942778617143631,
-          "negative": 0.23279687762260437
+          "positive": 0.6877753734588623,
+          "neutral": 0.07942777872085571,
+          "negative": 0.23279684782028198
         },
         "correct": true
       },
@@ -363,7 +364,7 @@
         "display_label": "positive",
         "scores": {
           "positive": 0.9639050364494324,
-          "neutral": 0.0269338209182024,
+          "neutral": 0.026933807879686356,
           "negative": 0.009161176159977913
         },
         "correct": true
@@ -387,7 +388,7 @@
         "display_label": "negative",
         "scores": {
           "positive": 0.024101540446281433,
-          "neutral": 0.029278507456183434,
+          "neutral": 0.029278522357344627,
           "negative": 0.9466199278831482
         },
         "correct": true
@@ -398,9 +399,9 @@
         "prediction": "negative",
         "display_label": "negative",
         "scores": {
-          "positive": 0.014462045393884182,
-          "neutral": 0.02287609875202179,
-          "negative": 0.9626618027687073
+          "positive": 0.014462034218013287,
+          "neutral": 0.02287607453763485,
+          "negative": 0.9626619219779968
         },
         "correct": true
       },
@@ -422,9 +423,9 @@
         "prediction": "positive",
         "display_label": "unclear",
         "scores": {
-          "positive": 0.43986836075782776,
-          "neutral": 0.31198930740356445,
-          "negative": 0.24814239144325256
+          "positive": 0.4398682713508606,
+          "neutral": 0.31198933720588684,
+          "negative": 0.24814236164093018
         },
         "correct": false
       },
@@ -435,8 +436,8 @@
         "display_label": "unclear",
         "scores": {
           "positive": 0.555445671081543,
-          "neutral": 0.24708111584186554,
-          "negative": 0.19747327268123627
+          "neutral": 0.24708114564418793,
+          "negative": 0.19747325778007507
         },
         "correct": false
       },
@@ -446,9 +447,9 @@
         "prediction": "negative",
         "display_label": "unclear",
         "scores": {
-          "positive": 0.37924253940582275,
-          "neutral": 0.19872483611106873,
-          "negative": 0.42203256487846375
+          "positive": 0.37924259901046753,
+          "neutral": 0.1987248659133911,
+          "negative": 0.42203253507614136
         },
         "correct": false
       },
@@ -458,9 +459,9 @@
         "prediction": "negative",
         "display_label": "negative",
         "scores": {
-          "positive": 0.05630391463637352,
-          "neutral": 0.10062407702207565,
-          "negative": 0.8430720567703247
+          "positive": 0.05630382522940636,
+          "neutral": 0.10062393546104431,
+          "negative": 0.8430722951889038
         },
         "correct": false
       },
@@ -470,9 +471,9 @@
         "prediction": "neutral",
         "display_label": "neutral",
         "scores": {
-          "positive": 0.1352003961801529,
-          "neutral": 0.7187358736991882,
-          "negative": 0.14606377482414246
+          "positive": 0.13520047068595886,
+          "neutral": 0.7187357544898987,
+          "negative": 0.14606381952762604
         },
         "correct": true
       },
@@ -482,9 +483,9 @@
         "prediction": "positive",
         "display_label": "unclear",
         "scores": {
-          "positive": 0.4707302451133728,
-          "neutral": 0.28624266386032104,
-          "negative": 0.24302703142166138
+          "positive": 0.47073015570640564,
+          "neutral": 0.2862427234649658,
+          "negative": 0.24302710592746735
         },
         "correct": false
       }
@@ -526,7 +527,7 @@
               "quote": "* HbA1c above 7 percent",
               "quote_sha256": "1550a7bc317404a2d5dc517708ec4c207b55a6d18418119827dca6ba882788cb",
               "source_id": "S1",
-              "rerank_score": 5.459033012390137
+              "rerank_score": 5.459034442901611
             }
           ],
           "abstained": false,
@@ -583,7 +584,7 @@
               "quote": "* Metformin treatment",
               "quote_sha256": "19b27e5a5fd091800e021177e3d2b3c5df169115ccbab9e5f2d65b35e7236b30",
               "source_id": "S1",
-              "rerank_score": 4.377237796783447
+              "rerank_score": 4.3772382736206055
             },
             {
               "nct_id": "DEMO-T2D-001",
@@ -595,7 +596,7 @@
               "quote": "* HbA1c above 7 percent",
               "quote_sha256": "1550a7bc317404a2d5dc517708ec4c207b55a6d18418119827dca6ba882788cb",
               "source_id": "S2",
-              "rerank_score": 2.842135429382324
+              "rerank_score": 2.8421311378479004
             },
             {
               "nct_id": "DEMO-T2D-001",
@@ -607,7 +608,7 @@
               "quote": "* Type 2 diabetes",
               "quote_sha256": "cf9d6b79905b42093d95287ede7b4261390de6e37a789d08818c49409fdb0f35",
               "source_id": "S3",
-              "rerank_score": 2.4818801879882812
+              "rerank_score": 2.4818766117095947
             }
           ],
           "abstained": false,
@@ -745,7 +746,7 @@
               "quote": "* COPD",
               "quote_sha256": "0df89c86031d784e2bfc27770410ac423d1e953d2d6e0d287c2e3a34322c945d",
               "source_id": "S1",
-              "rerank_score": 4.975870132446289
+              "rerank_score": 4.975869178771973
             }
           ],
           "abstained": false,
@@ -801,7 +802,7 @@
               "quote": "* Blood pressure measurement",
               "quote_sha256": "109534f783ad9de80ce2e8f8f5f3cf61ac8a303237b6eb187988326e3294d192",
               "source_id": "S1",
-              "rerank_score": 2.7313201427459717
+              "rerank_score": 2.731318473815918
             }
           ],
           "abstained": false,
@@ -857,7 +858,7 @@
               "quote": "* History of stroke",
               "quote_sha256": "56491e710ca5866155a24e1e1ae6a69766086c5a669860e38f23abdfd47cdbd5",
               "source_id": "S1",
-              "rerank_score": 2.96751070022583
+              "rerank_score": 2.967512369155884
             }
           ],
           "abstained": false,
@@ -999,7 +1000,7 @@
     ],
     "limits": "Fixed fictional corpus, expected source phrase or abstention only. Not clinical answer accuracy or registry-wide recall."
   },
-  "elapsed_seconds_including_first_load": 12.7,
+  "elapsed_seconds_including_first_load": 24.34,
   "limitations": [
     "No training or parameter tuning used these cases.",
     "This is development evidence, not independent clinical validation.",
