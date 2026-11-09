@@ -175,7 +175,13 @@ for kind, terms in [("DISEASE", vocabulary.DISEASES),
 
 # Context window: number of words to look before/after entity for triggers
 NEGATION_WINDOW = 12
-PATIENT_SUBJECT_BOUNDARY = r"(?=\b(?:the\s+)?patient\s+(?:herself|himself|has|is|was|denies|reports|takes|uses|does|develops)\b)"
+PATIENT_SUBJECT_BOUNDARY = (
+    # A conditional's first patient reference is not a change of subject.
+    # Retain its trigger, including the optional article and "possible that".
+    r"(?<!if )(?<!if the )(?<!should )(?<!should the )(?<!were )(?<!were the )"
+    r"(?<!that )(?<!that the )(?<!possible )(?<!possible the )"
+    r"(?=\b(?:the\s+)?patient\s+(?:herself|himself|has|is|was|denies|reports|takes|uses|does|develops)\b)"
+)
 
 
 def subject_prefix(text: str, start: int) -> str:

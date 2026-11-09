@@ -33,7 +33,7 @@
     "rag_service.py": "2614a2e3b94837818ec51032c16fe05aaac8428824177a5edf0f83e4e63310e6",
     "model_registry.py": "ffa92184dad3f2a3f8a66a95e55416329ecb0cc488a3fb721d273a90ae36af48",
     "../security/model_policy.py": "dbf71e89d2f1b3e77f13594447c25378211e3364f95c71a6a8a31b196a1951c2",
-    "../nlp/negex_pipeline.py": "1584ed95792485e7e4dd4291f7fd740b27ae057edd707c23f4f30c300659d78b",
+    "../nlp/negex_pipeline.py": "8eadf2858b46c5cabe7170ccd11cac892015575505f0a57023455f1eb079332c",
     "../nlp/vocabulary.py": "6523c9411dba14db92377f5be2955f4ee168e4958aa63323c2848acf21b6daac",
     "../data/disease_ontology_lexicon.json": "717c976a06d49a43a1c26990cca6203497284ec8abdcf3226a7c2f10011f0741"
   },
@@ -1036,7 +1036,7 @@
     ],
     "limits": "Fixed fictional corpus, expected source phrase or abstention only. Not clinical answer accuracy or registry-wide recall."
   },
-  "elapsed_seconds_including_first_load": 119.69,
+  "elapsed_seconds_including_first_load": 262.63,
   "limitations": [
     "No training or parameter tuning used these cases.",
     "This is development evidence, not independent clinical validation.",
