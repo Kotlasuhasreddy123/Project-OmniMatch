@@ -39,6 +39,7 @@ def get_embedding_model() -> Any:
         logger.info("Loading embedding model: %s", EMBEDDING_MODEL)
         _embedding_model = SentenceTransformer(
             EMBEDDING_MODEL, revision=EMBEDDING_REVISION, trust_remote_code=False,
+            model_kwargs={'use_safetensors': True},
         )
         logger.info("Embedding model loaded.")
     return _embedding_model
