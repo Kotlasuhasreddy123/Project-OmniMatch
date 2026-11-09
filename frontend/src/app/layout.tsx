@@ -5,7 +5,7 @@ import { PortalBoundary } from "@/components/PortalBoundary";
 import { browserCsp } from '../../security-policy';
 
 export const metadata: Metadata = {
-  icons: { icon: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/favicon.ico` },
+  icons: { icon: { url: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/omnimatch-icon.svg`, type: "image/svg+xml" } },
   title: "OmniMatch — Ambient AI Clinical Trial Routing",
   description:
     "Consent-gated ambient audio capture with AI-powered clinical trial matching. CPSC-69100 Master's Project.",
