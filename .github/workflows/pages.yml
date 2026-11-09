@@ -32,7 +32,7 @@ jobs:
           NEXT_PUBLIC_WORKOS_CLIENT_ID: ${{ vars.WORKOS_CLIENT_ID }}
           NEXT_PUBLIC_WORKOS_ORG_ID: ${{ vars.WORKOS_ORGANIZATION_ID }}
           NEXT_TELEMETRY_DISABLED: '1'
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/out
