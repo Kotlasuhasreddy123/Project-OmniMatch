@@ -13,11 +13,12 @@ if TYPE_CHECKING:
     from sentence_transformers import SentenceTransformer
 
 from app.config import settings
+from app.understanding.model_registry import MODELS
 
 logger = logging.getLogger(__name__)
 
 VECTOR_SIZE = 384          # all-MiniLM-L6-v2 output dimension
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_MODEL, EMBEDDING_REVISION = MODELS["embedding"]
 MATCH_SCORE_THRESHOLD = 0.65
 DEMO_MATCH_SCORE_THRESHOLD = 0.40
 TOP_K = 10
@@ -36,7 +37,9 @@ def get_embedding_model() -> Any:
     if _embedding_model is None:
         from sentence_transformers import SentenceTransformer
         logger.info("Loading embedding model: %s", EMBEDDING_MODEL)
-        _embedding_model = SentenceTransformer(EMBEDDING_MODEL)
+        _embedding_model = SentenceTransformer(
+            EMBEDDING_MODEL, revision=EMBEDDING_REVISION, trust_remote_code=False,
+        )
         logger.info("Embedding model loaded.")
     return _embedding_model
 

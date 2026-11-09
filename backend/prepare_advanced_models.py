@@ -15,5 +15,9 @@ if __name__ == '__main__':
             'special_tokens_map.json', 'vocab.txt', 'vocab.json', 'merges.txt',
             'spiece.model', 'spm.model', 'sentencepiece.bpe.model', 'generation_config.json', 'added_tokens.json',
             'README.md', 'LICENSE*', 'NOTICE*',
+            # Core search uses SentenceTransformer, not just AutoModel. Keep its
+            # pooling and sequence-length configuration for offline startup.
+            'modules.json', 'sentence_bert_config.json', 'config_sentence_transformers.json',
+            '1_Pooling/config.json',
         ])
         print(f'{name}: {repo}@{revision} cached at {path}', flush=True)
