@@ -1,8 +1,8 @@
 # Which models does OmniMatch use?
 
-## 1. Speech: OpenAI Whisper base
+## 1. Speech: OpenAI Whisper small
 
-The backend loads the multilingual `base` checkpoint by default (74 million parameters). OpenAI trained this model family on 680,000 hours of internet audio paired with transcripts across English and other languages. We download the published weights and run inference locally. We have not fine-tuned Whisper on our conversations, patient records or synthetic demo scripts. This is a general speech model, so medical names, accents and noisy recordings still need transcription review.
+The backend now defaults to the multilingual `small` checkpoint. `base` remains a faster, smaller option; existing installations must change their own WHISPER_MODEL setting to use small. OpenAI trained this model family on 680,000 hours of internet audio paired with transcripts across English and other languages. We download the published weights and run inference locally. We have not fine-tuned Whisper on our conversations, patient records or synthetic demo scripts. This is a general speech model, so medical names, accents and noisy recordings still need transcription review.
 
 Source: [Whisper model card](https://github.com/openai/whisper/blob/main/model-card.md). The exact original recordings are not supplied as an OmniMatch dataset. A trained speech model is not evidence of accuracy on a particular clinic's recordings.
 
@@ -16,7 +16,7 @@ Source: [MiniLM model card and dataset table](https://huggingface.co/sentence-tr
 
 The active extraction endpoint calls `backend/app/nlp/negex_pipeline.py`. It uses a medical vocabulary and regular expressions to identify terms, negation, family history and hypothetical statements. Although spaCy is an installed dependency, this active extractor does not load a trained spaCy medical NER model. Its confidence values are heuristics. Criterion checks and review-score arithmetic are also rules rather than learned diagnostic models.
 
-The two learned models are already trained by their publishers. Our own pipeline needs representative evaluation and carefully reviewed improvements; it does not start as an untrained medical model. Whisper and MiniLM weights have not been fine-tuned. A separate synthetic-data assertion candidate was trained in the latest update; see [its exact data, parameters and results](MODEL_TRAINING_RESULTS.md). It is not connected to the live app. Fine-tuning requires a defined task, licensed/consented data, independent labels and a held-out evaluation set. The three fictional catalog studies and our synthetic scripts do not establish broad medical coverage.
+The core speech and embedding models are already trained by their publishers; six pinned transformer checkpoints support the optional research workflow. Our own pipeline needs representative evaluation and carefully reviewed improvements; it does not start as an untrained medical model. Whisper and MiniLM weights have not been fine-tuned. A separate synthetic-data assertion candidate was trained in the latest update; see [its exact data, parameters and results](MODEL_TRAINING_RESULTS.md). It is not connected to the live app. Fine-tuning requires a defined task, licensed/consented data, independent labels and a held-out evaluation set. The three fictional catalog studies and our synthetic scripts do not establish broad medical coverage.
 
 ## What we checked and fixed
 
@@ -24,7 +24,7 @@ Run `python backend/evaluate_context.py` from the repository root. It uses only 
 
 These are development regression results on known vocabulary, not an independent clinical test set. This metric checks whether an expected term/context combination is present. It does not measure all false positive entities, NER F1, audio word error rate, trial-retrieval relevance, eligibility correctness, or medication/disease prediction. It was used to fix the rules, so it must not be presented as unseen evaluation performance.
 
-The older 100-transcript synthetic development benchmark improved from 29.7% to 70.3% negation recall after vocabulary and context-rule changes, under its existing procedure. It remains below its 95% target. The strict expected-failure test records that gap rather than counting it as a pass. See [the validation and training plan](VALIDATION_AND_TRAINING_PLAN.md) for the separate results and next steps.
+The older 100-transcript synthetic development benchmark first improved from 29.7% to 70.3% negation recall. The current terminology and subject-scope update improves recall to 82.3%, precision to 87.8% and F1 to 85.0% under its existing procedure. It remains below its 95% target. The strict expected-failure test records that gap rather than counting it as a pass. See [the validation and training plan](VALIDATION_AND_TRAINING_PLAN.md) for the separate results and next steps.
 
 ## Other code and the new candidate
 
@@ -33,6 +33,10 @@ The newly trained TF-IDF/logistic regression candidate classifies an already sup
 ## Optional transformer understanding and RAG
 
 The separate `/research` workflow now supports pinned medical DeBERTa NER, MiniLM NLI context review, DistilBERT general wording tone, and retrieval-augmented generation using BM25, dense MiniLM embeddings, a BERT-family cross-encoder and FLAN-T5 small. These are publisher-trained checkpoints, not new local fine-tuning. It is disabled until the local owner installs/caches the weights and sets `ADVANCED_NLP_ENABLED=true`. The default extraction route remains unchanged. See [advanced setup and measured limits](ADVANCED_NLP_AND_RAG.md). The earlier `biobert_v3.py` wrapper remains unused; the new NLI service calls the checkpoint directly with full natural-language hypothesis pairs.
+
+## Current terminology and speech comparison
+
+The active English dictionary now includes 30,995 unambiguous variants and twenty ambiguous aliases from a pinned CC0 Human Disease Ontology snapshot. Ambiguous terms carry review notes and remain pending. This is terminology grounding, not learned diagnostic ability. On eight single-voice synthetic notes totaling ninety reference words, Whisper base made eight edits and small made three (8.9% versus 3.3% word error). This known development assessment does not establish real clinical speech accuracy. See [the accuracy update and evidence](ACCURACY_UPGRADE.md).
 
 ## What remains before medical claims
 
