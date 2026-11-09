@@ -1,4 +1,4 @@
-# Security verification — November 9, 2026
+# Security verification - November 9, 2026
 
 Code verified: `ef59566` on the security-guardrails branch. This report records a synthetic-data development check, not an independent penetration test or clinical validation.
 
@@ -20,7 +20,7 @@ The test logs and machine-specific overrides remain in the unpublished local `ou
 
 ## Local rollout
 
-The upgraded backend started successfully with Torch 2.15.0+cpu, Transformers 5.22.2, Whisper 20250625 and PyJWT 2.15.1. Health reported a connected Qdrant and loaded Whisper. The saved SQLite counts remained 11 inbox records and 26 audit entries. The pre-upgrade backup is `/app/data/backups/before-security-20261109T061931Z.sqlite3` inside the persistent backend volume.
+The upgraded backend started successfully with Torch 2.15.0+cpu, Transformers 5.22.2, Whisper 20250625 and PyJWT 2.15.1. Health reported a connected Qdrant and loaded Whisper. All 62 running Python source files matched the tested checkout after line-ending normalization. The saved SQLite counts remained 11 inbox records and 26 audit entries; Qdrant retained all 18 indexed studies. The pre-upgrade backup is `/app/data/backups/before-security-20261109T061931Z.sqlite3` inside the persistent backend volume.
 
 Live boundary checks returned HTTP 401 for an unauthenticated inbox request, 403 for an unapproved website origin, and 400 for an unapproved Host header. Browser preview returned HTTP 200 with CSP installed. Backend and frontend containers enforce read-only application roots, all capabilities dropped, no privilege escalation and a 256-process limit. Qdrant uses the same privilege/process controls with its writable data storage.
 
