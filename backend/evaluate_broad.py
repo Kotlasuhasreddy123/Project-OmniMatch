@@ -27,6 +27,7 @@ def evaluate():
     return {'dataset_sha256': hashlib.sha256(source.read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
             'rules_sha256': hashlib.sha256((ROOT/'app/nlp/negex_pipeline.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
             'vocabulary_sha256': hashlib.sha256((ROOT/'app/nlp/vocabulary.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
+            'ontology_sha256': hashlib.sha256((ROOT/'app/data/disease_ontology_lexicon.json').read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
             'record_count': len(records), 'true_positive': tp, 'false_positive': fp, 'false_negative': fn,
             'precision': precision, 'recall': recall, 'f1': 2*precision*recall/max(1e-9, precision+recall),
             'legacy_95_recall_target_met': recall >= .95, 'failures': failures,

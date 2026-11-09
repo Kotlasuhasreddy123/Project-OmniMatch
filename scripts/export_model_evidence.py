@@ -18,6 +18,7 @@ def export():
     assert before['dataset_sha256'] == after['dataset_sha256'] == training['dataset_sha256']
     assert hashlib.sha256((ROOT/'backend/app/nlp/negex_pipeline.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest() == after['rules_sha256']
     assert hashlib.sha256((ROOT/'backend/app/nlp/vocabulary.py').read_bytes().replace(b'\r\n', b'\n')).hexdigest() == after['vocabulary_sha256']
+    assert hashlib.sha256((ROOT/'backend/app/data/disease_ontology_lexicon.json').read_bytes().replace(b'\r\n', b'\n')).hexdigest() == after['ontology_sha256']
     report = {'broad_records': after['record_count'],
               'broad_before': {key: before[key] for key in ['precision', 'recall', 'f1']},
               'broad_after': {key: after[key] for key in ['precision', 'recall', 'f1']},

@@ -23,7 +23,7 @@ export default function GuidePage() {
         <h2 className="text-2xl font-semibold">Which models are running?</h2>
         <dl className="mt-5 space-y-5">
           <div>
-            <dt className="font-semibold">Speech → Whisper base by default</dt>
+            <dt className="font-semibold">Speech → Whisper small by default</dt>
             <dd className="mt-1 leading-7 text-gray-600">
               OpenAI trained this model family on 680,000 hours of audio and
               transcripts. We use its published weights locally. Your

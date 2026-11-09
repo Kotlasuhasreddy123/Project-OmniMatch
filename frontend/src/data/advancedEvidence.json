@@ -26,14 +26,14 @@
     }
   },
   "target_context_rules": {
-    "correct": 6,
+    "correct": 11,
     "total": 12,
-    "fraction": 0.5
+    "fraction": 0.9166666666666666
   },
   "target_context_hybrid": {
-    "correct": 9,
+    "correct": 12,
     "total": 12,
-    "fraction": 0.75
+    "fraction": 1.0
   },
   "nli": {
     "correct": 9,
@@ -47,16 +47,16 @@
     "unclear_count": 4
   },
   "rag": {
-    "correct": 11,
+    "correct": 12,
     "total": 12,
-    "fraction": 0.9166666666666666
+    "fraction": 1.0
   },
   "citations": {
-    "correct": 8,
-    "total": 8,
+    "correct": 9,
+    "total": 9,
     "fraction": 1.0
   },
   "verified_generated_quotes": 2,
-  "extractive_fallbacks": 4,
+  "extractive_fallbacks": 5,
   "overall_medical_98_validated": false
 }

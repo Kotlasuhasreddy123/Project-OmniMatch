@@ -82,3 +82,7 @@ Do not use `docker compose down -v` unless you intentionally want to remove the 
 - Old study index: check whether the same named volumes were created by an older installation; back up before any deliberate reindexing. Do not delete data as a troubleshooting shortcut.
 
 Public AWS deployment has a [separate guide](AWS_DEPLOYMENT.md). No AWS deployment is required to install this version locally.
+
+## Accuracy focused speech profile
+
+New installations use Whisper small after the controlled development comparison. It is slower and larger than base. For a constrained laptop, set WHISPER_MODEL=base in backend/.env and recreate the backend. See [measured results and limits](ACCURACY_UPGRADE.md). Small synthetic scores do not establish clinical accuracy.

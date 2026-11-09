@@ -110,6 +110,11 @@ export function EntityChip({ entity, onApprove, onReject }: EntityChipProps) {
       )}
 
       {/* Approve / Reject buttons — only when not already excluded */}
+      {entity.terminology_note && (
+        <p className="rounded-lg bg-amber-50 p-2 text-xs leading-5 text-amber-900">
+          {entity.terminology_note}
+        </p>
+      )}
       {!isExcluded && (
         <div className="flex gap-2">
           <button

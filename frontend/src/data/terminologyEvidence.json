@@ -1,0 +1,9 @@
+{
+  "source": "https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/bd7dcdf405e03d3f896089ece856209861946e56/src/ontology/doid.obo",
+  "revision": "bd7dcdf405e03d3f896089ece856209861946e56",
+  "license": "CC0-1.0",
+  "source_sha256": "b208a1bc910ba681f32c1c602e2a2d8c7ae6029d2f311fc9669f3fae30f09bc6",
+  "active_concepts": 12419,
+  "unambiguous_terms": 30995,
+  "ambiguous_terms": 20
+}

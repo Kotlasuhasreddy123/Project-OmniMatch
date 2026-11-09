@@ -6,7 +6,7 @@ This is not an external clinical evaluation or a live Qdrant integration test.
 import os
 import json
 from pathlib import Path
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, Mock
 import pytest
 
 pytestmark = pytest.mark.skipif(os.environ.get('OMNIMATCH_REAL_MODEL_TESTS') != '1', reason='Opt-in cached real-model integration check')
@@ -17,12 +17,19 @@ async def test_real_models_through_authenticated_api(client, auth_headers, monke
     from app.config import settings
     from app.understanding import router as module
     monkeypatch.setattr(settings, 'advanced_nlp_enabled', True)
+    runtime = module.get_runtime()
+    real_ner = Mock(wraps=runtime.ner)
+    monkeypatch.setattr(runtime, 'ner', real_ner)
     response = await client.post('/api/v1/understanding/analyze', headers=auth_headers,
                                  json={'text': 'The fictional patient has bronchiectasis and uses albuterol. No diabetes.', 'synthetic_only': True})
     assert response.status_code == 200, response.text
     entities = response.json()['entities']
     assert all(entity['status'] == 'pending' for entity in entities)
-    assert any(entity['term'] == 'bronchiectasis' and entity['source'] == 'biomedical_transformer' for entity in entities)
+    # The ontology may now recognize this term before neural proposal merging.
+    # Still verify that actual transformer inference ran, rather than replacing
+    # this integration check with a dictionary-only test.
+    assert any(entity['term'] == 'bronchiectasis' and entity['source'] in ['rules', 'biomedical_transformer'] for entity in entities)
+    real_ner.assert_called_once_with('The fictional patient has bronchiectasis and uses albuterol. No diabetes.')
     trials = json.loads((Path(__file__).resolve().parents[1]/'app/data/demo_trials.json').read_bytes())
     search = AsyncMock(return_value=trials)
     monkeypatch.setattr(module, 'get_qdrant_service', lambda: type('Index', (), {'search': search})())

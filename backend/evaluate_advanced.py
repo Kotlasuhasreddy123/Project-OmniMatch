@@ -31,7 +31,7 @@ def run(output):
     report = {'provenance': fixtures['provenance'], 'models': {key: {'id': value[0], 'revision': value[1]} for key, value in MODELS.items()},
               'fixtures_sha256': hashlib.sha256(fixtures_path.read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
               'service_sha256': {name: hashlib.sha256((ROOT/'app/understanding'/name).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
-                                 for name in ['runtime.py', 'analysis_service.py', 'rag_service.py', 'model_registry.py', '../security/model_policy.py']},
+                                 for name in ['runtime.py', 'analysis_service.py', 'rag_service.py', 'model_registry.py', '../security/model_policy.py', '../nlp/negex_pipeline.py', '../nlp/vocabulary.py', '../data/disease_ontology_lexicon.json']},
               'python': platform.python_version(), 'torch': torch.__version__, 'transformers': transformers.__version__,
               'device': 'cpu', 'threads': 4, 'fine_tuned_here': False, 'overall_medical_accuracy_98_validated': False}
     started = time.perf_counter()

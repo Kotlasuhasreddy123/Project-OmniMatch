@@ -48,7 +48,7 @@ class Settings(BaseSettings):
     clinicaltrials_max_studies: int = 1000
 
     # Whisper
-    whisper_model: str = "base"
+    whisper_model: str = "small"
 
     # Scheduler
     sync_cron_hour: int = 2

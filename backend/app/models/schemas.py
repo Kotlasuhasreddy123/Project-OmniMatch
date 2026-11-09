@@ -112,6 +112,7 @@ class ClinicalEntity(BaseModel):
     confidence: float = Field(..., ge=0.0, le=1.0)
     status: EntityStatus = EntityStatus.PENDING
     source: Literal["transcript", "manual", "history", "rules", "biomedical_transformer"] = "transcript"
+    terminology_note: str | None = Field(default=None, max_length=256)
 
     @field_validator('term')
     @classmethod

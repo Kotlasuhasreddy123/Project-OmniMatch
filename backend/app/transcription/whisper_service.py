@@ -35,7 +35,7 @@ def _get_whisper():
     return _whisper_module
 
 
-def get_whisper_model(model_name: str = "base"):
+def get_whisper_model(model_name: str = "small"):
     """Load and cache the Whisper model.
 
     Args:
@@ -56,7 +56,7 @@ def get_whisper_model(model_name: str = "base"):
 class TranscriptionService:
     """Wraps OpenAI Whisper for RAM-only audio transcription."""
 
-    def __init__(self, model_name: str = "base") -> None:
+    def __init__(self, model_name: str = "small") -> None:
         self.model_name = model_name
 
     def transcribe_buffer(self, audio_buffer: io.BytesIO) -> dict:
@@ -127,7 +127,7 @@ class TranscriptionService:
 _transcription_service: TranscriptionService | None = None
 
 
-def get_transcription_service(model_name: str = "base") -> TranscriptionService:
+def get_transcription_service(model_name: str = "small") -> TranscriptionService:
     """Return the singleton TranscriptionService instance.
 
     Args:

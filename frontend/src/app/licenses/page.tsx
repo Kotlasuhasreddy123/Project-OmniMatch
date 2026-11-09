@@ -1,6 +1,11 @@
 import Link from "next/link";
 const components = [
   [
+    "Human Disease Ontology terminology snapshot",
+    "CC0-1.0",
+    "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/bd7dcdf405e03d3f896089ece856209861946e56/LICENSE",
+  ],
+  [
     "Medical-NER (DeBERTa)",
     "MIT (publisher-declared)",
     "https://huggingface.co/blaze999/Medical-NER",

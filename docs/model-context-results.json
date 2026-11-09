@@ -1,16 +1,17 @@
 {
   "dataset_version": "1.0",
   "dataset_sha256": "3a86692c735d51aa4288ac4e05569f1ad39e0e4ddc342a72bfad4521a110676d",
-  "rules_sha256": "4cb18ad47ce5cba4906b176c82b8d755819722b5dbad76bedeac1e4fd40c1931",
+  "rules_sha256": "1584ed95792485e7e4dd4291f7fd740b27ae057edd707c23f4f30c300659d78b",
+  "vocabulary_sha256": "6523c9411dba14db92377f5be2955f4ee168e4958aa63323c2848acf21b6daac",
   "provenance": "Authored synthetic regression fixtures; no patient records, recordings, registry studies or external training corpus.",
   "case_count": 69,
   "metric": "Expected target term present with the expected context and negation",
-  "correct": 72,
+  "correct": 63,
   "total": 72,
-  "target_assertion_accuracy": 1.0,
+  "target_assertion_accuracy": 0.875,
   "by_context": {
     "hypothetical": {
-      "correct": 17,
+      "correct": 8,
       "total": 17
     },
     "patient": {
@@ -26,6 +27,178 @@
       "total": 17
     }
   },
-  "failures": [],
+  "failures": [
+    {
+      "text": "If the patient develops asthma, arrange review. The patient has asthma.",
+      "expected": {
+        "term": "asthma",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "asthma",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.68,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    },
+    {
+      "text": "If the patient develops diabetes, arrange review.",
+      "expected": {
+        "term": "diabetes",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "diabetes",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.68,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    },
+    {
+      "text": "If the patient develops asthma, arrange review.",
+      "expected": {
+        "term": "asthma",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "asthma",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.68,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    },
+    {
+      "text": "If the patient develops hypertension, arrange review.",
+      "expected": {
+        "term": "hypertension",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "hypertension",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.68,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    },
+    {
+      "text": "If the patient develops epilepsy, arrange review.",
+      "expected": {
+        "term": "epilepsy",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "epilepsy",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.68,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    },
+    {
+      "text": "If the patient develops migraine, arrange review.",
+      "expected": {
+        "term": "migraine",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "migraine",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.68,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    },
+    {
+      "text": "If the patient develops kidney disease, arrange review.",
+      "expected": {
+        "term": "kidney disease",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "kidney disease",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.76,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    },
+    {
+      "text": "If the patient develops depression, arrange review.",
+      "expected": {
+        "term": "depression",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "depression",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.68,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    },
+    {
+      "text": "If the patient develops eczema, arrange review.",
+      "expected": {
+        "term": "eczema",
+        "context": "hypothetical",
+        "negated": false
+      },
+      "actual_for_term": [
+        {
+          "term": "eczema",
+          "entity_type": "DISEASE",
+          "negated": false,
+          "context": "patient",
+          "confidence": 0.68,
+          "status": "pending",
+          "terminology_note": null
+        }
+      ]
+    }
+  ],
   "limits": "Synthetic regression checks on known vocabulary. Does not measure all extracted false positives, NER F1, speech accuracy, retrieval relevance or clinical validity. No weights are trained or fine-tuned."
 }

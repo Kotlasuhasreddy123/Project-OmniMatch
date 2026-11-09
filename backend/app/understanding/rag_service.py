@@ -10,6 +10,7 @@ import re
 from collections import Counter
 from .model_registry import MODELS
 from app.security.model_policy import instruction_like
+from app.nlp.negex_pipeline import extract_entities
 
 STOP_WORDS = set('the a an is are was were i my me am do does can could would should what which how of for in to and or with this that study trial patient'.split())
 
@@ -96,7 +97,12 @@ def answer(question, approved_terms, trials, runtime):
     query = question + ' Approved visit terms: ' + ', '.join(approved_terms)
     def ranking_text(item):
         section = item['section'] + ' criteria' if item['section'] in ['inclusion', 'exclusion'] else 'study information'
-        return f"{item['title']}\n{section}: {item['quote']}"
+        # Typed literal mentions give a general web reranker clinical context
+        # without inventing synonyms, facts or answers. Returned quotations and
+        # offsets always refer to the original, unmodified study passage.
+        terms = extract_entities(item['quote'])
+        typed = '; '.join(f"{entity['entity_type'].lower()}: {entity['term']}" for entity in terms[:12])
+        return f"{item['title']}\n{section}: {item['quote']}\nLiteral clinical terms: {typed}"
     vectors = runtime.embeddings([query] + [ranking_text(item) for item in passages])
     dense = [sum(a*b for a, b in zip(vectors[0], vector)) for vector in vectors[1:]]
     lexical = bm25(question, passages)

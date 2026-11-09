@@ -1,0 +1,75 @@
+{
+  "model": "base",
+  "voice": "Microsoft David Desktop",
+  "cases": [
+    {
+      "reference": "The patient has asthma and uses albuterol. The patient denies diabetes.",
+      "transcription": "The patient has asthma and uses albuterol. The patient denies diabetes.",
+      "reference_words": 11,
+      "errors": 0,
+      "audio_seconds": 6.048,
+      "processing_seconds": 10.094
+    },
+    {
+      "reference": "The patient has type two diabetes and takes metformin. There is no kidney disease.",
+      "transcription": "The patient has type 2 diabetes and takes metformin. There is no kidney disease.",
+      "reference_words": 14,
+      "errors": 1,
+      "audio_seconds": 6.318,
+      "processing_seconds": 3.065
+    },
+    {
+      "reference": "Her mother had a stroke. The patient has high blood pressure and takes lisinopril.",
+      "transcription": "Her mother had a stroke. The patient has high blood pressure and takes less in a pill.",
+      "reference_words": 14,
+      "errors": 4,
+      "audio_seconds": 5.893,
+      "processing_seconds": 3.052
+    },
+    {
+      "reference": "The patient reports migraine and nausea. No fever or chest pain is reported.",
+      "transcription": "The patient reports migraine and nausea. No fever or chest pain is reported.",
+      "reference_words": 13,
+      "errors": 0,
+      "audio_seconds": 5.919,
+      "processing_seconds": 3.05
+    },
+    {
+      "reference": "The patient has rheumatoid arthritis and takes methotrexate.",
+      "transcription": "The patient has rheumatoid arthritis and takes methatrexate.",
+      "reference_words": 8,
+      "errors": 1,
+      "audio_seconds": 4.314,
+      "processing_seconds": 2.968
+    },
+    {
+      "reference": "The patient has pneumonia and received amoxicillin. No history of tuberculosis.",
+      "transcription": "The patient has pneumonia and received a moxasillin. No history of tuberculosis.",
+      "reference_words": 11,
+      "errors": 2,
+      "audio_seconds": 6.358,
+      "processing_seconds": 2.79
+    },
+    {
+      "reference": "Possible endometriosis needs further review. The patient denies asthma.",
+      "transcription": "possible endometriosis needs further review. The patient denies asthma.",
+      "reference_words": 9,
+      "errors": 0,
+      "audio_seconds": 5.714,
+      "processing_seconds": 2.905
+    },
+    {
+      "reference": "The patient has chronic pancreatitis. Her father had Parkinson disease.",
+      "transcription": "The patient has chronic pancreatitis. Her father had Parkinson disease.",
+      "reference_words": 10,
+      "errors": 0,
+      "audio_seconds": 5.874,
+      "processing_seconds": 2.68
+    }
+  ],
+  "reference_words": 90,
+  "errors": 8,
+  "word_error_rate": 0.08888888888888889,
+  "provenance": "Eight author-created fictional notes spoken by one offline Windows TTS voice. Audio was passed in memory only.",
+  "limits": "Synthetic single-speaker development check. Not doctor/patient accents, ambient noise, clinical speech validation or model fine-tuning."
+}

@@ -1,6 +1,6 @@
 """Hybrid term proposals, assertion disagreement review, and separate text tone."""
 import re
-from app.nlp.negex_pipeline import extract_entities, _get_compiled_patterns, _check_context
+from app.nlp.negex_pipeline import extract_entities, _get_compiled_patterns, _check_context, subject_prefix
 from .model_registry import MODELS
 
 NER_TYPES = {'disease_disorder': 'DISEASE', 'sign_symptom': 'SYMPTOM',
@@ -12,7 +12,7 @@ def span_context(text, start, end):
     lowered = text.lower()
     patterns = _get_compiled_patterns()
     beginning = max(lowered.rfind(mark, 0, start) for mark in '.!?') + 1
-    prefix = re.split(r'\b(?:but|however|patient\s+(?:herself|himself|has|is))\b', lowered[beginning:start])[-1]
+    prefix = subject_prefix(lowered, start)
     family = any(pattern.search(prefix) for pattern in patterns['family_context'])
     hypothetical = _check_context(lowered, start, end, patterns['hypothetical'])
     uncertain = _check_context(lowered, start, end, patterns['uncertainty_pre']) or _check_context(

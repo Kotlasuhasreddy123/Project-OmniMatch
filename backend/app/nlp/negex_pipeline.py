@@ -44,6 +44,7 @@ POST_NEGATION_TRIGGERS = [
 
 # Family history context triggers
 FAMILY_CONTEXT_TRIGGERS = [
+    r"\b(?:mother|father|sister|brother|parents?|grandmother|grandfather|aunt|uncle)\s+(?:was\s+diagnosed\s+with|reports?|reported|takes?|uses?|developed|suffers?\s+from|denies|denied)\b",
     r"\bfamily\s+history\s+of\b",
     r"\bfamily\s+history(?:\s+\w+){0,3}\s+for\b",
     r"\bmother\s+(had|has|with)\b",
@@ -174,6 +175,13 @@ for kind, terms in [("DISEASE", vocabulary.DISEASES),
 
 # Context window: number of words to look before/after entity for triggers
 NEGATION_WINDOW = 12
+PATIENT_SUBJECT_BOUNDARY = r"(?=\b(?:the\s+)?patient\s+(?:herself|himself|has|is|was|denies|reports|takes|uses|does|develops)\b)"
+
+
+def subject_prefix(text: str, start: int) -> str:
+    """Scope family history to the latest explicitly stated subject."""
+    beginning = max(text.rfind(mark, 0, start) for mark in '.!?') + 1
+    return re.split(r'\b(?:but|however)\b|' + PATIENT_SUBJECT_BOUNDARY, text[beginning:start])[-1]
 
 
 def _compile_patterns(patterns: list[str]) -> list[re.Pattern]:
@@ -220,10 +228,10 @@ def _check_context(
     """
     # Negation cannot reach across sentences or a contrast such as "but".
     before_scope = re.split(
-        r"[.!?;]|\b(?:but|however|although)\b|\band\s+(?:has|reports|takes|uses|presents\s+with)\b",
+        r"[.!?;]|\b(?:but|however|although)\b|\band\s+(?:has|reports|takes|uses|presents\s+with)\b|" + PATIENT_SUBJECT_BOUNDARY,
         text[:match_start],
     )[-1]
-    after_scope = re.split(r"[.!?;]|\b(?:but|however|although)\b", text[match_end:])[0]
+    after_scope = re.split(r"[.!?;]|\b(?:but|however|although)\b|" + PATIENT_SUBJECT_BOUNDARY, text[match_end:])[0]
     words_before = before_scope.split()[-window:]
     words_after = after_scope.split()[:window]
 
@@ -276,14 +284,7 @@ def extract_entities(transcription: str) -> list[dict]:
                 # short fixed word window misses coordinated mentions such as
                 # "family history significant for diabetes in mother and
                 # hypertension in father".
-                sentence_start = max(text.rfind(".", 0, start), text.rfind("!", 0, start), text.rfind("?", 0, start)) + 1
-                sentence_prefix = text[sentence_start:start]
-                # "Family history ..., but the patient has ..." changes the
-                # subject back to the patient within a single sentence.
-                sentence_prefix = re.split(
-                    r"\b(?:but|however|patient\s+(?:herself|himself|has|is))\b",
-                    sentence_prefix,
-                )[-1]
+                sentence_prefix = subject_prefix(text, start)
 
                 # Determine context: family history takes priority
                 is_family = any(pat.search(sentence_prefix) for pat in patterns["family_context"])
@@ -334,6 +335,10 @@ def extract_entities(transcription: str) -> list[dict]:
                     "context": context,
                     "confidence": round(confidence, 3),
                     "status": "pending",
+                    "terminology_note": (
+                        "This term can describe more than one condition subtype. Verify the intended wording."
+                        if normalized_term in vocabulary.AMBIGUOUS_DISEASE_TERMS else None
+                    ),
                 })
 
     # Sort by confidence descending

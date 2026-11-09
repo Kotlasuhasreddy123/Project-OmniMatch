@@ -1,0 +1,441 @@
+{
+  "provenance": "Author-created English synthetic development regression, created to exercise terminology/context changes. Templated and not independent clinical validation; no model fitting uses these cases.",
+  "dataset_sha256": "0f6fb9a51a568b80fdb379c1fb8894a80d6b0f76307365072dc064c04b23e25f",
+  "correct": 72,
+  "total": 72,
+  "metric": "Exact term/context/negation SET agreement per synthetic note; includes extra entities.",
+  "cases": [
+    {
+      "id": "FINAL-001",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-002",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-003",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-004",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-005",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-006",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-007",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-008",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-009",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-010",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-011",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-012",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-013",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-014",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-015",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-016",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-017",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-018",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-019",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-020",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-021",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-022",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-023",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-024",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-025",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-026",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-027",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-028",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-029",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-030",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-031",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-032",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-033",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-034",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-035",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-036",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-037",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-038",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-039",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-040",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-041",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-042",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-043",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-044",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-045",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-046",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-047",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-048",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-049",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-050",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-051",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-052",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-053",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-054",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-055",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-056",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-057",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-058",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-059",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-060",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-061",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-062",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-063",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-064",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-065",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-066",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-067",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-068",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-069",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-070",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-071",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    },
+    {
+      "id": "FINAL-072",
+      "correct": true,
+      "missing": [],
+      "extra": []
+    }
+  ]
+}
