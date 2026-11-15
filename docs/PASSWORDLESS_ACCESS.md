@@ -28,3 +28,7 @@ GitHub Pages serves a noncommercial academic portal, sample results, policies, a
 The browser SDK uses its free browser mode and stores refresh state in browser storage. Treat shared computers accordingly and sign out. Do not enable paid custom domains, enterprise SSO, or paid email-domain options for this setup. Free-tier terms and limits can change; no service is guaranteed free forever. The Pages workflow publishes only the frontend's static output, never the backend, local databases, environment files or model caches. For a future commercial service, reassess hosting terms and use an appropriate application host.
 
 References: [WorkOS waitlist](https://workos.com/docs/authkit/waitlist), [Magic Auth](https://workos.com/docs/authkit/magic-auth), [React/browser integration](https://workos.com/docs/authkit/react), [session tokens](https://workos.com/docs/reference/authkit/session-tokens), [pricing](https://workos.com/pricing), [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits).
+
+## Render static portal
+
+For the new free static portal, also allow origin `https://omnimatch-research.onrender.com` and redirect `https://omnimatch-research.onrender.com/login/` if using it for sign-in. Set only the public browser client and organization identifiers in the Render build environment, then redeploy. This does not host the protected Python API or database. Keep staging free and do not enable billing or paid features for the academic demonstration.

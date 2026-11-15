@@ -1,5 +1,7 @@
 # OmniMatch — synthetic-data classroom prototype
 
+**November 17 team demonstration:** [Timed scripts, complete doctor–patient dialogue and 24 Q&A answers](docs/PRESENTATION_NOVEMBER_17.md). Free public portal: https://omnimatch-research.onrender.com/ . The portal is separate from local model inference and protected visit storage.
+
 **Current setup and repeat-visit demo:** [Local release checklist](docs/LOCAL_RELEASE_CHECKLIST.md), including passwordless configuration, optional models, archive/restore and remaining validation work.
 
 The full laptop Docker rehearsal now passes: [results, recovery notes and exact startup commands](docs/LOCAL_REHEARSAL_RESULTS.md). It includes real Qdrant, embeddings, cited answers and a RAM-only Whisper pipeline check. Live email sign-in remains pending owner configuration; 98% medical accuracy is not established.
