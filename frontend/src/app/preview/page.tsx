@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HistoryReview } from '@/components/HistoryReview';
 import { ResultsOverview } from "@/components/InboxDashboard/ResultsOverview";
 import type { InboxItem, TrialMatch } from "@/types";
 
@@ -95,6 +96,10 @@ export default function PreviewPage() {
         items={fixtures}
         description="Illustrative totals from two invented visits. These display fixtures demonstrate the workspace and are separate from your inbox."
       />
+      <HistoryReview visits={[
+        { session_id: 'EXAMPLE-VISIT-1', approved_terms: ['asthma', 'albuterol'] },
+        { session_id: 'EXAMPLE-VISIT-2', approved_terms: ['asthma', 'migraine'] },
+      ]} terms={['asthma', 'albuterol', 'migraine']} />
       <div className="flex flex-wrap gap-4">
         <Link
           href="/session"

@@ -9,6 +9,7 @@ import { getPatientTimeline } from "@/lib/apiClient";
 import type { PatientTimelineResponse, TimelineEntry } from "@/types";
 import { Clock, Tag, TrendingUp, Search } from "lucide-react";
 import clsx from "clsx";
+import { HistoryReview } from '@/components/HistoryReview';
 
 const TYPE_COLORS: Record<string, string> = {
   DISEASE: "bg-purple-100 text-purple-800",
@@ -162,6 +163,7 @@ export default function TimelinePage() {
       {timeline && (
         <div className="space-y-6" aria-label={`Timeline for ${patientPseudo}`}>
           <h2 className="text-lg font-semibold">Approved history for {patientPseudo}</h2>
+          <HistoryReview visits={timeline.visits ?? []} terms={timeline.entries.map(entry => entry.entity_term)} />
           <div className="rounded-xl border border-blue-200 bg-white p-4 space-y-2">
             <a href={`/session?patient=${encodeURIComponent(patientPseudo)}`} className="inline-block rounded bg-blue-600 px-4 py-2 text-sm text-white focus-visible:ring-2 focus-visible:ring-blue-500">Record follow-up or add a written update</a>
             <p className="text-sm text-gray-600">Use the same patient ID. On the review screen, select Load previous approved terms if you want to include relevant history, then approve it again. Earlier visits stay unchanged.</p>
