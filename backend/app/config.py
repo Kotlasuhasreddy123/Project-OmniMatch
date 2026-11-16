@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     # WorkOS public application identifiers. No WorkOS API secret is needed to verify JWTs.
     workos_client_id: str = ""
     workos_organization_id: str = ""
-    workos_issuer: str = "https://api.workos.com"
+    workos_issuer: str = ""  # Blank derives the native issuer from the configured client.
     workos_access_permission: str = "omnimatch:access"
     workos_admin_permission: str = "omnimatch:admin"
 

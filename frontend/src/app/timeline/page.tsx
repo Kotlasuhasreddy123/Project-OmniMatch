@@ -166,7 +166,7 @@ export default function TimelinePage() {
           <HistoryReview visits={timeline.visits ?? []} terms={timeline.entries.map(entry => entry.entity_term)} />
           <div className="rounded-xl border border-blue-200 bg-white p-4 space-y-2">
             <a href={`/session?patient=${encodeURIComponent(patientPseudo)}`} className="inline-block rounded bg-blue-600 px-4 py-2 text-sm text-white focus-visible:ring-2 focus-visible:ring-blue-500">Record follow-up or add a written update</a>
-            <p className="text-sm text-gray-600">Use the same patient ID. On the review screen, select Load previous approved terms if you want to include relevant history, then approve it again. Earlier visits stay unchanged.</p>
+            <p className="text-sm text-gray-600">Use the same patient ID. If earlier conditions or medicines are still relevant, include them in the new note and approve those terms again. Earlier visits stay unchanged.</p>
           </div>
           <section aria-label="Visits in time order" className="space-y-3">
             <h2 className="font-semibold">Visits in time order ({timeline.visits?.length ?? 0})</h2>

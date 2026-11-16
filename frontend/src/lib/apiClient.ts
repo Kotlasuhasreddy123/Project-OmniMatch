@@ -75,7 +75,31 @@ async function apiFetch<T>(
     headers["Content-Type"] = "application/json";
   }
 
-  const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
+  const send = async () => {
+    try {
+      return await fetch(`${BASE_URL}${path}`, { ...options, headers });
+    } catch {
+      // Do not retry uncertain mutations after a connection failure.
+      throw new ApiError(0, "The local service could not be reached. If Docker is starting, wait until the backend is healthy. Check the inbox before resending a visit; the request outcome is unknown.");
+    }
+  };
+  let res = await send();
+  if (res.status === 401 && process.env.NEXT_PUBLIC_WORKOS_CLIENT_ID) {
+    // A rejected authentication check has not run the endpoint. Refresh once
+    // to recover an expired token; never loop or retry a forbidden (403) action.
+    try {
+      const renewed = await (await import("./passwordless")).providerToken(true);
+      headers.Authorization = `Bearer ${renewed}`;
+    } catch {
+      clearToken();
+      throw new ApiError(401, "Your sign-in session ended. Open Access and sign in again. Keep this tab open to preserve your unsent note.");
+    }
+    res = await send();
+    if (res.status === 401) {
+      clearToken();
+      throw new ApiError(401, "Your sign-in could not be verified. Open Access and sign in again. Keep this tab open to preserve your unsent note.");
+    }
+  }
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));

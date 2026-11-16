@@ -19,6 +19,7 @@ def signed(monkeypatch):
     key['kid'] = 'test-key'
     monkeypatch.setattr(verifier.settings, 'workos_client_id', 'client_test')
     monkeypatch.setattr(verifier.settings, 'workos_organization_id', 'org_test')
+    monkeypatch.setattr(verifier.settings, 'workos_issuer', 'https://api.workos.com')
     monkeypatch.setattr(verifier, '_keys', {'test-key': key})
     monkeypatch.setattr(verifier, '_expires', time.monotonic() + 300)
     monkeypatch.setattr(verifier, '_client_id', 'client_test')
@@ -27,6 +28,9 @@ def signed(monkeypatch):
                       iss='https://api.workos.com', iat=int(time.time()), exp=int(time.time()) + 120,
                       permissions=['omnimatch:access'])
         claims.update(changes)
+        if changes.get('omit_client_id'):
+            claims.pop('client_id')
+        claims.pop('omit_client_id', None)
         return jwt.encode(claims, pem, algorithm='RS256', headers={'kid': 'test-key'})
     return token
 
@@ -35,6 +39,29 @@ def signed(monkeypatch):
 async def test_staff_and_admin(signed):
     assert (await verifier.verify_workos_token(signed())).role == UserRole.CLINICAL_STAFF
     assert (await verifier.verify_workos_token(signed(permissions=['omnimatch:access', 'omnimatch:admin']))).role == UserRole.ADMIN
+
+
+@pytest.mark.asyncio
+async def test_standard_authkit_session_without_optional_client_claim(signed):
+    assert (await verifier.verify_workos_token(signed(omit_client_id=True))).role == UserRole.CLINICAL_STAFF
+    assert (await verifier.verify_workos_token(signed(aud='client_test'))).role == UserRole.CLINICAL_STAFF
+
+
+@pytest.mark.asyncio
+async def test_wrong_explicit_audience_rejected(signed):
+    with pytest.raises(HTTPException) as error:
+        await verifier.verify_workos_token(signed(aud='client_other'))
+    assert error.value.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_native_issuer_derived_from_client(signed, monkeypatch):
+    monkeypatch.setattr(verifier.settings, 'workos_issuer', '')
+    result = await verifier.verify_workos_token(signed(omit_client_id=True, iss='https://api.workos.com/user_management/client_test'))
+    assert result.role == UserRole.CLINICAL_STAFF
+    with pytest.raises(HTTPException) as error:
+        await verifier.verify_workos_token(signed(iss='https://api.workos.com/user_management/client_other'))
+    assert error.value.status_code == 401
 
 
 @pytest.mark.asyncio

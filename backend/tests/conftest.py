@@ -57,6 +57,7 @@ async def app(tmp_db_path: str, monkeypatch, identity_key) -> FastAPI:
     from app.auth import workos_verifier as verifier
     monkeypatch.setattr(cfg.settings, "workos_client_id", "client_test")
     monkeypatch.setattr(cfg.settings, "workos_organization_id", "org_test")
+    monkeypatch.setattr(cfg.settings, "workos_issuer", "https://api.workos.com")
     monkeypatch.setattr(verifier, "_client_id", "client_test")
     monkeypatch.setattr(verifier, "_keys", {"test-key": identity_key[1]})
     monkeypatch.setattr(verifier, "_expires", time.monotonic() + 3600)

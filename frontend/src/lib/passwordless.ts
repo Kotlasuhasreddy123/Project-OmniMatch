@@ -37,7 +37,7 @@ export async function authClient() {
   return instance;
 }
 
-export async function providerToken(): Promise<string> {
+export async function providerToken(forceRefresh = false): Promise<string> {
   const client = await authClient();
-  return client.getAccessToken();
+  return client.getAccessToken({ forceRefresh });
 }
