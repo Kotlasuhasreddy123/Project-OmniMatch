@@ -9,12 +9,15 @@ import {
   portalMode,
 } from "@/lib/passwordless";
 import { storeToken, getCurrentUser } from "@/lib/auth";
+import { clearToken } from "@/lib/apiClient";
+import { PublicResources } from "@/components/PublicResources";
 
 export default function LoginPage() {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState("");
+  const [accessPending, setAccessPending] = useState(false);
   useEffect(() => {
     if (!accessConfigured) return;
     let active = true;
@@ -26,10 +29,10 @@ export default function LoginPage() {
         storeToken(token);
         if (getCurrentUser())
           router.replace(portalMode ? "/workspace" : "/session");
-        else
-          setError(
-            "Your email is verified. The owner still needs to grant your organization access role.",
-          );
+        else {
+          clearToken();
+          setAccessPending(true);
+        }
       })
       .catch((err) => {
         if (active)
@@ -43,6 +46,19 @@ export default function LoginPage() {
       active = false;
     };
   }, [router]);
+
+  const checkApproval = async () => {
+    setBusy(true);
+    setError("");
+    try {
+      const client = await authClient();
+      storeToken(await client.getAccessToken({ forceRefresh: true }));
+      if (getCurrentUser()) router.replace(portalMode ? "/workspace" : "/session");
+      else { clearToken(); setAccessPending(true); }
+    } catch {
+      setError("We could not check your approval. Try again, or sign in with your approved email.");
+    } finally { setBusy(false); }
+  };
 
   const begin = async (requestAccess: boolean) => {
     setBusy(true);
@@ -69,9 +85,8 @@ export default function LoginPage() {
         No shared passwords.
       </h1>
       <p className="mt-5 max-w-2xl leading-7 text-gray-600">
-        Request access first. The owner reviews requests in WorkOS. Approval
-        sends an invitation, and approved members can sign in with a one-time
-        email code.
+        Explore public resources below without an account. To record visits or
+        open saved records, request access and sign in with an approved email.
       </p>
       <div className="my-8 grid gap-4 sm:grid-cols-3">
         {[
@@ -98,6 +113,14 @@ export default function LoginPage() {
           </div>
         ))}
       </div>
+      <div className="mb-8"><PublicResources /></div>
+      {accessPending && (
+        <section role="status" aria-labelledby="approval-pending-heading" className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+          <h2 id="approval-pending-heading" className="font-semibold">Email verified — workspace approval pending</h2>
+          <p className="mt-2 text-sm leading-6">You can use all public resources above now. Recording and saved visits become available after the owner adds you to the workspace with a staff access role. This is an approval step, not an email problem.</p>
+          <button onClick={checkApproval} disabled={busy} className="mt-4 rounded-full border border-amber-400 bg-white px-4 py-2 text-sm font-medium disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-amber-700">{busy ? "Checking…" : "Check my approval"}</button>
+        </section>
+      )}
       {!accessConfigured && (
         <p
           role="status"

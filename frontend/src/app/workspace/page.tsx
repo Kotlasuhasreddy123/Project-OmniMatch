@@ -4,6 +4,7 @@ import Link from "next/link";
 import { authClient, accessConfigured } from "@/lib/passwordless";
 import { getCurrentUser, storeToken } from "@/lib/auth";
 import { clearToken } from "@/lib/apiClient";
+import { PublicResources } from "@/components/PublicResources";
 
 export default function WorkspacePage() {
   const [state, setState] = useState("Checking access…");
@@ -33,7 +34,7 @@ export default function WorkspacePage() {
         setState(
           user
             ? "Your account has a workspace access role."
-            : "Your account is waiting for an organization access role.",
+            : "Your email is verified. Workspace access is waiting for owner approval. Public resources remain available below.",
         );
       })
       .catch(() => {
@@ -124,6 +125,7 @@ export default function WorkspacePage() {
         account status. Clinical processing is available only in the local
         installation, with synthetic data.
       </p>
+      <PublicResources />
       <Link href="/validation" className="inline-block underline">
         Review validation coverage before use →
       </Link>

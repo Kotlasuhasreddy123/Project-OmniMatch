@@ -41,7 +41,7 @@ export default function VerifyPage() {
     if (!sessionId) return;
     const patientLabel = getPatientLabel(sessionId);
     if (!PATIENT_LABEL_PATTERN.test(patientLabel)) {
-      setError("Enter a demo patient ID such as DEMO-001 before sending this visit.");
+      setError("Enter a patient ID such as DEMO-001 before sending this visit.");
       return;
     }
     setIsSubmitting(true);

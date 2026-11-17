@@ -74,7 +74,7 @@ export default function SessionPage() {
   const handleProceed = useCallback(async () => {
     if (!sessionId || !transcription.trim()) return;
     if (!PATIENT_LABEL_PATTERN.test(getPatientLabel(sessionId))) {
-      setError("Enter a demo patient ID above, such as DEMO-001, before continuing.");
+      setError("Enter a patient ID above, such as DEMO-001, before continuing.");
       return;
     }
     setError(null);

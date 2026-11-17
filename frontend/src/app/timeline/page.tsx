@@ -134,16 +134,16 @@ export default function TimelinePage() {
       {/* Search */}
       <div className="flex gap-3">
         <div className="flex-1">
-          <label htmlFor="patient-search" className="block text-sm font-medium mb-1">Demo patient ID</label>
+          <label htmlFor="patient-search" className="block text-sm font-medium mb-1">PATIENT ID</label>
           <input
             id="patient-search"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value.toUpperCase())}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            placeholder="Use the label from the visit, for example DEMO-001"
+            placeholder="Enter the patient ID used for the visit, e.g. DEMO-001"
             className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-            aria-label="Demo patient ID search"
+            aria-label="PATIENT ID search"
           />
         </div>
         <button
@@ -223,7 +223,7 @@ export default function TimelinePage() {
       {!timeline && !loading && (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 py-16 text-center">
           <Clock className="h-12 w-12 text-gray-300" aria-hidden="true" />
-          <p className="mt-3 text-base font-medium text-gray-600">Find a fictional patient using the label you entered for the visit</p>
+          <p className="mt-3 text-base font-medium text-gray-600">Enter a patient ID to see visit history</p>
           <p className="mt-1 text-sm text-gray-600">For example DEMO-001. Use the same label on a second visit to build a shared history.</p>
         </div>
       )}
