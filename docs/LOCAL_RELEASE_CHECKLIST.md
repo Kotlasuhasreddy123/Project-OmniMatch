@@ -2,7 +2,7 @@
 
 OmniMatch is a synthetic-patient research project. The software checks and model scores answer different questions. Passing application tests does not establish 98% medical accuracy.
 
-**Current status:** the local stack is now running and its full Docker rehearsal passed. See [the results and current startup commands](LOCAL_REHEARSAL_RESULTS.md). WorkOS email access and the medical-accuracy target remain unfinished.
+**Current status:** owner email-code sign-in and the protected written-visit workflow were verified November 15. See [session repair and current verification](SESSION_REPAIR_NOVEMBER_15.md). Fresh microphone rehearsal, broader user acceptance and the broad model target remain open. Earlier [rehearsal records](LOCAL_REHEARSAL_RESULTS.md) describe their own dated environment.
 
 ## Install or upgrade
 

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
+  <title id="title">OmniMatch</title>
+  <desc id="desc">From conversation to reviewed research. Consent, capture, verify and review in a local research workspace.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1830"/><stop offset="1" stop-color="#103f49"/></linearGradient><linearGradient id="line"><stop stop-color="#5eead4"/><stop offset="1" stop-color="#60a5fa"/></linearGradient></defs>
+  <rect width="1280" height="420" rx="24" fill="url(#bg)"/>
+  <circle cx="1140" cy="80" r="210" fill="#0d9488" opacity=".12"/>
+  <circle cx="1210" cy="360" r="240" fill="#2563eb" opacity=".1"/>
+  <rect x="64" y="54" width="62" height="62" rx="18" fill="#2563eb"/>
+  <text x="95" y="94" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="white">OM</text>
+  <text x="146" y="94" font-family="Arial,sans-serif" font-size="22" fill="#99f6e4" letter-spacing="3">RESEARCH WORKSPACE</text>
+  <text x="64" y="195" font-family="Arial,sans-serif" font-size="72" font-weight="700" fill="#f8fafc">OmniMatch</text>
+  <text x="66" y="245" font-family="Arial,sans-serif" font-size="29" fill="#cbd5e1">From conversation to reviewed research.</text>
+  <path d="M66 312 H1214" stroke="url(#line)" stroke-width="2" opacity=".5"/>
+  <g font-family="Arial,sans-serif" font-size="21" fill="#f1f5f9"><text x="66" y="360">01  Consent</text><text x="360" y="360">02  Capture</text><text x="654" y="360">03  Verify</text><text x="948" y="360">04  Review</text></g>
+</svg>

@@ -16,6 +16,14 @@ The application now requires WorkOS-signed account tokens. Blank settings intent
 
 ## Verify before opening registration
 
+### Where the owner approves someone
+
+In the WorkOS dashboard, select the environment used by your installation, then open **Users → Waitlist**. Review the email and approve the intended person. Approval alone is not application authorization: open **Organizations → your OmniMatch organization → Users**, add the approved user if needed, and assign a staff role with `omnimatch:access`. Keep the owner role and `omnimatch:admin` restricted to the installation owner. The ordinary Member role should not acquire these permissions automatically.
+
+The user then returns to OmniMatch, selects **Approved? Sign in with email code**, and completes verification. If their email is verified but access remains pending, check the organization membership and assigned permissions. Never resolve this by disabling API authorization.
+
+For a separate installation, create and configure your own provider application. The original project's owner dashboard and public IDs do not automatically grant access to someone else's local system.
+
 - Without a token, inbox requests return 401. A token from another application, an expired token, or an altered signature is rejected. A valid identity without the required organization/permission returns 403.
 - An approved staff account can review synthetic visits. Only an account with the admin permission can use administrative endpoints.
 - Test requesting access, denying access, approving an invitation, email-code expiry, sign-out, and membership removal using separate test accounts. These provider flows cannot be verified while application IDs are blank.
