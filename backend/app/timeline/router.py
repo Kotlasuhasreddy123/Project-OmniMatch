@@ -49,24 +49,24 @@ async def get_timeline(
     Returns:
         PatientTimelineResponse with entity history and mention counts.
     """
-    entries_raw = await get_patient_timeline(patient_pseudo)
-
-    entries = [
-        TimelineEntry(
-            entity_term=e["entity_term"],
-            entity_type=e["entity_type"],
-            confidence=e["confidence"],
-            first_seen=datetime.fromisoformat(e["first_seen"]),
-            last_seen=datetime.fromisoformat(e["last_seen"]),
-            mention_count=e["mention_count"],
-            session_id=e["session_id"],
-        )
-        for e in entries_raw
-    ]
-
-    # Saved visit results provide a truthful visit-by-visit view, even after archive.
-    async with db.execute("SELECT * FROM inbox_items WHERE patient_pseudo = ? ORDER BY created_at ASC, id ASC", (patient_pseudo,)) as cur:
+    # Build history only from this account's saved visits. The older shared
+    # aggregate table is retained for recovery but never exposed by this API.
+    async with db.execute("SELECT * FROM inbox_items WHERE patient_pseudo = ? AND owner_id = ? ORDER BY created_at ASC, id ASC", (patient_pseudo, current_user.sub)) as cur:
         rows = await cur.fetchall()
+    history = {}
+    for row in rows:
+        details = {e["term"].lower().strip(): e for e in json.loads(row["entity_details_json"] or "[]")}
+        for term in set(json.loads(row["approved_entities"])):
+            key = term.lower().strip()
+            if key in history:
+                history[key].last_seen = datetime.fromisoformat(row["created_at"])
+                history[key].mention_count += 1
+            else:
+                history[key] = TimelineEntry(entity_term=term, entity_type=details.get(key, {}).get("entity_type", "UNKNOWN"),
+                    confidence=details.get(key, {}).get("confidence", 0.0), first_seen=datetime.fromisoformat(row["created_at"]),
+                    last_seen=datetime.fromisoformat(row["created_at"]), mention_count=1,
+                    session_id=row["session_id"])
+    entries = list(history.values())
     visits = []
     seen_sessions = set()
     for row in rows:

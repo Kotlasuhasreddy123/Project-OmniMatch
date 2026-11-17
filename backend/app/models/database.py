@@ -85,4 +85,18 @@ async def init_db() -> None:
             await db.execute("ALTER TABLE inbox_items ADD COLUMN patient_pseudo TEXT")
         if "archived_at" not in columns:
             await db.execute("ALTER TABLE inbox_items ADD COLUMN archived_at TEXT")
+        if "owner_id" not in columns:
+            await db.execute("ALTER TABLE inbox_items ADD COLUMN owner_id TEXT")
+        if "entity_details_json" not in columns:
+            await db.execute("ALTER TABLE inbox_items ADD COLUMN entity_details_json TEXT")
+        await db.execute("CREATE TABLE IF NOT EXISTS session_owners (session_id TEXT PRIMARY KEY, user_id TEXT NOT NULL)")
+        # Recover ownership only from unambiguous historical audit evidence.
+        # Unattributed records remain preserved but invisible to all accounts.
+        await db.execute("""INSERT OR IGNORE INTO session_owners (session_id, user_id)
+            SELECT session_id, MIN(user_id) FROM audit_log
+            GROUP BY session_id HAVING COUNT(DISTINCT user_id) = 1""")
+        await db.execute("""UPDATE inbox_items SET owner_id =
+            (SELECT user_id FROM session_owners WHERE session_id = inbox_items.session_id)
+            WHERE owner_id IS NULL""")
+        await db.execute("CREATE INDEX IF NOT EXISTS idx_inbox_owner ON inbox_items(owner_id, created_at)")
         await db.commit()

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { PortalBoundary } from "@/components/PortalBoundary";
+import { AccountProfile } from "@/components/AccountProfile";
 import { browserCsp } from '../../security-policy';
 
 export const metadata: Metadata = {
@@ -57,6 +58,7 @@ export default function RootLayout({
               <Link href="/research" className="text-gray-600 hover:text-blue-600">Text & evidence</Link>
               <Link href="/validation" className="text-gray-600 hover:text-blue-600">Validation</Link>
               <Link href="/login" className="font-semibold text-teal-800">Access</Link>
+              <AccountProfile />
             </nav>
           </div>
         </nav>

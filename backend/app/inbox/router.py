@@ -11,6 +11,7 @@ import aiosqlite
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Response, status
 
 from app.auth.jwt_handler import get_current_user, require_role
+from app.auth.ownership import claim_session
 from app.models.database import get_db
 from app.models.schemas import (
     ClinicalEntity,
@@ -41,6 +42,7 @@ async def _run_matching_and_store(
     evidence_spans: list[EvidenceSpan],
     db_path: str,
     patient_pseudo: str | None = None,
+    owner_id: str | None = None,
 ) -> None:
     """Background task: run trial matching and write results to the inbox.
 
@@ -135,11 +137,11 @@ async def _run_matching_and_store(
             await db.execute(
                 """
                 INSERT INTO inbox_items
-                    (id, session_id, created_at, status, matches_json, approved_entities, patient_pseudo)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                    (id, session_id, created_at, status, matches_json, approved_entities, patient_pseudo, owner_id, entity_details_json)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (inbox_id, session_id, now, InboxStatus.UNREAD.value,
-                 matches_json, entities_json, patient_pseudo),
+                 matches_json, entities_json, patient_pseudo, owner_id, json.dumps([e.model_dump() for e in approved_entities])),
             )
             await db.commit()
 
@@ -192,6 +194,9 @@ async def complete_session(
     """
     from app.config import settings as app_settings
 
+    async with aiosqlite.connect(app_settings.sqlite_db_path) as ownership_db:
+        await claim_session(ownership_db, session_id, current_user.sub)
+
     if body.session_id != session_id:
         raise HTTPException(status_code=400, detail="The visit ID in the address and request must match.")
 
@@ -202,6 +207,7 @@ async def complete_session(
         evidence_spans=body.evidence_spans,
         db_path=app_settings.sqlite_db_path,
         patient_pseudo=body.patient_pseudo,
+        owner_id=current_user.sub,
     )
 
     return SessionCompleteResponse(
@@ -237,8 +243,8 @@ async def list_inbox(
         InboxListResponse with items sorted by created_at descending.
     """
     async with db.execute(
-        "SELECT * FROM inbox_items WHERE (? OR archived_at IS NULL) ORDER BY created_at DESC",
-        (include_archived,),
+        "SELECT * FROM inbox_items WHERE owner_id = ? AND (? OR archived_at IS NULL) ORDER BY created_at DESC",
+        (current_user.sub, include_archived),
     ) as cur:
         rows = await cur.fetchall()
 
@@ -282,7 +288,7 @@ async def get_inbox_item(
         InboxItem with full match details and missing variables.
     """
     async with db.execute(
-        "SELECT * FROM inbox_items WHERE id = ?", (item_id,)
+        "SELECT * FROM inbox_items WHERE id = ? AND owner_id = ?", (item_id, current_user.sub)
     ) as cur:
         row = await cur.fetchone()
 
@@ -323,7 +329,7 @@ async def mark_reviewed(
         db: Async SQLite connection.
     """
     async with db.execute(
-        "SELECT id FROM inbox_items WHERE id = ?", (item_id,)
+        "SELECT id FROM inbox_items WHERE id = ? AND owner_id = ?", (item_id, current_user.sub)
     ) as cur:
         row = await cur.fetchone()
 
@@ -334,8 +340,8 @@ async def mark_reviewed(
         )
 
     await db.execute(
-        "UPDATE inbox_items SET status = ? WHERE id = ?",
-        (InboxStatus.REVIEWED.value, item_id),
+        "UPDATE inbox_items SET status = ? WHERE id = ? AND owner_id = ?",
+        (InboxStatus.REVIEWED.value, item_id, current_user.sub),
     )
     await db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -348,7 +354,7 @@ async def archive_item(
     db: aiosqlite.Connection = Depends(get_db),
 ) -> Response:
     """Hide a reviewed item without deleting its result or patient history."""
-    async with db.execute("SELECT session_id, status, archived_at FROM inbox_items WHERE id = ?", (item_id,)) as cur:
+    async with db.execute("SELECT session_id, status, archived_at FROM inbox_items WHERE id = ? AND owner_id = ?", (item_id, current_user.sub)) as cur:
         row = await cur.fetchone()
     if row is None:
         raise HTTPException(404, "This inbox item was not found.")
@@ -369,13 +375,13 @@ async def restore_item(
     current_user: TokenPayload = Depends(require_role(INBOX_ROLES)),
     db: aiosqlite.Connection = Depends(get_db),
 ) -> Response:
-    async with db.execute("SELECT session_id, archived_at FROM inbox_items WHERE id = ?", (item_id,)) as cur:
+    async with db.execute("SELECT session_id, archived_at FROM inbox_items WHERE id = ? AND owner_id = ?", (item_id, current_user.sub)) as cur:
         row = await cur.fetchone()
     if row is None:
         raise HTTPException(404, "This inbox item was not found.")
     if row["archived_at"] is not None:
         now = datetime.now(timezone.utc).isoformat()
-        await db.execute("UPDATE inbox_items SET archived_at = NULL WHERE id = ?", (item_id,))
+        await db.execute("UPDATE inbox_items SET archived_at = NULL WHERE id = ? AND owner_id = ?", (item_id, current_user.sub))
         await db.execute("INSERT INTO audit_log (id,session_id,user_id,action,timestamp,ip_address) VALUES (?,?,?,?,?,?)",
                          (str(uuid.uuid4()), row["session_id"], current_user.sub, "INBOX_RESTORED", now, "internal"))
         await db.commit()

@@ -33,7 +33,17 @@ let _accessToken: string | null = null;
 export function setToken(token: string): void {
   _accessToken = token;
   if (typeof window !== "undefined") {
+    try {
+      const claims = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+      const previous = sessionStorage.getItem("omni_account_sub");
+      if (claims.sub && previous !== claims.sub) {
+        // Never carry a previous account's draft, consent or patient ID forward.
+        Object.keys(sessionStorage).filter(key => key.startsWith("omni_")).forEach(key => sessionStorage.removeItem(key));
+      }
+      if (claims.sub) sessionStorage.setItem("omni_account_sub", claims.sub);
+    } catch { /* API signature verification remains authoritative. */ }
     sessionStorage.setItem("omni_token", token);
+    window.dispatchEvent(new Event("omni-auth-change"));
   }
 }
 

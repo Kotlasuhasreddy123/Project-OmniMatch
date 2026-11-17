@@ -15,10 +15,10 @@ async def test_simulated_trial_cannot_be_referred(client, auth_headers, tmp_db_p
     }
     async with aiosqlite.connect(tmp_db_path) as db:
         await db.execute(
-            "INSERT INTO inbox_items (id, session_id, created_at, status, matches_json, approved_entities) "
-            "VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO inbox_items (id, session_id, created_at, status, matches_json, approved_entities, owner_id) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
             ("item-1", "session-1", datetime.now(timezone.utc).isoformat(),
-             "unread", json.dumps([match]), "[]"),
+             "unread", json.dumps([match]), "[]", "test_staff"),
         )
         await db.commit()
 

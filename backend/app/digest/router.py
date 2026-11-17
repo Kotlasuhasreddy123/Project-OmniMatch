@@ -51,7 +51,7 @@ async def create_referral(
     if body.webhook_url:
         raise HTTPException(400, 'Webhook destinations must be configured by the installation owner.')
     async with db.execute(
-        "SELECT session_id, matches_json, patient_pseudo FROM inbox_items WHERE id = ?", (body.inbox_item_id,)
+        "SELECT session_id, matches_json, patient_pseudo FROM inbox_items WHERE id = ? AND owner_id = ?", (body.inbox_item_id, current_user.sub)
     ) as cur:
         item = await cur.fetchone()
     if item is None or item["session_id"] != body.session_id:

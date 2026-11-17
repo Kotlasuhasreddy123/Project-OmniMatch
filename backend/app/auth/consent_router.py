@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 import aiosqlite
 from fastapi import APIRouter, Depends, Request, status
 
+from app.auth.ownership import claim_session
 from app.auth.jwt_handler import get_current_user
 from app.models.database import get_db
 from app.models.schemas import ConsentRequest, ConsentResponse, TokenPayload
@@ -36,6 +37,7 @@ async def log_consent(
     Returns:
         ConsentResponse confirming the audit entry was written.
     """
+    await claim_session(db, body.session_id, current_user.sub)
     audit_id = str(uuid.uuid4())
     timestamp = datetime.now(timezone.utc)
     ip_address = request.client.host if request.client else "unknown"
