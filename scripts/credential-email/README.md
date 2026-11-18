@@ -6,7 +6,7 @@ It runs on Google's service while your laptop is off. It does not need a public 
 
 ## Current status
 
-The script and email template are implemented. Twelve local automated tests passed using mocked Google and WorkOS services. No real applicant email has been sent. The automation is **not enabled** until the owner completes the setup and authorization below. Live Google sending and the actual WorkOS waitlist have not yet been tested.
+The script and email template are implemented. Twelve local automated tests passed using mocked Google and WorkOS services. On November 17, 2026, the owner deployment successfully initialized against WorkOS, sent a test message to the owner that was confirmed in Gmail, and completed the enable function. No applicant signup-to-delivery test has been completed yet. New installations are disabled by default and must complete the setup and authorization below; source files alone do not enable sending.
 
 ## One-time setup
 
