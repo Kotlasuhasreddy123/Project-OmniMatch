@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.auth.consent_router import router as consent_router
 from app.auth.router import router as auth_router
+from app.auth.registry import router as registry_router
 from app.audio.router import router as audio_router
 from app.config import settings
 from app.digest.router import router as digest_router
@@ -153,6 +154,7 @@ async def private_server_error(request: Request, exc: Exception):
 
 # Register all routers
 app.include_router(auth_router)
+app.include_router(registry_router)
 app.include_router(consent_router)
 app.include_router(audio_router)
 app.include_router(nlp_router)

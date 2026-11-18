@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState("");
   const [accessPending, setAccessPending] = useState(false);
+  const approvalInFlight = useRef(false);
   useEffect(() => {
     if (!accessConfigured) return;
     let active = true;
@@ -47,7 +48,9 @@ export default function LoginPage() {
     };
   }, [router]);
 
-  const checkApproval = async () => {
+  const checkApproval = useCallback(async () => {
+    if (approvalInFlight.current) return;
+    approvalInFlight.current = true;
     setBusy(true);
     setError("");
     try {
@@ -57,8 +60,14 @@ export default function LoginPage() {
       else { clearToken(); setAccessPending(true); }
     } catch {
       setError("We could not check your approval. Try again, or sign in with your approved email.");
-    } finally { setBusy(false); }
-  };
+    } finally { approvalInFlight.current = false; setBusy(false); }
+  }, [router]);
+
+  useEffect(() => {
+    if (!accessPending) return;
+    const interval = window.setInterval(() => { if (document.visibilityState === "visible") void checkApproval(); }, 15000);
+    return () => window.clearInterval(interval);
+  }, [accessPending, checkApproval]);
 
   const begin = async (requestAccess: boolean) => {
     setBusy(true);
@@ -78,47 +87,17 @@ export default function LoginPage() {
   };
   return (
     <section className="mx-auto max-w-4xl py-8">
-      <p className="eyebrow">ACCESS BY APPROVAL</p>
-      <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-        Your email. Your invitation.
-        <br />
-        No shared passwords.
-      </h1>
-      <p className="mt-5 max-w-2xl leading-7 text-gray-600">
-        Explore public resources below without an account. To record visits or
-        open saved records, request access and sign in with an approved email.
-      </p>
-      <div className="my-8 grid gap-4 sm:grid-cols-3">
-        {[
-          [
-            "01",
-            "Request access",
-            "Submit your email on the provider’s waitlist.",
-          ],
-          [
-            "02",
-            "Owner review",
-            "The owner approves your invitation and organization role.",
-          ],
-          [
-            "03",
-            "Email code",
-            "Follow the invitation and verify your email with WorkOS.",
-          ],
-        ].map(([n, title, text]) => (
-          <div key={n} className="rounded-2xl border bg-white p-6">
-            <span className="text-xl font-semibold text-teal-700">{n}</span>
-            <h2 className="my-2 font-semibold">{title}</h2>
-            <p className="text-sm leading-6 text-gray-600">{text}</p>
-          </div>
-        ))}
+      <p className="eyebrow">YOUR PRIVATE WORKSPACE</p>
+      <h1 className="mt-4 text-4xl font-semibold tracking-tight">Sign in and start a visit.</h1>
+      <p className="mt-4 max-w-2xl leading-7 text-gray-600">Approval is needed once per account. After approval, your existing sign-in session opens your workspace automatically. You only need a new email code when the sign-in session has ended.</p>
+      <div className="my-6 rounded-2xl border border-teal-200 bg-teal-50 p-5 text-sm leading-6 text-teal-950">
+        <strong>What happens next?</strong> Verify your email, receive one owner approval, then open your personal visits. Your inbox and patient history stay separate from other users.
       </div>
-      <div className="mb-8"><PublicResources /></div>
       {accessPending && (
         <section role="status" aria-labelledby="approval-pending-heading" className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
           <h2 id="approval-pending-heading" className="font-semibold">Email verified — workspace approval pending</h2>
-          <p className="mt-2 text-sm leading-6">You can use all public resources above now. Recording and saved visits become available after the owner adds you to the workspace with a staff access role. This is an approval step, not an email problem.</p>
-          <button onClick={checkApproval} disabled={busy} className="mt-4 rounded-full border border-amber-400 bg-white px-4 py-2 text-sm font-medium disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-amber-700">{busy ? "Checking…" : "Check my approval"}</button>
+          <p className="mt-2 text-sm leading-6">You have finished signing in. The owner needs to approve this account once. Leave this page open: we check automatically every 15 seconds and open your workspace when approval is ready.</p>
+          <button onClick={checkApproval} disabled={busy} className="mt-4 rounded-full border border-amber-400 bg-white px-4 py-2 text-sm font-medium disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-amber-700">{busy ? "Checking…" : "Check now"}</button>
         </section>
       )}
       {!accessConfigured && (
@@ -131,7 +110,7 @@ export default function LoginPage() {
           remain available.
         </p>
       )}
-      <label className="flex items-start gap-3 text-sm leading-6">
+      {!accessPending && <label className="flex items-start gap-3 text-sm leading-6">
         <input
           type="checkbox"
           checked={accepted}
@@ -145,34 +124,37 @@ export default function LoginPage() {
           </Link>
           . I will use synthetic data only.
         </span>
-      </label>
+      </label>}
       {error && (
         <p
           role="alert"
           className="mt-4 rounded-xl bg-rose-50 p-4 text-rose-800"
         >
           {error}
+          {accessPending && <button onClick={() => begin(false)} disabled={busy} className="ml-3 font-semibold underline">Sign in again</button>}
         </p>
       )}
-      <div className="mt-6 flex flex-wrap gap-4">
-        <button
-          disabled={!accessConfigured || !accepted || busy}
-          onClick={() => begin(true)}
-          className="rounded-full bg-teal-700 px-6 py-3 font-medium text-white disabled:opacity-40"
-        >
-          Request access
-        </button>
+      {!accessPending && <div className="mt-6 flex flex-wrap gap-4">
         <button
           disabled={!accessConfigured || !accepted || busy}
           onClick={() => begin(false)}
+          className="rounded-full bg-teal-700 px-6 py-3 font-medium text-white disabled:opacity-40"
+        >
+          Continue with email
+        </button>
+        <button
+          disabled={!accessConfigured || !accepted || busy}
+          onClick={() => begin(true)}
           className="rounded-full border bg-white px-6 py-3 font-medium disabled:opacity-40"
         >
-          Approved? Sign in with email code
+          Request access
         </button>
         <Link href="/preview" className="px-4 py-3 underline">
           Explore sample results
         </Link>
-      </div>
+      </div>}
+      <p className="mt-4 text-sm text-gray-600">Need professional credential information? <Link href="/credentials" className="font-medium text-teal-800 underline">Check a U.S. NPI record</Link>. Registry lookup does not approve an account.</p>
+      <div className="mt-8"><PublicResources /></div>
       <p className="mt-6 text-sm leading-6 text-gray-600">
         GitHub source is public under its license. Account approval controls the
         official workspace; it cannot prevent downloading or modifying public

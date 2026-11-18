@@ -22,7 +22,7 @@ test("unconfigured access cannot submit or collect a password", () => {
   expect(container.querySelector('input[type="password"]')).toBeNull();
   fireEvent.click(screen.getByRole("checkbox"));
   expect(screen.getByRole("button", { name: "Request access" })).toBeDisabled();
-  expect(screen.getByRole("button", { name: /Approved/ })).toBeDisabled();
+  expect(screen.getByRole("button", { name: /Continue with email/ })).toBeDisabled();
 });
 
 test("changing a language never claims clinical validation", () => {

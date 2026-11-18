@@ -46,18 +46,18 @@ export default function RootLayout({
             </div>
             <nav className="flex flex-wrap gap-4 text-sm font-medium" aria-label="Site links">
               <Link href="/session" className="text-gray-600 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-                New Session
+                New visit
               </Link>
               <Link href="/inbox" className="text-gray-600 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
                 Inbox
               </Link>
               <Link href="/timeline" className="text-gray-600 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-                Timeline
+                Patient history
               </Link>
-              <Link href="/models" className="text-gray-600 hover:text-blue-600">Models</Link>
-              <Link href="/research" className="text-gray-600 hover:text-blue-600">Text & evidence</Link>
-              <Link href="/validation" className="text-gray-600 hover:text-blue-600">Validation</Link>
-              <Link href="/login" className="font-semibold text-teal-800">Access</Link>
+              <Link href="/models" className="text-gray-600 hover:text-blue-600">AI & data</Link>
+              <Link href="/research" className="text-gray-600 hover:text-blue-600">Analyze a note</Link>
+              <Link href="/validation" className="text-gray-600 hover:text-blue-600">Test results</Link>
+              <Link href="/login" className="font-semibold text-teal-800">Sign in</Link>
               <AccountProfile />
             </nav>
           </div>

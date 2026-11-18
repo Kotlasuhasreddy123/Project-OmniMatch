@@ -24,6 +24,31 @@ import type {
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
+export interface RegistryResult {
+  status: "record_found" | "inactive" | "organization" | "not_found";
+  registry_name: string;
+  specialty: string;
+  message: string;
+  identity_verified: boolean;
+  license_verified: boolean;
+  access_granted: boolean;
+}
+
+export async function checkProfessionalRegistry(npi: string): Promise<RegistryResult> {
+  // Public read-only lookup must not depend on a signed-in WorkOS session.
+  let response: Response;
+  try {
+    response = await fetch(`${BASE_URL}/api/v1/credentials/npi`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ npi }),
+    });
+  } catch { throw new Error("Registry lookup needs the running OmniMatch backend. Open the local application or ask the owner for help."); }
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    throw new Error(typeof body.detail === "string" ? body.detail : "Check the 10-digit NPI and try again.");
+  }
+  return response.json();
+}
+
 // ---------------------------------------------------------------------------
 // Token management (httpOnly cookies preferred in production)
 // ---------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import LoginPage from "@/app/login/page";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -25,13 +25,13 @@ test("verified unapproved users can open public resources without accepting sign
   expect(screen.getByRole("link", { name: /^Sample results/ })).toHaveAttribute("href", "/preview");
   expect(screen.getByRole("link", { name: /^Installation guide/ })).toHaveAttribute("href", "/guide");
   expect(screen.getByRole("link", { name: /^Models and data/ })).toHaveAttribute("href", "/models");
-  expect(screen.getByRole("checkbox")).not.toBeChecked();
+  expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   expect(mockReplace).not.toHaveBeenCalled();
 });
 
 test("checking approval refreshes permissions and only opens the workspace after an access role exists", async () => {
   render(<LoginPage />);
-  const button = await screen.findByRole("button", { name: "Check my approval" });
+  const button = await screen.findByRole("button", { name: "Check now" });
   fireEvent.click(button);
   await waitFor(() => expect(mockAccessToken).toHaveBeenCalledWith({ forceRefresh: true }));
   expect(mockReplace).not.toHaveBeenCalled();
@@ -39,4 +39,17 @@ test("checking approval refreshes permissions and only opens the workspace after
   (getCurrentUser as jest.Mock).mockReturnValue({ role: "CLINICAL_STAFF" });
   fireEvent.click(button);
   await waitFor(() => expect(mockReplace).toHaveBeenCalledWith("/session"));
+});
+
+test("pending approval is checked automatically without another email sign-in", async () => {
+  jest.useFakeTimers();
+  const view = render(<LoginPage />);
+  await act(async () => { await Promise.resolve(); });
+  expect(screen.getByRole("heading", { name: /workspace approval pending/ })).toBeInTheDocument();
+  (getCurrentUser as jest.Mock).mockReturnValue({ role: "CLINICAL_STAFF" });
+  await act(async () => { jest.advanceTimersByTime(15000); });
+  expect(mockAccessToken).toHaveBeenCalledWith({ forceRefresh: true });
+  expect(mockReplace).toHaveBeenCalledWith("/session");
+  view.unmount();
+  jest.useRealTimers();
 });
