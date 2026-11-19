@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { PortalBoundary } from "@/components/PortalBoundary";
-import { AccountProfile } from "@/components/AccountProfile";
+import { SiteHeader } from "@/components/SiteHeader";
 import { browserCsp } from '../../security-policy';
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head><meta httpEquiv="Content-Security-Policy" content={browserCsp()} /></head>
-      <body className="min-h-screen bg-gray-50 font-sans antialiased">
+      <body className="min-h-screen font-sans antialiased">
         {/* Skip navigation for accessibility */}
         <a
           href="#main-content"
@@ -29,45 +29,13 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        {/* Top navigation */}
-        <nav
-          className="border-b border-gray-200 bg-white shadow-sm"
-          aria-label="Main navigation"
-        >
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6">
-            <div className="flex items-center gap-3">
-              <span
-                className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white font-bold text-sm"
-                aria-hidden="true"
-              >
-                OM
-              </span>
-              <Link href="/" className="text-lg font-bold text-gray-900">OmniMatch</Link>
-            </div>
-            <nav className="flex flex-wrap gap-4 text-sm font-medium" aria-label="Site links">
-              <Link href="/session" className="text-gray-600 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-                New visit
-              </Link>
-              <Link href="/inbox" className="text-gray-600 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-                Inbox
-              </Link>
-              <Link href="/timeline" className="text-gray-600 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-                Patient history
-              </Link>
-              <Link href="/models" className="text-gray-600 hover:text-blue-600">AI & data</Link>
-              <Link href="/research" className="text-gray-600 hover:text-blue-600">Analyze a note</Link>
-              <Link href="/validation" className="text-gray-600 hover:text-blue-600">Test results</Link>
-              <Link href="/login" className="font-semibold text-teal-800">Sign in</Link>
-              <AccountProfile />
-            </nav>
-          </div>
-        </nav>
+        <SiteHeader />
 
         {/* Main content */}
-        <main id="main-content" className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <main id="main-content" className="app-main">
           <PortalBoundary>{children}</PortalBoundary>
         </main>
-        <footer className="mx-auto flex max-w-7xl flex-wrap justify-between gap-4 border-t px-6 py-7 text-sm text-gray-600"><span>OmniMatch · Synthetic-data research workspace</span><div className="flex flex-wrap gap-5"><Link href="/policies">Policies & privacy</Link><Link href="/licenses">Licenses</Link><a href="mailto:suhasreddykotla222@gmail.com">Contact / report a concern</a></div></footer>
+        <footer className="site-footer"><div><Link href="/" className="font-semibold text-slate-800">OmniMatch</Link><p className="mt-1">Academic research · Synthetic patient data only</p></div><nav aria-label="Footer navigation"><Link href="/guide">User guide</Link><Link href="/policies">Privacy & terms</Link><Link href="/licenses">Licenses</Link><a href="mailto:suhasreddykotla222@gmail.com">Contact</a></nav></footer>
       </body>
     </html>
   );

@@ -45,9 +45,9 @@ const sections = [
 
 export default function PoliciesPage() {
   return (
-    <article className="mx-auto max-w-4xl space-y-7 py-8">
+    <article className="mx-auto max-w-4xl space-y-7">
       <p className="eyebrow">POLICIES & TRANSPARENCY</p>
-      <h1 className="text-4xl font-semibold tracking-tight">
+      <h1 className="text-3xl font-semibold tracking-tight">
         Know what you share.
         <br />
         Know what the system does.

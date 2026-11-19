@@ -95,6 +95,7 @@ export default function VerifyPage() {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <header className="page-header"><p className="eyebrow">Step 3 of 4</p><h1>Approve the visit information</h1><p>Include only the patient terms you have checked. Rejected, negated and family-history terms are excluded from the study search.</p></header>
       <div className="mb-5"><PatientIdentity sessionId={sessionId} /></div>
       {error && (
         <div

@@ -21,7 +21,9 @@ test("unconfigured access cannot submit or collect a password", () => {
   );
   expect(container.querySelector('input[type="password"]')).toBeNull();
   fireEvent.click(screen.getByRole("checkbox"));
+  fireEvent.click(screen.getByRole("button", { name: "New user" }));
   expect(screen.getByRole("button", { name: "Request access" })).toBeDisabled();
+  fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
   expect(screen.getByRole("button", { name: /Continue with email/ })).toBeDisabled();
 });
 

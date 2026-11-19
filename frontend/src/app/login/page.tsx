@@ -16,6 +16,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [accepted, setAccepted] = useState(false);
+  const [newUser, setNewUser] = useState(false);
   const [error, setError] = useState("");
   const [accessPending, setAccessPending] = useState(false);
   const approvalInFlight = useRef(false);
@@ -85,81 +86,44 @@ export default function LoginPage() {
       setBusy(false);
     }
   };
-  return (
-    <section className="mx-auto max-w-4xl py-8">
-      <p className="eyebrow">YOUR PRIVATE WORKSPACE</p>
-      <h1 className="mt-4 text-4xl font-semibold tracking-tight">Sign in and start a visit.</h1>
-      <p className="mt-4 max-w-2xl leading-7 text-gray-600">Approval is needed once per account. After approval, your existing sign-in session opens your workspace automatically. You only need a new email code when the sign-in session has ended.</p>
-      <div className="my-6 rounded-2xl border border-teal-200 bg-teal-50 p-5 text-sm leading-6 text-teal-950">
-        <strong>What happens next?</strong> Verify your email, receive one owner approval, then open your personal visits. Your inbox and patient history stay separate from other users.
+  return <>
+    <section className="access-layout" aria-labelledby="access-title">
+      <div className="access-intro">
+        <p className="eyebrow">Account access</p>
+        <h1 id="access-title">Your own workspace.<br />One owner approval.</h1>
+        <p>Sign in with your email to work with visits, study suggestions and patient history in your installed application.</p>
+        <ol className="access-steps" aria-label="Account access steps">
+          <li><span className="step-number">1</span><div><strong>Verify your email</strong><p>Use the one-time code sent by WorkOS.</p></div></li>
+          <li><span className="step-number">2</span><div><strong>Receive owner approval</strong><p>For new requests, check your email for a professional-details request.</p></div></li>
+          <li><span className="step-number">3</span><div><strong>Open your personal workspace</strong><p>Your inbox and saved visits remain separate from other accounts.</p></div></li>
+        </ol>
       </div>
-      {accessPending && (
-        <section role="status" aria-labelledby="approval-pending-heading" className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
-          <h2 id="approval-pending-heading" className="font-semibold">Email verified — workspace approval pending</h2>
-          <p className="mt-2 text-sm leading-6">You have finished signing in. The owner needs to approve this account once. Leave this page open: we check automatically every 15 seconds and open your workspace when approval is ready.</p>
-          <button onClick={checkApproval} disabled={busy} className="mt-4 rounded-full border border-amber-400 bg-white px-4 py-2 text-sm font-medium disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-amber-700">{busy ? "Checking…" : "Check now"}</button>
-        </section>
-      )}
-      {!accessConfigured && (
-        <p
-          role="status"
-          className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900"
-        >
-          Access requests are not open yet. The owner must configure WorkOS and
-          enable waitlist approvals and email codes. Preview and documentation
-          remain available.
-        </p>
-      )}
-      {!accessPending && <label className="flex items-start gap-3 text-sm leading-6">
-        <input
-          type="checkbox"
-          checked={accepted}
-          onChange={(e) => setAccepted(e.target.checked)}
-          className="mt-1"
-        />{" "}
-        <span>
-          I have read the{" "}
-          <Link href="/policies" className="underline">
-            terms, privacy notice and acceptable use rules
-          </Link>
-          . I will use synthetic data only.
-        </span>
-      </label>}
-      {error && (
-        <p
-          role="alert"
-          className="mt-4 rounded-xl bg-rose-50 p-4 text-rose-800"
-        >
-          {error}
-          {accessPending && <button onClick={() => begin(false)} disabled={busy} className="ml-3 font-semibold underline">Sign in again</button>}
-        </p>
-      )}
-      {!accessPending && <div className="mt-6 flex flex-wrap gap-4">
-        <button
-          disabled={!accessConfigured || !accepted || busy}
-          onClick={() => begin(false)}
-          className="rounded-full bg-teal-700 px-6 py-3 font-medium text-white disabled:opacity-40"
-        >
-          Continue with email
-        </button>
-        <button
-          disabled={!accessConfigured || !accepted || busy}
-          onClick={() => begin(true)}
-          className="rounded-full border bg-white px-6 py-3 font-medium disabled:opacity-40"
-        >
-          Request access
-        </button>
-        <Link href="/preview" className="px-4 py-3 underline">
-          Explore sample results
-        </Link>
-      </div>}
-      <p className="mt-4 text-sm text-gray-600">Need professional credential information? <Link href="/credentials" className="font-medium text-teal-800 underline">Check a U.S. NPI record</Link>. Registry lookup does not approve an account.</p>
-      <div className="mt-8"><PublicResources /></div>
-      <p className="mt-6 text-sm leading-6 text-gray-600">
-        GitHub source is public under its license. Account approval controls the
-        official workspace; it cannot prevent downloading or modifying public
-        source code.
-      </p>
+      <div className="access-card">
+        {accessPending ? <section role="status" aria-labelledby="approval-pending-heading">
+          <p className="eyebrow">Email verified</p>
+          <h2 id="approval-pending-heading" className="mt-3 text-xl font-semibold tracking-tight">Workspace approval pending</h2>
+          <p className="mt-3 text-sm leading-7 text-slate-600">The owner needs to approve this account once. We check every 15 seconds while this page is open and take you to your workspace when access is ready.</p>
+          <button onClick={checkApproval} disabled={busy} className="ui-button mt-5 w-full">{busy ? "Checking approval…" : "Check now"}</button>
+          <p className="mt-4 text-xs leading-6 text-slate-600">Already approved? The owner should confirm your active membership and Clinical Staff role in WorkOS.</p>
+        </section> : <>
+          <div className="access-modes" role="group" aria-label="Choose account access">
+            <button aria-pressed={!newUser} onClick={() => {setNewUser(false); setError("");}}>Sign in</button>
+            <button aria-pressed={newUser} onClick={() => {setNewUser(true); setError("");}}>New user</button>
+          </div>
+          <h2 className="text-xl font-semibold tracking-tight">{newUser ? "Request your account" : "Welcome back"}</h2>
+          <p className="mt-2 text-sm leading-7 text-slate-600">{newUser ? "Verify your email, then provide your professional details for the owner to review." : "Continue with your approved email. No password is needed."}</p>
+          <label className="mt-6 flex items-start gap-3 text-xs leading-6 text-slate-600">
+            <input type="checkbox" checked={accepted} onChange={e => setAccepted(e.target.checked)} className="mt-1.5 h-4 w-4 shrink-0 accent-teal-700" />
+            <span>I agree to the <Link href="/policies" className="underline underline-offset-2 text-slate-800">terms, privacy notice and acceptable use rules</Link> and will use synthetic patient data only.</span>
+          </label>
+          <button disabled={!accessConfigured || !accepted || busy} onClick={() => begin(newUser)} className="ui-button mt-5 w-full">{busy ? "Opening sign-in…" : newUser ? "Request access" : "Continue with email"}</button>
+          <p className="mt-4 text-xs leading-6 text-slate-500">An active sign-in session opens your workspace automatically. A new email code is needed when that session ends.</p>
+        </>}
+        {!accessConfigured && <p role="status" className="status-note mt-4">Access requests are not open yet. The installation owner needs to configure account access. Public resources are available below.</p>}
+        {error && <div role="alert" className="mt-4 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">{error}{accessPending && <button onClick={() => begin(false)} disabled={busy} className="mt-2 block font-semibold underline">Sign in again</button>}</div>}
+        <div className="mt-6 border-t border-slate-100 pt-4 text-xs leading-6 text-slate-600">Need help? <a href="mailto:suhasreddykotla222@gmail.com" className="text-teal-800 underline underline-offset-2">Contact the workspace owner</a>.</div>
+      </div>
     </section>
-  );
+    <div className="mx-auto max-w-5xl border-t border-slate-200 pt-7"><PublicResources /></div>
+  </>;
 }

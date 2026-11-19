@@ -1,82 +1,37 @@
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, FlaskConical, Inbox } from "lucide-react";
+import { ArrowRight, Check, FileText, ShieldCheck } from "lucide-react";
 
 export default function HomePage() {
-  return (
-    <div className="flex flex-col items-center justify-center rounded-[2rem] bg-gradient-to-b from-teal-50 via-white to-white px-6 py-20 text-center">
-      <p className="eyebrow">OMNIMATCH · CLINICAL RESEARCH, CONNECTED</p>
-      <h1 className="mt-6 max-w-4xl text-5xl font-semibold tracking-tighter text-gray-900 sm:text-7xl">
-        A conversation. A clearer research path.
-      </h1>
-      <p className="mt-4 max-w-2xl text-lg text-gray-600">
-        Bring visit information, human review, and study evidence into one
-        considered workspace. For clinicians, research coordinators, and
-        academic teams exploring the path from a fictional visit to study
-        review.
-      </p>
-      <div className="mt-6 max-w-2xl rounded-xl border border-gray-200 bg-white p-5 text-left text-sm text-gray-700">
-        <h2 className="font-semibold text-gray-900">
-          What does a trial mean here?
-        </h2>
-        <p className="mt-2">
-          A clinical trial is a research study with rules about who may take
-          part. The sample catalog demonstrates how approved visit information
-          can support study review. Available conditions depend on the indexed
-          catalog. These are research matches, not disease forecasts.
-        </p>
-        <Link href="/guide" className="mt-3 inline-block text-blue-700 underline">
-          Read the simple project guide and demo script
-        </Link>
-      </div>
-      <p className="mt-3 max-w-2xl text-sm font-medium text-amber-800">
-        Use synthetic patient details. A study suggestion still needs
-        eligibility review.
-      </p>
-
-      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm text-left">
-          <ShieldCheck className="h-8 w-8 text-green-500" aria-hidden="true" />
-          <h2 className="mt-3 text-base font-semibold">Consent Gated</h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Microphone access is strictly blocked until explicit patient consent
-            is recorded and audit-logged.
-          </p>
+  const portal = process.env.NEXT_PUBLIC_PORTAL_MODE === "true";
+  return <>
+    <section className="hero-layout" aria-labelledby="home-title">
+      <div>
+        <p className="eyebrow">Clinical research, with human review</p>
+        <h1 id="home-title">Turn visit information into study suggestions.</h1>
+        <p className="hero-intro">Record a conversation or add a note. Review the extracted terms, explore related studies, and see what information is still needed.</p>
+        <div className="hero-actions">
+          <Link href={portal ? "/preview" : "/session"} className="ui-button">{portal ? "Explore sample results" : "Start a new visit"}<ArrowRight size={17} aria-hidden="true" /></Link>
+          <Link href={portal ? "/guide" : "/preview"} className="ui-button ui-button-secondary">{portal ? "Set up on your computer" : "See an example"}</Link>
         </div>
-
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm text-left">
-          <FlaskConical className="h-8 w-8 text-blue-500" aria-hidden="true" />
-          <h2 className="mt-3 text-base font-semibold">Human-in-the-Loop</h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Every AI-extracted entity requires explicit staff approval before
-            being sent to the trial-matching engine.
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm text-left">
-          <Inbox className="h-8 w-8 text-purple-500" aria-hidden="true" />
-          <h2 className="mt-3 text-base font-semibold">Async Inbox</h2>
-          <p className="mt-1 text-sm text-gray-500">
-            Trial matches route to an asynchronous inbox — no pop-ups during
-            consultations.
-          </p>
-        </div>
+        <p className="mt-5 flex items-start gap-2 text-xs leading-6 text-slate-600"><ShieldCheck size={15} className="mt-1 shrink-0 text-emerald-700" aria-hidden="true" />Synthetic patient data only. You approve the information used in every search.</p>
       </div>
-
-      <div className="mt-10 flex gap-4">
-        <Link
-          href="/session"
-          className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-colors"
-        >
-          Start New Session
-          <ArrowRight className="h-5 w-5" aria-hidden="true" />
-        </Link>
-        <Link
-          href="/preview"
-          className="flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-base font-semibold text-gray-700 shadow hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-colors"
-        >
-          Explore Visual Results
-        </Link>
+      <div className="workflow-preview" aria-label="Illustrative visit-to-study workflow">
+        <div className="preview-label"><strong>From visit to review</strong><span>Synthetic example</span></div>
+        <article><p className="preview-card-label">01 · Visit information</p><p className="preview-card-title flex gap-2"><FileText size={16} className="mt-1 shrink-0 text-slate-500" aria-hidden="true" />“The patient has asthma and uses albuterol.”</p></article>
+        <article><p className="preview-card-label">02 · Terms approved by the reviewer</p><span className="preview-chip"><Check size={12} aria-hidden="true" />Asthma</span><span className="preview-chip"><Check size={12} aria-hidden="true" />Albuterol</span></article>
+        <article><p className="preview-card-label">03 · Study review</p><p className="preview-card-title">Related study information</p><p className="mt-2 text-xs leading-6 text-slate-600">Supporting terms are linked to criteria. Missing measurements remain visible for review.</p><div className="mt-3 flex items-center gap-2 text-xs text-amber-900"><span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-amber-600" />Lung-function measurement needs checking</div></article>
       </div>
-    </div>
-  );
+    </section>
+    <section className="flow-steps" aria-label="How OmniMatch works">
+      {[
+        ["01", "Capture the visit", "Add a patient ID and record consent. Use voice recording or a written note."],
+        ["02", "Review the information", "Check the transcript, then approve or reject each extracted medical term."],
+        ["03", "Explore related studies", "Open your inbox to compare study criteria, missing information and visit history."],
+      ].map(([number,title,body]) => <article className="flow-step" key={number}><span className="step-number">{number}</span><h2>{title}</h2><p>{body}</p></article>)}
+    </section>
+    <section className="mt-9 grid gap-5 md:grid-cols-2">
+      <div className="ui-panel"><p className="eyebrow">What the results mean</p><h2 className="mt-3 text-xl font-semibold tracking-tight">A starting point for study review.</h2><p className="mt-3 text-sm leading-7 text-slate-600">Clinical trials are research studies with rules about who can participate. OmniMatch suggests studies from approved visit information. It does not predict a future disease or confirm enrollment.</p><p className="mt-3 text-xs leading-6 text-slate-600">The bundled catalog contains fictional studies. Real registry records require separate checks of recruitment status, locations and eligibility.</p></div>
+      <div className="ui-panel"><p className="eyebrow">Where your work happens</p><h2 className="mt-3 text-xl font-semibold tracking-tight">Explore here. Work in your installation.</h2><p className="mt-3 text-sm leading-7 text-slate-600">The public website offers examples, account access and setup guides. Recording, AI processing and saved visits run on your computer. Each account has its own inbox and history.</p><Link href="/guide" className="ui-link mt-5">Read the setup guide <ArrowRight size={15} aria-hidden="true" /></Link></div>
+    </section>
+  </>;
 }

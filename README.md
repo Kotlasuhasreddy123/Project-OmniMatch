@@ -31,9 +31,9 @@ Built for students, developers and research-workflow evaluators using **syntheti
 | Optional evidence research | Use local transformers and RAG with cited study excerpts. |
 | Approved email access | Use WorkOS email codes and organization permissions instead of shared passwords. |
 
-![Illustrative visit comparison and fictional case examples](docs/assets/history-preview.png)
+![OmniMatch interface and guided visit workflow](docs/assets/interface-preview.png)
 
-*Screenshot from the public preview. Cases and scores are invented display examples, separate from saved visits.*
+*Refined interface from the installed app. The workflow illustration uses synthetic information; it does not represent a real patient or study.*
 
 ## Choose how to use it
 

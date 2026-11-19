@@ -1,10 +1,10 @@
 import Link from "next/link";
 export default function GuidePage() {
   return (
-    <article className="mx-auto max-w-3xl space-y-8 py-10">
+    <article className="mx-auto max-w-3xl space-y-7">
       <p className="eyebrow">YOUR RESEARCH WORKSPACE</p>
-      <h1 className="text-4xl font-semibold tracking-tight">
-        From conversation to review.
+      <h1 className="text-3xl font-semibold tracking-tight">
+        Set up and use OmniMatch
       </h1>
       <section id="study-data">
         <h2 className="text-2xl font-semibold">Understand the data</h2>
@@ -67,7 +67,7 @@ export default function GuidePage() {
       <section>
         <h2 className="text-2xl font-semibold">Try the workflow</h2>
         <ol className="mt-4 list-decimal space-y-3 pl-5">
-          <li>Give the fictional patient a label such as DEMO-001, then grant consent before recording.</li>
+          <li>Enter a patient ID such as DEMO-001, then grant consent before recording.</li>
           <li>Speak a fictional medical history and check the transcript.</li>
           <li>Approve or reject each extracted term.</li>
           <li>Complete the visit and open the inbox.</li>

@@ -80,18 +80,15 @@ const fixtures: InboxItem[] = [
 ];
 
 export default function PreviewPage() {
+  const portal = process.env.NEXT_PUBLIC_PORTAL_MODE === "true";
   return (
-    <article className="py-8">
-      <p className="eyebrow">EXPLORE THE RESULTS WORKSPACE</p>
-      <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tighter sm:text-6xl">
-        Evidence you can see.
-        <br />A review you can follow.
-      </h1>
-      <p className="mt-5 max-w-2xl leading-7 text-gray-600">
-        These are invented display examples, including the scores. They
-        demonstrate the layout and interactions and are separate from your saved
-        inbox records.
-      </p>
+    <article>
+      <header className="page-header">
+        <p className="eyebrow">Sample results</p>
+        <h1>Understand a study review.</h1>
+        <p>Explore two fictional visits to see how study suggestions, evidence checks and follow-up history fit together. These examples are separate from your saved inbox.</p>
+      </header>
+      <div className="status-note">Example data · All studies and scores on this page are invented to demonstrate the interface.</div>
       <ResultsOverview
         items={fixtures}
         description="Illustrative totals from two invented visits. These display fixtures demonstrate the workspace and are separate from your inbox."
@@ -102,13 +99,13 @@ export default function PreviewPage() {
       ]} terms={['asthma', 'albuterol', 'migraine']} />
       <div className="flex flex-wrap gap-4">
         <Link
-          href="/session"
-          className="rounded-full bg-teal-700 px-6 py-3 font-medium text-white"
+          href={portal ? "/guide" : "/session"}
+          className="ui-button"
         >
-          Try a visit →
+          {portal ? "Set up your first visit" : "Start a visit"}
         </Link>
-        <Link href="/inbox" className="rounded-full border px-6 py-3">
-          Open my inbox
+        <Link href={portal ? "/login" : "/inbox"} className="ui-button ui-button-secondary">
+          {portal ? "Account access" : "Open my inbox"}
         </Link>
       </div>
     </article>

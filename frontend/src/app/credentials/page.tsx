@@ -15,9 +15,9 @@ export default function CredentialsPage() {
     catch (err) { setError(err instanceof Error ? err.message : "Lookup unavailable. Try again later."); }
     finally { setBusy(false); }
   }
-  return <section className="mx-auto max-w-2xl space-y-6 py-6">
+  return <section className="mx-auto max-w-2xl space-y-6">
     <p className="eyebrow">PROFESSIONAL REGISTRY</p>
-    <h1 className="text-4xl font-semibold tracking-tight">Check a U.S. NPI record</h1>
+    <h1 className="text-3xl font-semibold tracking-tight">Check a U.S. NPI record</h1>
     <p className="leading-7 text-gray-600">Find an individual provider record in the official CMS registry. This lookup supports owner review; it does not verify that you are the person listed, confirm a medical license, or unlock an account.</p>
     {portalMode ? <div className="rounded-2xl border border-teal-200 bg-teal-50 p-6 leading-7"><h2 className="font-semibold">Use the official registry on this public site</h2><p>The built-in check runs in your installed OmniMatch application. On this public portal, open the official CMS registry using the link below.</p><a href="https://npiregistry.cms.hhs.gov/" target="_blank" rel="noreferrer" className="mt-3 inline-block font-semibold underline">Open the CMS registry ↗</a></div> : <form onSubmit={lookup} className="space-y-4 rounded-2xl border bg-white p-6">
       <label htmlFor="npi" className="block font-semibold">10-digit NPI number</label>

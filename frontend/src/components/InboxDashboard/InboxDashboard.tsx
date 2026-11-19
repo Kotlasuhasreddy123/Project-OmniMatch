@@ -75,7 +75,7 @@ function TrialMatchCard({ match, inboxItemId, sessionId }: { match: TrialMatch; 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <CaseBadge conditions={match.conditions} />
-            <span className="text-sm font-semibold text-gray-900 truncate">{match.title}</span>
+            <span className="text-sm font-semibold text-gray-900 break-words">{match.title}</span>
             <span className="shrink-0 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
               {match.phase}
             </span>
@@ -360,11 +360,10 @@ export function InboxDashboard({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Clinical Trial Inbox
+            Study review inbox
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Trial matches are routed here after each visit session completes.
-            No real-time alerts — review at your convenience.
+            Open a visit to review its study suggestions and missing information. Reviewed visits can be archived without deleting their history.
           </p>
         </div>
         {unreadCount > 0 && (
@@ -378,7 +377,7 @@ export function InboxDashboard({
         )}
       </div>
 
-      {!isLoading && <ResultsOverview items={items} />}
+      {!isLoading && items.length > 0 && <ResultsOverview items={items} />}
       {/* Loading */}
       {isLoading && (
         <div
@@ -399,7 +398,7 @@ export function InboxDashboard({
             No inbox items yet
           </p>
           <p className="mt-1 text-sm text-gray-400">
-            Complete a visit session to see matched trials here.
+            Complete a reviewed visit to see study suggestions here.
           </p>
         </div>
       )}

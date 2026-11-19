@@ -40,12 +40,8 @@ export function ResultsOverview({
     >
       <div className="overview-heading">
         <div>
-          <p className="eyebrow">THE REVIEW AT A GLANCE</p>
-          <h2>
-            See the signal.
-            <br />
-            Know what to check.
-          </h2>
+          <p className="eyebrow">Results overview</p>
+          <h2>Your review summary</h2>
         </div>
         <p>{description}</p>
       </div>
@@ -74,9 +70,7 @@ export function ResultsOverview({
         <div className="visual-card mt-4">
           <h3>Compare the review scores</h3>
           <p>
-            Use the chart to compare ranking values. Hover or use keyboard
-            navigation for details; the full numerical list appears below.
-            Repeated studies belong to separate visits.
+            Compare the top six study suggestions. Scores help order a review; they are not a chance of enrollment. The numerical list is available below.
           </p>
           <StudyComparisonChart
             data={ranked.map((m, index) => ({

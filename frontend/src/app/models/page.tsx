@@ -43,12 +43,10 @@ const rows = [
 ];
 export default function ModelsPage() {
   return (
-    <article className="mx-auto max-w-5xl space-y-8 py-8">
+    <article className="mx-auto max-w-5xl space-y-7">
       <p className="eyebrow">MODELS & TRAINING · OPEN EVIDENCE</p>
-      <h1 className="text-4xl font-semibold tracking-tight">
-        What runs. What learned.
-        <br />
-        What still needs proof.
+      <h1 className="text-3xl font-semibold tracking-tight">
+        AI models and data sources
       </h1>
       <p className="max-w-3xl leading-7 text-gray-600">
         Speech recognition, term extraction and study search are different

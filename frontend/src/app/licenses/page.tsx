@@ -84,9 +84,9 @@ const components = [
 ];
 export default function LicensesPage() {
   return (
-    <article className="mx-auto max-w-4xl space-y-7 py-8">
+    <article className="mx-auto max-w-4xl space-y-7">
       <p className="eyebrow">OPEN SOURCE & MODEL NOTICES</p>
-      <h1 className="text-4xl font-semibold tracking-tight">
+      <h1 className="text-3xl font-semibold tracking-tight">
         Built with open tools.
         <br />
         Respecting their licenses.

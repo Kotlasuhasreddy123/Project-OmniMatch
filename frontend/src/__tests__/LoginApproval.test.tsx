@@ -20,7 +20,7 @@ beforeEach(() => {
 
 test("verified unapproved users can open public resources without accepting sign-in terms", async () => {
   render(<LoginPage />);
-  expect(await screen.findByRole("heading", { name: /workspace approval pending/ })).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { name: /workspace approval pending/i })).toBeInTheDocument();
   expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   expect(screen.getByRole("link", { name: /^Sample results/ })).toHaveAttribute("href", "/preview");
   expect(screen.getByRole("link", { name: /^Installation guide/ })).toHaveAttribute("href", "/guide");
@@ -45,7 +45,7 @@ test("pending approval is checked automatically without another email sign-in", 
   jest.useFakeTimers();
   const view = render(<LoginPage />);
   await act(async () => { await Promise.resolve(); });
-  expect(screen.getByRole("heading", { name: /workspace approval pending/ })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: /workspace approval pending/i })).toBeInTheDocument();
   (getCurrentUser as jest.Mock).mockReturnValue({ role: "CLINICAL_STAFF" });
   await act(async () => { jest.advanceTimersByTime(15000); });
   expect(mockAccessToken).toHaveBeenCalledWith({ forceRefresh: true });

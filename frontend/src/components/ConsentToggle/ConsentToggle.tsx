@@ -31,14 +31,13 @@ export function ConsentToggle({
             id="consent-heading"
             className="text-lg font-semibold text-gray-900"
           >
-            Patient Consent
+            2. Confirm patient consent
           </h2>
           <p
             id="consent-description"
             className="mt-1 text-sm text-gray-500"
           >
-            Audio recording is strictly disabled until you enable consent. All
-            audio is processed in memory only — no recordings are saved to disk.
+            Confirm consent before recording or reviewing a written note. Audio is processed in memory and is not saved to disk.
           </p>
         </div>
 
@@ -78,7 +77,7 @@ export function ConsentToggle({
           "mt-4 flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium",
           consentGranted
             ? "bg-green-50 text-green-800"
-            : "bg-red-50 text-red-800"
+            : "bg-amber-50 text-amber-900"
         )}
         aria-live="polite"
         aria-atomic="true"
@@ -94,7 +93,7 @@ export function ConsentToggle({
         ) : (
           <>
             <ShieldOff
-              className="h-5 w-5 flex-shrink-0 text-red-500"
+              className="h-5 w-5 flex-shrink-0 text-amber-700"
               aria-hidden="true"
             />
             <span>Consent required before audio recording can begin</span>

@@ -125,14 +125,14 @@ export default function TimelinePage() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Patient Visit Timeline</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Patient history</h1>
         <p className="mt-1 text-sm text-gray-500">
           See each visit and its approved terms under the same patient ID. A new symptom is first recorded in the visit where it was added, even if another visit happened earlier on the same day.
         </p>
       </div>
 
       {/* Search */}
-      <div className="flex gap-3">
+      <div className="flex flex-wrap items-end gap-3">
         <div className="flex-1">
           <label htmlFor="patient-search" className="block text-sm font-medium mb-1">PATIENT ID</label>
           <input
@@ -156,7 +156,7 @@ export default function TimelinePage() {
           {loading ? "Loading…" : "Search"}
         </button>
       </div>
-      <p className="text-sm text-gray-600">Enter this label on New Session before sending each visit. The session ID is different for every visit. Older inbox records were not linked to a patient, and we have kept them unchanged.</p>
+      <p className="text-sm text-gray-600">Use the same patient ID on each new visit to link their history. Each visit has its own session ID.</p>
 
       {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
 

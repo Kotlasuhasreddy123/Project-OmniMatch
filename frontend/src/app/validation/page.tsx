@@ -48,10 +48,10 @@ export default function ValidationPage() {
   const [specialty, setSpecialty] = useState(specialties[0]);
   const [language, setLanguage] = useState(languages[0]);
   return (
-    <article className="mx-auto max-w-5xl space-y-7 py-8">
+    <article className="mx-auto max-w-5xl space-y-7">
       <p className="eyebrow">VALIDATION YOU CAN INSPECT</p>
-      <h1 className="text-4xl font-semibold tracking-tight">
-        Evidence before an accuracy claim.
+      <h1 className="text-3xl font-semibold tracking-tight">
+        Test results and coverage
       </h1>
       <p className="max-w-3xl leading-7 text-gray-600">
         Every specialty and language needs its own representative, independently

@@ -9,28 +9,25 @@ export function PortalBoundary({ children }: { children: React.ReactNode }) {
   );
   if (process.env.NEXT_PUBLIC_PORTAL_MODE === "true" && localOnly) {
     return (
-      <section className="rounded-3xl bg-teal-50 p-8">
-        <p className="eyebrow">YOUR DATA STAYS WITH YOUR INSTALLATION</p>
-        <h1 className="mt-4 text-3xl font-semibold">
+      <section className="ui-panel mx-auto max-w-3xl">
+        <p className="eyebrow">LOCAL WORKSPACE REQUIRED</p>
+        <h1 className="mt-3 text-2xl font-semibold tracking-tight">
           Open your local research workspace
         </h1>
         <p className="my-5 max-w-2xl leading-7">
-          This public site handles access information and setup guides.
-          Recording, extraction and study matching run on your own computer.
-          Install the app, then open the local workspace and sign in with your
-          approved account.
+          Recording, study matching and saved visits run in the installed app. This public website provides examples, setup guides and account access. If you have already started the local services, open your workspace below.
         </p>
         <div className="flex flex-wrap gap-4">
           <a
             href="http://localhost:3000"
-            className="rounded-full bg-teal-700 px-5 py-3 text-white"
+            className="ui-button"
           >
             Open installed app ↗
           </a>
-          <Link href="/workspace" className="rounded-full border px-5 py-3">
+          <Link href="/workspace" className="ui-button ui-button-secondary">
             Installation and access
           </Link>
-          <Link href="/preview" className="px-5 py-3 underline">
+          <Link href="/preview" className="ui-link">
             View example results
           </Link>
         </div>

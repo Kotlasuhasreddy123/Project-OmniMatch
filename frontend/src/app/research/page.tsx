@@ -124,18 +124,13 @@ export default function ResearchPage() {
       status.models.some((model) => model.task === task && model.cached),
     );
   return (
-    <article className="mx-auto max-w-5xl space-y-7 py-8">
+    <article className="mx-auto max-w-5xl space-y-7">
       <p className="eyebrow">LOCAL TEXT UNDERSTANDING & STUDY EVIDENCE</p>
-      <h1 className="text-4xl font-semibold tracking-tight">
-        Read the visit.
-        <br />
-        Review the terms. Check the source.
+      <h1 className="text-3xl font-semibold tracking-tight">
+        Analyze a visit note
       </h1>
       <p className="max-w-3xl leading-7 text-gray-600">
-        Biomedical transformers suggest terms, a second model checks their
-        context, and retrieval finds study evidence. Approve each patient term
-        before asking a study question. This research desk does not save a visit
-        or send a referral.
+        Extract medical terms, review their context, then ask questions supported by study sources. This analysis is separate from saved visits and does not send referrals.
       </p>
       {status && (!ready || !ragReady) && (
         <section

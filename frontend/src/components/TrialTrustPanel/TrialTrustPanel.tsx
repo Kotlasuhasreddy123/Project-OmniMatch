@@ -31,13 +31,13 @@ export function TrialTrustPanel({ freshness, criterionEvidence }: TrialTrustPane
           {freshness.level === 'BLOCKED' ? 'Referral unavailable' : freshness.level === 'REVIEW' ? 'Check study details before contacting' : 'Registry checks passed — staff review required'}
         </h4>
         <p className="mt-1 text-sm">{freshness.reason}</p>
-        <p className="mt-1 text-xs">Recommended action: {freshness.recommended_action.replaceAll("_", " ")}</p>
+        <p className="mt-1 text-xs">Next step: {freshness.recommended_action === "ROUTE_TO_COORDINATOR" ? "A coordinator can review this study." : freshness.level === "BLOCKED" ? "Keep this suggestion for review; referral is unavailable." : "Confirm the current study details before contacting a coordinator."}</p>
       </div>
 
       <div>
         <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500">
           <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-          Human Verified Evidence
+          Evidence from approved terms
         </h4>
         {criterionEvidence.length === 0 ? (
           <p className="mt-1 text-sm text-gray-600">No approved transcript anchor was available for a matched criterion.</p>
