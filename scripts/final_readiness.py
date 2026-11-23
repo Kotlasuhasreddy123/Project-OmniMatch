@@ -68,6 +68,11 @@ def check(attestations=None, check_services=False):
                 health=json.load(response)
             with urlopen('http://localhost:3000/preview',timeout=10) as response:
                 frontend=response.status==200
+            with urlopen('http://localhost:8000/api/v1/auth/config',timeout=10) as response:
+                account=json.load(response)
+            # For an existing installation, the running configuration is the
+            # relevant evidence. It may come from an ignored Compose override.
+            checks['owner_account_ids_configured'] = account.get('configured') is True
             checks['local_services_ready'] = bool(health.get('qdrant_connected') and health.get('whisper_loaded') and frontend)
         except (OSError,ValueError):
             checks['local_services_ready'] = False

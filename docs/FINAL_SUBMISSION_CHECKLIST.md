@@ -1,24 +1,26 @@
 # Final submission readiness
 
-Prepared November 9, 2026. This is a status checklist, not an approval or a claim of clinical validation.
+Updated November 22, 2026. This is a status checklist, not an approval or a claim of clinical validation. The video recording is assigned to the student and excluded from the current completion work.
 
 ## Completed software work
 
 - [x] Consent before microphone access, explicit term approval, asynchronous research inbox and role checks.
 - [x] Pinned terminology provenance and licenses, ambiguity review, context regression and evidence quotation checks.
 - [x] Speech comparison with raw error counts and latency tradeoff documented in [Accuracy upgrade](ACCURACY_UPGRADE.md).
-- [x] Real-model backend verification: 250 passed, one expected failure for the unmet broad-recall target. Frontend: 69 passed.
+- [x] November 22 isolated backend regression: 264 passed, 3 optional checks skipped, one expected failure for the unmet broad-recall target. The three optional real-model integrations passed in a separate run. Frontend: 86 passed across 21 suites; TypeScript passed.
+- [x] November 22 installation check: all 14 local pages responded, both unauthenticated protected requests returned 401, Qdrant and Whisper were loaded, and account configuration was present.
+- [x] Owner account setup, earlier owner sign-in, two written visits, history and archive/restore have dated rehearsal evidence. Automated email-request tests: 12 passed. These do not establish fresh new-user acceptance.
 - [x] Local installation, optional AWS deployment, passwordless setup, security controls and model/data documentation.
 - [x] Prepared private cumulative report, testing/training draft, technical manual, future individual preparation drafts and rubric checklist.
 
 ## Owner and team acceptance gates
 
-- [ ] Configure WorkOS client and organization IDs, then test owner approval, rejected access, email sign-in, expiry and revocation. Never put API secrets in the browser or GitHub.
+- [ ] Finish the live new-user approval, email delivery, expiry and revocation acceptance record. WorkOS IDs are configured; local automated permission and ownership tests pass. Never put API secrets in the browser or GitHub.
 - [ ] Record designated-user acceptance: expected outcome, actual outcome, pass/fail, issue and correction for each scenario.
 - [ ] Record scenario-training attendance, unassisted operation and actual feedback. Previously confirmed practice does not establish formal acceptance or measured training effectiveness.
 - [ ] Confirm the latest Blackboard prompts, milestone rubric, deadline and advisor feedback. The supplied syllabus and older project description differ.
 - [ ] Each author verifies personal contributions, rewrites preparation drafts in their own words and follows the course AI/authorship rules.
-- [ ] Choose local installation or hosted deployment, verify it on the intended machine and complete handover. GitHub Pages serves the public portal; it cannot run the Python API or Qdrant.
+- [ ] Complete teammate-machine handover. The current arrangement is a public Render portal plus protected local inference and storage. This laptop is checked; each teammate must retain their own installation and sign-in results. AWS remains optional and unprovisioned.
 - [ ] All members review and approve the final files before one group member submits the group report. Individual journals remain separate.
 
 The cumulative draft includes 33 body pages and at least 10 background pages in the verified rendering. Page count alone does not establish rubric compliance. Recheck after editing or importing into Google Docs.

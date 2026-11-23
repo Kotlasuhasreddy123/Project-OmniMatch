@@ -93,6 +93,8 @@ Use `python3` instead of `py -3` on macOS/Linux. The report checks synthetic tex
 
 ## Stop, restart and update
 
+Before accepting an installation, run `python scripts/verify_release.py` and complete the [release acceptance checks](RELEASE_ACCEPTANCE.md). Save the results for each teammate's laptop. Automated HTTP checks do not replace sign-in, microphone and user checks.
+
 ```bash
 docker compose stop
 docker compose start

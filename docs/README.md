@@ -17,6 +17,8 @@
 - [Validation plan](VALIDATION_AND_TRAINING_PLAN.md)
 - [Code map](CODE_MAP.md)
 - [Session repair and workflow verification](SESSION_REPAIR_NOVEMBER_15.md)
+- [Release acceptance and teammate handover](RELEASE_ACCEPTANCE.md)
+- [November 22 release verification](RELEASE_VERIFICATION_2026_11_22.md)
 
 ## Historical records
 
