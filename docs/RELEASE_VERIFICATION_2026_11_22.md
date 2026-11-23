@@ -13,10 +13,13 @@ This record describes engineering checks on the Windows Docker installation and 
 | Credential request automation | 12 passed | Mocked WorkOS and email behavior; no new email recipient contacted by these tests |
 | Readiness guard tests | 2 passed | Missing or placeholder approvals cannot mark acceptance complete |
 | Installation verifier tests | 3 passed | Open protected route or unloaded model fails; successful checks do not imply sign-in or clinical validity |
+| npm dependency audit after update | Zero known production or development vulnerabilities | Compatible transitive dependency updates; all 86 frontend tests and TypeScript passed again |
 
 The expected failure retains the broad NLP recall requirement rather than hiding it. The previously reported NLP latency assertion passed in the current full regression. This does not establish that latency under all machine loads will pass.
 
 The first real-model run was stopped after speech processing competed heavily with the running application. A separate run with two CPU resources and bounded PyTorch settings passed the three integrations. The original under-load page check included a home-page timeout; a subsequent complete check passed after model-test load ended. Both records are retained privately. The application still needs workload-specific timing and a physical microphone rehearsal.
+
+The npm audit initially identified a moderate minimatch denial-of-service advisory propagated through TypeScript ESLint development dependencies. Compatible lockfile updates removed the reported npm findings. A GitHub Dependabot alert was also reported by the push; its private detail page requires owner sign-in, so a zero local npm audit is not represented as independent confirmation that GitHub closed that alert. Deprecated build-tool notices also remain distinct from known audit findings.
 
 ## Reproduce
 
