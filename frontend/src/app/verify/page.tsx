@@ -14,6 +14,7 @@ import { getOrCreateSessionId, clearSessionId } from "@/lib/session";
 import type { ClinicalEntity } from "@/types";
 import { AlertCircle } from "lucide-react";
 import { PatientIdentity } from "@/components/PatientIdentity/PatientIdentity";
+import { getCurrentUser } from "@/lib/auth";
 import { getPatientLabel, patientLabelKey, PATIENT_LABEL_PATTERN } from "@/lib/patient";
 
 export default function VerifyPage() {
@@ -51,7 +52,10 @@ export default function VerifyPage() {
       const evidenceSpans = await buildEvidenceSpans(transcript, approvedEntities);
       await recordEvidenceLedger(sessionId, approvedEntities, evidenceSpans);
       await completeSession(sessionId, approvedEntities, evidenceSpans, patientLabel);
-      sessionStorage.setItem("omni_pending_visit", JSON.stringify({ sessionId, patientLabel, submittedAt: Date.now() }));
+      // Keep only the already-reviewed payload for an explicit retry. The raw
+      // transcript is still removed; a retry never approves any new finding.
+      sessionStorage.setItem("omni_pending_visit", JSON.stringify({ sessionId, patientLabel,
+        submittedAt: Date.now(), ownerId: getCurrentUser()?.sub, approvedEntities, evidenceSpans }));
       sessionStorage.removeItem("omni_entities");
       sessionStorage.removeItem("omni_transcription");
       sessionStorage.removeItem("omni_word_confidences");

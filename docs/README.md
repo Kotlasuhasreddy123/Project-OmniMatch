@@ -19,6 +19,7 @@
 - [Session repair and workflow verification](SESSION_REPAIR_NOVEMBER_15.md)
 - [Release acceptance and teammate handover](RELEASE_ACCEPTANCE.md)
 - [November 22 release verification](RELEASE_VERIFICATION_2026_11_22.md)
+- [Additional recovery tests and startup plan](RECOVERY_TESTING_AND_STARTUP_PLAN.md)
 
 ## Historical records
 

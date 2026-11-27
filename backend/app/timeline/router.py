@@ -53,6 +53,15 @@ async def get_timeline(
     # aggregate table is retained for recovery but never exposed by this API.
     async with db.execute("SELECT * FROM inbox_items WHERE patient_pseudo = ? AND owner_id = ? ORDER BY created_at ASC, id ASC", (patient_pseudo, current_user.sub)) as cur:
         rows = await cur.fetchall()
+    # Older databases may contain several completion rows for one visit.
+    # Use the same distinct visits for both term counts and the visit list.
+    distinct_rows = []
+    seen = set()
+    for row in rows:
+        if row['session_id'] not in seen:
+            seen.add(row['session_id'])
+            distinct_rows.append(row)
+    rows = distinct_rows
     history = {}
     for row in rows:
         details = {e["term"].lower().strip(): e for e in json.loads(row["entity_details_json"] or "[]")}

@@ -8,6 +8,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { InboxDashboard } from "@/components/InboxDashboard/InboxDashboard";
+import { PendingVisitNotice } from "@/components/InboxDashboard/PendingVisitNotice";
 import { getInbox, markReviewed, archiveInboxItem, ApiError } from "@/lib/apiClient";
 import { getCurrentUser } from "@/lib/auth";
 import type { InboxItem } from "@/types";
@@ -88,6 +89,7 @@ export default function InboxPage() {
 
   return (
     <div className="mx-auto max-w-4xl">
+      {!isLoading && <PendingVisitNotice items={items} onRefresh={fetchInbox} />}
       <label className="mb-4 flex items-center gap-2 text-sm">
         <input type="checkbox" checked={includeArchived} onChange={event => setIncludeArchived(event.target.checked)} />
         Show archived visits (saved in the database)

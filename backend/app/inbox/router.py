@@ -160,7 +160,9 @@ async def _run_matching_and_store(
         )
 
     except Exception as exc:
-        logger.error("Background matching failed for session %s: %s", session_id, exc)
+        # Model/transport errors can contain submitted text or connection data.
+        # Retain only the error category, not its potentially private message.
+        logger.error("Background matching failed (%s)", type(exc).__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -194,11 +196,11 @@ async def complete_session(
     """
     from app.config import settings as app_settings
 
-    async with aiosqlite.connect(app_settings.sqlite_db_path) as ownership_db:
-        await claim_session(ownership_db, session_id, current_user.sub)
-
     if body.session_id != session_id:
         raise HTTPException(status_code=400, detail="The visit ID in the address and request must match.")
+
+    async with aiosqlite.connect(app_settings.sqlite_db_path) as ownership_db:
+        await claim_session(ownership_db, session_id, current_user.sub)
 
     background_tasks.add_task(
         _run_matching_and_store,
