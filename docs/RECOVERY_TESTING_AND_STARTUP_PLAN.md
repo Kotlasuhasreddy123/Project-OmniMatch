@@ -14,6 +14,14 @@ Updated November 26, 2026, Central Time. The regression and browser results belo
 
 The expected backend failure preserves the broader NLP quality target; it must not be counted as a passing accuracy test. The three skipped integrations need explicit cached-model/local-service execution. Timing measurements are machine-specific and are not the full visit-to-inbox latency. Earlier results remain dated historical records rather than replacing these findings.
 
+## Installation and model recheck on November 26
+
+The rebuilt Docker installation was restarted with its existing data volumes preserved. All 18 read-only installation checks passed, covering page responses, service/model readiness, configured authentication and denial of unauthenticated protected requests.
+
+The three opt-in real-model/local-service integration tests passed separately in 63.36 seconds. They exercised a temporary Qdrant study collection, reviewed findings through matching and history, cited evidence retrieval, actual transformer inference, and Whisper decoding of a one-second silent WAV held in memory. The warm fictional index-to-inbox case took 0.096 seconds. These checks use synthetic data and test identities; they do not verify real WorkOS sign-in, microphone speech quality, broad clinical accuracy or capacity under load. No new model weights were trained.
+
+Code and regression tests were published in commit `0c3041a`. The local 50 ms NLP speed failure above remains unresolved; a successful service integration does not cancel that finding.
+
 ## Defects found and corrected
 
 1. An invalid completion request could claim the URL session ID before rejecting a mismatched body. Validation now happens before ownership is claimed.
